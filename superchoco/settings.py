@@ -13,9 +13,35 @@ SECRET_KEY = secret_key
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+# TEMPLATE_DEBUG = DEBUG
 
-ALLOWED_HOSTS = []
+ADMINS = (
+    # ('Your Name', 'your_email@domain.com'),
+)
 
+ALLOWED_HOSTS = [
+    '*'
+]
+
+# MANAGERS = ADMINS
+
+# If you set this to False, Django will make some optimizations so as not
+# to load the internationalization machinery.
+# USE_I18N = True
+
+# Absolute path to the directory that holds media.
+# Example: "/home/media/media.lawrence.com/"
+# MEDIA_ROOT = '/home/hosting_russianchoco/projects/russian-souvenir-staging/media'
+
+# URL that handles the media served from MEDIA_ROOT. Make sure to use a
+# trailing slash if there is a path component (optional in other cases).
+# Examples: "http://media.lawrence.com", "http://example.com/media/"
+# MEDIA_URL = '/media/'
+
+# URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
+# trailing slash.
+# Examples: "http://foo.com/media/", "/media/".
+# ADMIN_MEDIA_PREFIX = '/media/admin/'
 
 # Application definition
 
@@ -45,7 +71,9 @@ ROOT_URLCONF = 'superchoco.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            #"/home/hosting_russianchoco/projects/russian-souvenir-staging/choco/templates",
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
