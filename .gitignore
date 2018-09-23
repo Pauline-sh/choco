@@ -9,3 +9,4 @@ Pipfile
 .env
 instructions.txt
 mysqlclient-27-64.whl
+keys.py
