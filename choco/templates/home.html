@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+<!-- эта строка для отображения изображений из папки static -->
+{% load staticfiles %}
+
+{% block content %}
+    <table id="choco_table">
+        {% for item in chocos %}
+            <tr><td>
+                {{ forloop.counter }}: {{ item.choco_name }} - {{ item.choco_price }} RUB <img src="{% static item.choco_pic %}"/>
+            </td></tr>
+        {% endfor %}
+    </table>
+{% endblock %}

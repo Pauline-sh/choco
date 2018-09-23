@@ -1,0 +1,11 @@
+db.sqlite3
+geckodriver.log
+virtualenv
+*.pyc
+.idea
+__pycache__
+/static
+Pipfile
+.env
+instructions.txt
+mysqlclient-27-64.whl
