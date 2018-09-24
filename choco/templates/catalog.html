@@ -10,7 +10,7 @@
         {% else %}
             {% for item in chocos %}
                 <tr><td>
-                    <a href="{% url 'choco:details' pk=item.id %}">{{ forloop.counter }}</a>: {{ item.choco_name }} - {{ item.choco_price }} RUB <img src="{% static item.choco_pic %}"/>
+                    <a href="{{ item.get_absolute_url }}">{{ forloop.counter }}</a>: {{ item.choco_name }} - {{ item.choco_price }} RUB <img src="{% static item.choco_pic %}"/>
                 </td></tr>
             {% endfor %}
         {% endif %}

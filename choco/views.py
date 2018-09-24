@@ -1,11 +1,11 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import Assortment
 from .cart import Cart
 from .forms import CartAddProductForm
 
-context = {'cart_quantity': 1}
+context = {'cart_quantity': 0}
 def home_page(request):
     return render(request, 'home.html', context)
 
@@ -42,38 +42,25 @@ def catalog_page(request):
 
 
 def cart_page(request):
+    cart = Cart(request)
+    for item in cart:
+        item['update_quantity_form'] = CartAddProductForm(initial={'quantity': item['quantity'], 'update': True})
+    context['cart'] = cart
     return render(request, 'cart.html', context)
 
 
 def cart_add(request, pk):
-    pass
-
-
-def cart_remove(request, pk):
-    pass
-
-
-"""
-def cart_add(request, product_id):
     cart = Cart(request)
-    product = get_object_or_404(Product, id=product_id)
+    choco_item = get_object_or_404(Assortment, pk=pk)
     form = CartAddProductForm(request.POST)
     if form.is_valid():
         cd = form.cleaned_data
-        cart.add(product=product, quantity=cd['quantity'], update_quantity=cd['update'])
-    return redirect('cart:cart_detail')
- 
- 
-def cart_remove(request, product_id):
+        cart.add(item=choco_item, quantity=cd['quantity'], update_quantity=cd['update'])
+    return render(request, 'home.html', context)
+
+
+def cart_remove(request, pk):
     cart = Cart(request)
-    product = get_object_or_404(Product, id=product_id)
+    product = get_object_or_404(Assortment, pk=pk)
     cart.remove(product)
-    return redirect('cart:cart_detail')
- 
- 
-def cart_detail(request):
-    cart = Cart(request)
-    for item in cart:
-        item['update_quantity_form'] = CartAddProductForm(initial={'quantity': item['quantity'], 'update': True})
-    return render(request, 'cart/detail.html', {'cart': cart})
-"""
+    return redirect('choco:cart')
