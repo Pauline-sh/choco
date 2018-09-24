@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+<!-- эта строка для отображения изображений из папки static -->
+{% load staticfiles %}
+
+{% block content %}
+    <table id="choco_table">
+        {% if chocos|length < 1 %}
+            <p>Сейчас ассортимент пуст. Заходите позже!</p>
+        {% else %}
+            {% for item in chocos %}
+                <tr><td>
+                    <a href="{% url 'choco:details' pk=item.id %}">{{ forloop.counter }}</a>: {{ item.choco_name }} - {{ item.choco_price }} RUB <img src="{% static item.choco_pic %}"/>
+                </td></tr>
+            {% endfor %}
+        {% endif %}
+    </table>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if chocos.has_previous %}
+                <a href="?page={{ chocos.previous_page_number }}">Назад</a>
+            {% endif %}
+
+            {% if chocos.has_next %}
+                <a href="?page={{ chocos.next_page_number }}">Вперед</a>
+            {% endif %}
+        </span>
+    </div>
+{% endblock %}

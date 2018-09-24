@@ -9,10 +9,18 @@
 
         {% load static %}
         <link rel="stylesheet" type="text/css" href="{% static 'choco/css/main.css' %}">
+
+        <script src="/static/js/test.js"></script>
     </head>
 
     <body>
-        <div class="header"><p class="test">dat me, upper hook</p></div>
+        <div class="header test">
+            <a href="{% url 'choco:home' %}">Home</a>
+            <a href="{% url 'choco:catalog' %}">Catalog</a>
+            <a href="{% url 'choco:about' %}">About</a>
+            <a href="{% url 'choco:contacts' %}">Contacts</a>
+            <a href="{% url 'choco:cart' %}">Cart {{ cart_quantity }}</a>
+        </div>
         {% block content %}
         {% endblock %}
         <div class="footer"><p class="test">dat me, bottom hook</p></div>
