@@ -1,3 +1,9 @@
-.test {
-    color: blue;
+body {
+    background-color: #D1BEA9;
+}
+
+#content {
+    width: 80%;
+    margin: 0 auto 0 auto;
+    background-color: #B49B7F;
 }
