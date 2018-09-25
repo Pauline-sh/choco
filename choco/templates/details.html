@@ -1,8 +1,22 @@
 {% extends 'base.html' %}
 
+{% block styles %}
+{% endblock %}
+
 <!-- эта строка для отображения изображений из папки static -->
 {% load staticfiles %}
 
 {% block content %}
     <p>{{ item.choco_name }}</p>
+	<form action="{% url 'choco:cart_add' item.id %}" method="post">
+        {% csrf_token %}
+
+        {{ cart_form.quantity }}
+        {{ cart_form.quantity.errors }}
+
+        {{ cart_form.update }}
+        {{ cart_form.update.errors }}
+        <input type="submit" value="Добавить в корзину">
+    </form>
+    <a href="{% url 'choco:cart_remove' item.id %}">Удалить</a>
 {% endblock %}

@@ -5,29 +5,29 @@ from .models import Assortment
 from .cart import Cart
 from .forms import CartAddProductForm
 
-context = {'cart_quantity': 0}
 def home_page(request):
-    return render(request, 'home.html', context)
+    return render(request, 'home.html')
 
 
 def about_page(request):
-    return render(request, 'about.html', context)
+    return render(request, 'about.html')
 
 
 def contacts_page(request):
-    return render(request, 'contacts.html', context)
+    return render(request, 'contacts.html')
 
 
 def details_page(request, pk):
     choco_item = get_object_or_404(Assortment, pk=pk)
-    context['item'] = choco_item
-    return render(request, 'details.html', context)
+    cart_form = CartAddProductForm()
+
+    return render(request, 'details.html', {'item': choco_item, 'cart_form': cart_form})
 
 
 def catalog_page(request):
     chocos_list = Assortment.objects.all()
 
-    paginator = Paginator(chocos_list, 25) # Show 25 contacts per page
+    paginator = Paginator(chocos_list, 15) # Show 25 contacts per page
 
     page = request.GET.get('page')
     try:
@@ -37,16 +37,15 @@ def catalog_page(request):
     except EmptyPage:
         chocos = paginator.page(paginator.num_pages)
 
-    context['chocos'] = chocos
-    return render(request, 'catalog.html', context)
+    return render(request, 'catalog.html', {'chocos': chocos})
 
 
 def cart_page(request):
     cart = Cart(request)
     for item in cart:
         item['update_quantity_form'] = CartAddProductForm(initial={'quantity': item['quantity'], 'update': True})
-    context['cart'] = cart
-    return render(request, 'cart.html', context)
+
+    return render(request, 'cart.html', {'cart': cart})
 
 
 def cart_add(request, pk):
@@ -56,7 +55,7 @@ def cart_add(request, pk):
     if form.is_valid():
         cd = form.cleaned_data
         cart.add(item=choco_item, quantity=cd['quantity'], update_quantity=cd['update'])
-    return render(request, 'home.html', context)
+    return redirect('choco:cart')
 
 
 def cart_remove(request, pk):

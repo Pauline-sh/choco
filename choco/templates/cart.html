@@ -1,8 +1,29 @@
 {% extends 'base.html' %}
 
+{% block styles %}
+{% endblock %}
+
 <!-- эта строка для отображения изображений из папки static -->
 {% load staticfiles %}
 
 {% block content %}
-    basketpage
+    {% if cart|length < 1 %}
+        <p>Ваш заказ не содержит товаров</p>
+    {% else %}
+        {% for item in cart %}
+            {% with product=item.product  %}
+                {{ product.choco_name }}
+                <form action="{% url 'choco:cart_add' product.id %}" method="post">
+                    {% csrf_token %}
+                    {{ item.update_quantity_form.quantity }}
+                    {{ item.update_quantity_form.update }}
+                    <input type="submit" value="Обновить">
+                </form>
+                <a href="{% url 'choco:cart_remove' product.id %}">Удалить</a>
+                <p>Цена: {{ product.choco_price }} RUB</p>
+                <p>Сумма: {{ item.total_price }} RUB</p>
+                <br /><br />
+            {% endwith %}
+        {% endfor %}
+    {% endif %}
 {% endblock %}

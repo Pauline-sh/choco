@@ -3,6 +3,11 @@
 <!-- эта строка для отображения изображений из папки static -->
 {% load staticfiles %}
 
+{% block styles %}
+	<!--убрать в catalog.html-->
+	<link rel="stylesheet" type="text/css" href="{% static 'choco/css/catalog.css' %}">
+{% endblock %}
+
 {% block content %}
     <div id="assortment">
         {% if chocos|length < 1 %}
@@ -27,7 +32,13 @@
             {% if chocos.has_previous %}
                 <a href="?page={{ chocos.previous_page_number }}">Назад</a>
             {% endif %}
-
+            {% for pg in chocos.paginator.page_range %}
+                {% if chocos.number == pg %}
+                  <a href="?page={{ pg }}">{{ pg }}</a>
+                {% else %}
+                  <a href="?page={{ pg }}">{{ pg }}</a>
+                {% endif %}
+          {% endfor %}
             {% if chocos.has_next %}
                 <a href="?page={{ chocos.next_page_number }}">Вперед</a>
             {% endif %}
