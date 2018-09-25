@@ -4,17 +4,23 @@
 {% load staticfiles %}
 
 {% block content %}
-    <table id="choco_table">
+    <div id="assortment">
         {% if chocos|length < 1 %}
             <p>Сейчас ассортимент пуст. Заходите позже!</p>
         {% else %}
             {% for item in chocos %}
-                <tr><td>
-                    <a href="{{ item.get_absolute_url }}">{{ forloop.counter }}</a>: {{ item.choco_name }} - {{ item.choco_price }} RUB <img src="{% static item.choco_pic %}"/>
-                </td></tr>
+                <div class="item-wrap">
+                    <a href="{{ item.get_absolute_url }}">
+                        <img src="{% static item.choco_pic %}"/>
+                        <div class="item-info">
+                            <p>{{ item.choco_name }}</p>
+                            <p>{{ item.choco_price }} RUB</p>
+                        </div>
+                    </a>
+                </div>
             {% endfor %}
         {% endif %}
-    </table>
+    </div>
 
     <div class="pagination">
         <span class="step-links">

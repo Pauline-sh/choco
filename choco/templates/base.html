@@ -11,8 +11,12 @@
         <link rel="stylesheet" type="text/css" href="{% static 'choco/css/normalize.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'choco/css/main.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'choco/css/header.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'choco/css/cart.css' %}">
 
-        <script src="/static/js/test.js"></script>
+        <!--убрать в catalog.html-->
+        <link rel="stylesheet" type="text/css" href="{% static 'choco/css/catalog.css' %}">
+
+        <script src="../static/choco/js/cart.js"></script>
     </head>
 
     <body>
@@ -23,19 +27,55 @@
                 </div>
 
                 <div class="header-menu">
-                    <a href="{% url 'choco:home' %}">Главная</a>
-                    <a href="{% url 'choco:about' %}">О нас</a>
-                    <a href="{% url 'choco:catalog' %}">Каталог</a>
-                    <a href="{% url 'choco:contacts' %}">Контакты</a>
-                    <a href="{% url 'choco:cart' %}">
+                    <div><a href="{% url 'choco:home' %}">Главная</a></div>
+                    <div><a href="{% url 'choco:about' %}">О нас</a></div>
+                    <div><a href="{% url 'choco:catalog' %}">Каталог</a></div>
+                    <div><a href="{% url 'choco:contacts' %}">Контакты</a></div>
+                    <div><a id="open-cart" href="{% url 'choco:cart' %}">
                         <img class="shopping-cart" src="../static/choco/images/shopping-cart.svg">
                         <span class="cart-fill">{{ cart_quantity }}<span>
-                    </a>
+                    </a></div>
+                </div>
+
+                <hr>
+            </div>
+
+            <div id="side-cart">
+                <div class="cart-top">
+                    <a id="close-cart" href="javascript:void(0)">✕</a>
+                    <div class="cart-title">Корзина</div>
+                    <div class="placeholder"></div>
+                </div>
+                <div class="cart-content">
+                    <div class="cart-item">
+                        <div class="wrapper">
+                            <div class="cart-item-image">
+                                <img src="https://icdn.lenta.ru/images/2017/12/16/09/20171216095223558/pic_d9e825467acbb86ef11b3de2a135a097.jpg">
+                            </div>
+                            <div class="cart-item-info">
+                                <div>я тестовый товар</div>
+                                <div>Количество: 115</div>
+                                <div>Цена: 1500000 RUB</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cart-item">
+                        <div class="wrapper">
+                            <div class="cart-item-image">
+                                <img src="https://cdn2.img.ria.ru/images/148393/86/1483938656.jpg">
+                            </div>
+                            <div class="cart-item-info">
+                                <div>Набор подарочный №47 Автомат Калашникова</div>
+                                <div>Количество: 3</div>
+                                <div>Цена: 1500 RUB</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             {% block content %}
             {% endblock %}
         </div>
-        <div class="footer"><p class="test">dat me, bottom hook</p></div>
+        <!--div class="footer"><p class="test">dat me, bottom hook</p></div-->
     </body>
 </html>
