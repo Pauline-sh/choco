@@ -17,6 +17,7 @@ class Assortment(models.Model):
     choco_gt_60_price = models.DecimalField(max_digits=10, decimal_places=2)
     
     choco_pic = models.CharField(max_length=100)
+    choco_dir = models.CharField(max_length=100)
     choco_art = models.CharField(max_length=100)
     choco_date = models.DateField(default=datetime.date.today)
 
