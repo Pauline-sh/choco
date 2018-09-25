@@ -1,4 +1,10 @@
+@font-face {
+    font-family: MarketDeco;
+    src: url(../fonts/market_deco_new.ttf);
+}
+
 body {
+    font-family: MarketDeco;
     background-color: #D1BEA9;
 }
 

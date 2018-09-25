@@ -1,3 +1,7 @@
+.header {
+    margin-bottom: 2.5%;
+}
+
 .logo {
     display: flex;
     justify-content: center;
@@ -6,12 +10,16 @@
 .header-menu {
     display: flex;
     justify-content: space-around;
-    margin: 3%;
+    margin: 3% 3% 1% 3%;
+}
+
+.header-menu > div {
+    min-width: 15%;
+    text-align: center;
 }
 
 .header-menu a {
     transition: 0.3s color ease;
-    font-family: 'Times New Roman', Times, serif;
     text-decoration: none;
     font-size: 1.3em;
     color: #FFFFFF;
@@ -22,6 +30,12 @@
 }
 
 img.shopping-cart {
-    width: 20px;
-    height: 20px;
+    color: #3DC9D2;
+    width: 25px;
+    height: 25px;
+}
+
+.header hr {
+    width: 95%;
+    color: #FFFFFF;
 }

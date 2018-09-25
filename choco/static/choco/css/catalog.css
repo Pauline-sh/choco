@@ -1,0 +1,28 @@
+#assortment {
+    margin: 1.5%;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.item-wrap {
+    width: 30%;
+}
+
+.item-wrap a {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+}
+
+.item-wrap img {
+    width: 80%;
+}
+
+.item-info {
+    max-width: 80%;
+    text-align: center;
+    color: #FFFFFF;
+}
