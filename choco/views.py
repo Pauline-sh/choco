@@ -1,10 +1,16 @@
+# -*- coding: utf-8 -*-
+import json
+
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.mail import send_mail
+from django.http import HttpResponse
 
 from .models import Assortment
 from .cart import Cart
-from .forms import CartAddProductForm
+from .forms import CartAddProductForm, OrderForm, ContactForm
+
+EMAIL_FROM = 'pauline-sh-hub@yandex.ru'
 
 def home_page(request):
     return render(request, 'home.html')
@@ -15,7 +21,8 @@ def about_page(request):
 
 
 def contacts_page(request):
-    return render(request, 'contacts.html')
+    contact_form = ContactForm()
+    return render(request, 'contacts.html', {'contact_form': contact_form})
 
 
 def details_page(request, pk):
@@ -29,7 +36,7 @@ def catalog_page(request):
     chocos_list = Assortment.objects.all()
     cart_form = CartAddProductForm()
 
-    paginator = Paginator(chocos_list, 15) # Show 25 contacts per page
+    paginator = Paginator(chocos_list, 15)
 
     page = request.GET.get('page')
     try:
@@ -67,23 +74,21 @@ def cart_remove(request, pk):
     return redirect('choco:cart')
 
 def order_page(request):
-    send_mail(
-        'Hey there',
-        'Here is the message.',
-        'pauline-sh-hub@yandex.ru',
-        ['pauline-sh-hub@yandex.ru'],
-        fail_silently=False,
-    )
-    return render(request, 'order.html')
+    order_form = OrderForm()
+    return render(request, 'order.html', {'order_form': order_form})
 
 def order_send(request):
-    send_mail(
-        'Subject here',
-        'Here is the message.',
-        'from@example.com',
-        ['to@example.com'],
-        fail_silently=False,
-    )
+    order_form = OrderForm()
+    if request.method == 'POST':
+        if order_form.is_valid():
+            order_form.save()
+            send_mail(
+                'Hey there',
+                'Here is the message.',
+                'pauline-sh-hub@yandex.ru',
+                ['pauline-sh-hub@yandex.ru'],
+                fail_silently=False,
+            )
 
     chocos_list = Assortment.objects.all()
     paginator = Paginator(chocos_list, 15)
@@ -95,3 +100,31 @@ def order_send(request):
     except EmptyPage:
         chocos = paginator.page(paginator.num_pages)
     return render(request, 'catalog.html', {'chocos': chocos})
+
+def message_send(request):
+    if request.method == 'POST':
+        the_name = request.POST.get('the_name').encode("utf-8")
+        the_email = request.POST.get('the_email').encode("utf-8")
+        the_subject = request.POST.get('the_subject').encode("utf-8")
+        the_message = request.POST.get('the_message').encode("utf-8")
+
+        send_mail(
+            "ОТ: " + the_name + " ТЕМА: " + the_subject,
+            the_message,
+            EMAIL_FROM,
+            [the_email],
+            fail_silently=False,
+        )
+
+        response_data = {}
+        response_data['result'] = 'Email successful!'
+
+        return HttpResponse(
+            json.dumps(response_data),
+            content_type="application/json"
+        )
+    else:
+        return HttpResponse(
+            json.dumps({"nothing to see": "this isn't happening"}),
+            content_type="application/json"
+        )

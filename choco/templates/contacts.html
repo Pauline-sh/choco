@@ -1,11 +1,61 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block styles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'choco/css/ajax_waiting.css' %}">
+    <script src="{% static 'choco/js/contact.js' %}"></script>
 {% endblock %}
 
 <!-- эта строка для отображения изображений из папки static -->
 {% load staticfiles %}
 
 {% block content %}
-    contactspage
+    <form id="contact-form" method="post" action="">
+        {% csrf_token %}
+
+        <div>
+            <label>
+                <span>Имя*:</span>
+                {{ contact_form.name }}
+            </label>
+        </div>
+        <div>
+            <label>
+                <span>E-mail*:</span>
+                {{ contact_form.email }}
+            </label>
+        </div>
+        <div>
+            <label>
+                <span>Тема сообщения:</span>
+                {{ contact_form.subject }}
+            </label>
+        </div>
+        <div>
+            <label>
+                <span>Текст сообщения*:</span>
+                {{ contact_form.message }}
+            </label>
+        </div>
+        <div>
+            {% if contact_form.errors %}
+                {% for field in contact_form %}
+                    {% for error in field.errors %}
+                        <div>
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in contact_form.non_field_errors %}
+                    <div>
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        <input type="submit" value="Подтвердить">
+    </form>
+    <div class="modal"><!-- Place at bottom of page --></div>
 {% endblock %}
