@@ -13,4 +13,6 @@ urlpatterns = [
     url(r'^cart/$', views.cart_page, name='cart'),
     url(r'^add/(?P<pk>[0-9]+)/$', views.cart_add, name='cart_add'),
     url(r'^remove/(?P<pk>[0-9]+)/$', views.cart_remove, name='cart_remove'),
+    url(r'^order/$', views.order_page, name='order'),
+    url(r'^order/send$', views.order_send, name='order_send'),
 ]

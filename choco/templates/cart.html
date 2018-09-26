@@ -15,7 +15,11 @@
                 {{ product.choco_name }}
                 <form action="{% url 'choco:cart_add' product.id %}" method="post">
                     {% csrf_token %}
+
+                    {{ item.quantity_quantity_form.label }}
                     {{ item.update_quantity_form.quantity }}
+                    {{ item.quantity_quantity_form.label }}
+
                     {{ item.update_quantity_form.update }}
                     <input type="submit" value="Обновить">
                 </form>
@@ -25,5 +29,6 @@
                 <br /><br />
             {% endwith %}
         {% endfor %}
+        <a href="{% url 'choco:order' %}">Оформить заказ</a>
     {% endif %}
 {% endblock %}

@@ -11,12 +11,13 @@
 	<form action="{% url 'choco:cart_add' item.id %}" method="post">
         {% csrf_token %}
 
+        {{ cart_form.label }}
         {{ cart_form.quantity }}
+        {{ cart_form.label }}
         {{ cart_form.quantity.errors }}
 
         {{ cart_form.update }}
         {{ cart_form.update.errors }}
         <input type="submit" value="Добавить в корзину">
     </form>
-    <a href="{% url 'choco:cart_remove' item.id %}">Удалить</a>
 {% endblock %}

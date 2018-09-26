@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.mail import send_mail
 
 from .models import Assortment
 from .cart import Cart
@@ -26,6 +27,7 @@ def details_page(request, pk):
 
 def catalog_page(request):
     chocos_list = Assortment.objects.all()
+    cart_form = CartAddProductForm()
 
     paginator = Paginator(chocos_list, 15) # Show 25 contacts per page
 
@@ -37,7 +39,7 @@ def catalog_page(request):
     except EmptyPage:
         chocos = paginator.page(paginator.num_pages)
 
-    return render(request, 'catalog.html', {'chocos': chocos})
+    return render(request, 'catalog.html', {'chocos': chocos, 'cart_form': cart_form})
 
 
 def cart_page(request):
@@ -63,3 +65,33 @@ def cart_remove(request, pk):
     product = get_object_or_404(Assortment, pk=pk)
     cart.remove(product)
     return redirect('choco:cart')
+
+def order_page(request):
+    send_mail(
+        'Hey there',
+        'Here is the message.',
+        'pauline-sh-hub@yandex.ru',
+        ['pauline-sh-hub@yandex.ru'],
+        fail_silently=False,
+    )
+    return render(request, 'order.html')
+
+def order_send(request):
+    send_mail(
+        'Subject here',
+        'Here is the message.',
+        'from@example.com',
+        ['to@example.com'],
+        fail_silently=False,
+    )
+
+    chocos_list = Assortment.objects.all()
+    paginator = Paginator(chocos_list, 15)
+    page = request.GET.get('page')
+    try:
+        chocos = paginator.page(page)
+    except PageNotAnInteger:
+        chocos = paginator.page(1)
+    except EmptyPage:
+        chocos = paginator.page(paginator.num_pages)
+    return render(request, 'catalog.html', {'chocos': chocos})
