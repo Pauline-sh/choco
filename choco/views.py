@@ -67,6 +67,7 @@ def cart_remove(request, pk):
     return redirect('choco:cart')
 
 def order_page(request):
+    """
     send_mail(
         'Hey there',
         'Here is the message.',
@@ -74,6 +75,7 @@ def order_page(request):
         ['pauline-sh-hub@yandex.ru'],
         fail_silently=False,
     )
+    """
     return render(request, 'order.html')
 
 def order_send(request):
