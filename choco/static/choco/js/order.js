@@ -1,13 +1,14 @@
 $(document).ready(function(){
-    $('#contact-form').on('submit', function(event){
+    $('#order-form').on('submit', function(event){
         event.preventDefault();
-        send_contact_message();
+        send_order_message();
     });
 });
 
-function send_contact_message(){
+function send_order_message(){
     $("body").addClass("loading");
     let csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    /*
     $.ajax({
         url: "send/",
         type: "POST",
@@ -42,4 +43,5 @@ function send_contact_message(){
             console.log(xhr.status + ": " + xhr.responseText);
         }
     });
+    */
 }
