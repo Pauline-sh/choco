@@ -109,7 +109,7 @@ def message_send(request):
         the_message = request.POST.get('the_message').encode("utf-8")
 
         send_mail(
-            "ОТ: " + the_name + " ТЕМА: " + the_subject,
+            "ОТ: ".encode("utf-8") + the_name + " ТЕМА: ".encode("utf-8") + the_subject,
             the_message,
             EMAIL_FROM,
             [the_email],
