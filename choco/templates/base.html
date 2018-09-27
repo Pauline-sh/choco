@@ -18,6 +18,9 @@
 
 		{% block styles %}
         {% endblock %}
+
+        <script src="{% static 'choco/jquery/jquery-3.1.1.min.js' %}"></script>
+        <script src="{% static 'choco/js/sidecart.js' %}"></script>
     </head>
 
 	{% load rupluralize_filter %}
@@ -73,6 +76,7 @@
                                             <div>{{ product.choco_name }}</div>
                                             <div>Количество: {{ item.quantity }}</div>
                                             <div>Цена: {{ item.total_price }} RUB</div>
+                                            <!--сделать красивее:-->
                                             <a href="{% url 'choco:cart_remove' product.id %}">Удалить</a>
                                         </div>
                                     </div>
@@ -80,7 +84,9 @@
                             {% endwith %}
                         {% endfor %}
                     {% endif %}
-                    <a href="{% url 'choco:cart' %}">Перейти в корзину</a>
+                </div>
+                <div class="checkout-btn-container">
+                    <a href="{% url 'choco:cart' %}" class="checkout-btn">Перейти в корзину</a>
                 </div>
             </div>
             {% block content %}

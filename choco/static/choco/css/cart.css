@@ -26,6 +26,10 @@
     color: #5B4D41;
 }
 
+.cart-content {
+    min-height: 75%;
+}
+
 .cart-item {
     margin: 1.5%;
     border: 1px solid #FDF6F0;
@@ -55,4 +59,30 @@
 
 .cart-item-info > div:first-child {
     flex-grow: 1;
+}
+
+.checkout-btn-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.checkout-btn {
+    display: inline-block;
+    height: 40px;
+    width: 90%;
+    border: 3px solid #B49B7F;
+    border-radius: 7px;
+    font-size: 1.2em;
+    line-height: 40px;
+    text-align: center;
+    text-decoration: none;
+    background-color: #FDF6F0;
+    color: #5B4D41;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+    -webkit-appearance: textfield;
+    appearance: textfield;
 }
