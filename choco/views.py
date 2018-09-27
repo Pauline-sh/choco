@@ -103,13 +103,13 @@ def order_send(request):
 
 def message_send(request):
     if request.method == 'POST':
-        the_name = request.POST.get('the_name').encode("utf-8")
-        the_email = request.POST.get('the_email').encode("utf-8")
-        the_subject = request.POST.get('the_subject').encode("utf-8")
-        the_message = request.POST.get('the_message').encode("utf-8")
+        the_name = request.POST.get('the_name')
+        the_email = request.POST.get('the_email')
+        the_subject = request.POST.get('the_subject')
+        the_message = request.POST.get('the_message')
 
         send_mail(
-            "ОТ: ".encode("utf-8") + the_name + " ТЕМА: ".encode("utf-8") + the_subject,
+            u"ОТ: " + the_name + u" ТЕМА: " + the_subject,
             the_message,
             EMAIL_FROM,
             [the_email],
@@ -118,6 +118,25 @@ def message_send(request):
 
         response_data = {}
         response_data['result'] = 'Email successful!'
+        if isinstance(the_name, str):
+            response_data['the_name'] = 'STR'
+        elif isinstance(the_name, unicode):
+            response_data['the_name'] = 'UNICODE'
+
+        if isinstance(the_email, str):
+            response_data['the_email'] = 'STR'
+        elif isinstance(the_email, unicode):
+            response_data['the_email'] = 'UNICODE'
+
+        if isinstance(the_subject, str):
+            response_data['the_subject'] = 'STR'
+        elif isinstance(the_subject, unicode):
+            response_data['the_subject'] = 'UNICODE'
+
+        if isinstance(the_message, str):
+            response_data['the_message'] = 'STR'
+        elif isinstance(the_message, unicode):
+            response_data['the_message'] = 'UNICODE'
 
         return HttpResponse(
             json.dumps(response_data),
