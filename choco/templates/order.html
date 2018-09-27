@@ -7,5 +7,50 @@
 {% load staticfiles %}
 
 {% block content %}
-    orderpage
+    <form action="{% url 'choco:order_send' %}" method="post">
+        {% csrf_token %}
+
+        <div>
+            <label>
+                <span>Имя*:</span>
+                {{ order_form.name }}
+            </label>
+        </div>
+        <div>
+            <label>
+                <span>Город*:</span>
+                {{ order_form.city }}
+            </label>
+        </div>
+        <div>
+            <label>
+                <span>Контактный номер*:</span>
+                {{ order_form.phone_number }}
+            </label>
+        </div>
+        <div>
+            <label>
+                <span>Дополнительная информация:</span>
+                {{ order_form.note }}
+            </label>
+        </div>
+        <div>
+            {% if order_form.errors %}
+                {% for field in order_form %}
+                    {% for error in field.errors %}
+                        <div>
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in order_form.non_field_errors %}
+                    <div>
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        <input type="submit" value="Подтвердить">
+    </form>
 {% endblock %}

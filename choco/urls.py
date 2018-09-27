@@ -15,4 +15,5 @@ urlpatterns = [
     url(r'^remove/(?P<pk>[0-9]+)/$', views.cart_remove, name='cart_remove'),
     url(r'^order/$', views.order_page, name='order'),
     url(r'^order/send$', views.order_send, name='order_send'),
+    url(r'^contacts/send/$', views.message_send, name='message_send'),
 ]
