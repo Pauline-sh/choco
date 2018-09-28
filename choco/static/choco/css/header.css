@@ -19,6 +19,7 @@
 }
 
 .header-menu a {
+    font-family: MarketDeco;
     transition: 0.3s color ease;
     text-decoration: none;
     font-size: 1.3em;

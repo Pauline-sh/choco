@@ -69,9 +69,13 @@ def cart_add(request, pk):
 
 def cart_remove(request, pk):
     cart = Cart(request)
-    product = get_object_or_404(Assortment, pk=pk)
-    cart.remove(product)
-    return redirect('choco:cart')
+    if request.method == 'POST':
+        product = get_object_or_404(Assortment, pk = request.POST.get('itemId'))
+        cart.remove(product)
+        return HttpResponse(
+            json.dumps({"status:":"OK"}),
+            content_type="application/json"
+        )
 
 def order_page(request):
     order_form = OrderForm()
