@@ -8,34 +8,34 @@ $(document).ready(function(){
 function send_order_message(){
     $("body").addClass("loading");
     let csrftoken = $("[name=csrfmiddlewaretoken]").val();
-    /*
     $.ajax({
         url: "send/",
         type: "POST",
         dataType: "json",
         data: {
             the_name : $('#id_name').val(),
-            the_email : $('#id_email').val(),
-            the_subject : $('#id_subject').val(),
-            the_message : $('#id_message').val(),
+            the_city : $('#id_city').val(),
+            the_phone_number : $('#id_phone_number').val(),
+            the_note : $('#id_note').val(),
         },
         headers:{
             "X-CSRFToken": csrftoken
         },
 
         success: function(json) {
-            $('#id_name').val('').css('outline: none;');
-            $('#id_email').val('');
-            $('#id_subject').val('');
-            $('#id_message').val('');
-
             console.log(json);
-            console.log("success");
 
             $("body").removeClass("loading");
-            // тут сделать модалочьку
-            alert("Ваше сообщение успешно отправлено!");
-            location.href="/";
+
+            if(json.result != "OK"){
+                alert(json.error);
+            }
+            else{
+                // тут сделать модалочьку
+                console.log(json.cart);
+                alert("Ваш заказ успешно отправлен!");
+                location.href="/";
+            }
 
         },
         error: function(xhr, errmsg, err) {
@@ -43,5 +43,4 @@ function send_order_message(){
             console.log(xhr.status + ": " + xhr.responseText);
         }
     });
-    */
 }

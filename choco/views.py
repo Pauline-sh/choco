@@ -4,13 +4,18 @@ import json
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.mail import send_mail
+from django.core.exceptions import ValidationError
 from django.http import HttpResponse
+from django.core.validators import validate_email
 
 from .models import Assortment
 from .cart import Cart
 from .forms import CartAddProductForm, OrderForm, ContactForm
 
+
 EMAIL_FROM = 'pauline-sh-hub@yandex.ru'
+EMAIL_TO = EMAIL_FROM
+
 
 def home_page(request):
     return render(request, 'home.html')
@@ -33,7 +38,7 @@ def details_page(request, pk):
 
 
 def catalog_page(request):
-    chocos_list = Assortment.objects.all()
+    chocos_list = Assortment.objects.all().order_by('id')
     cart_form = CartAddProductForm()
 
     paginator = Paginator(chocos_list, 15)
@@ -73,33 +78,57 @@ def cart_remove(request, pk):
     cart.remove(product)
     return redirect('choco:cart')
 
+
 def order_page(request):
     order_form = OrderForm()
     return render(request, 'order.html', {'order_form': order_form})
 
-def order_send(request):
-    order_form = OrderForm()
-    if request.method == 'POST':
-        if order_form.is_valid():
-            order_form.save()
-            send_mail(
-                'Hey there',
-                'Here is the message.',
-                'pauline-sh-hub@yandex.ru',
-                ['pauline-sh-hub@yandex.ru'],
-                fail_silently=False,
-            )
 
-    chocos_list = Assortment.objects.all()
-    paginator = Paginator(chocos_list, 15)
-    page = request.GET.get('page')
-    try:
-        chocos = paginator.page(page)
-    except PageNotAnInteger:
-        chocos = paginator.page(1)
-    except EmptyPage:
-        chocos = paginator.page(paginator.num_pages)
-    return render(request, 'catalog.html', {'chocos': chocos})
+def order_send(request):
+    if request.method == 'POST':
+        the_name = request.POST.get('the_name')
+        the_city = request.POST.get('the_city')
+        the_phone_number = request.POST.get('the_phone_number')
+        the_note = request.POST.get('the_note')
+
+        response_data = {}
+        try:
+            cart = Cart(request)
+
+            order_content_str = ""
+            counter = 1
+            for item in cart:
+                product=item['product']
+                order_content_str += str(counter) + ". " + product.__str__() + u"\n\t Количество: " + str(item['quantity']) + u"\n\t Цена единицы товара: " + str(item['price']) + "\n"
+                counter = counter + 1
+            order_content_str += u"\nОбщая стоимость заказа: " + str(cart.get_total_price())
+            order_content_str += u"\nДанные заказчика: \n\tИмя: " + the_name
+            order_content_str += u"\n\tТелефон:" + the_phone_number
+            order_content_str += u"\n\tГород: " + the_city
+            order_content_str += u"\n\tЗаметка о заказе: " + the_note
+
+            send_mail(
+                u"Новый заказ",
+                order_content_str,
+                EMAIL_FROM,
+                [EMAIL_TO],
+            )
+            cart.clear()
+            response_data['result'] = u'OK'
+        except Exception as e:
+            response_data['error'] = u'Ошибка отправки заказа. Попробуйте позже'
+            response_data['result'] = u'ERROR'
+
+        return HttpResponse(
+            json.dumps(response_data),
+            content_type="application/json"
+        )
+    else:
+        return HttpResponse(
+            json.dumps({"nothing to see": "this isn't happening"}),
+            content_type="application/json"
+        )
+
 
 def message_send(request):
     if request.method == 'POST':
@@ -108,35 +137,22 @@ def message_send(request):
         the_subject = request.POST.get('the_subject')
         the_message = request.POST.get('the_message')
 
-        send_mail(
-            u"ОТ: " + the_name + u" ТЕМА: " + the_subject,
-            the_message,
-            EMAIL_FROM,
-            [the_email],
-            fail_silently=False,
-        )
-
         response_data = {}
-        response_data['result'] = 'Email successful!'
-        if isinstance(the_name, str):
-            response_data['the_name'] = 'STR'
-        elif isinstance(the_name, unicode):
-            response_data['the_name'] = 'UNICODE'
 
-        if isinstance(the_email, str):
-            response_data['the_email'] = 'STR'
-        elif isinstance(the_email, unicode):
-            response_data['the_email'] = 'UNICODE'
-
-        if isinstance(the_subject, str):
-            response_data['the_subject'] = 'STR'
-        elif isinstance(the_subject, unicode):
-            response_data['the_subject'] = 'UNICODE'
-
-        if isinstance(the_message, str):
-            response_data['the_message'] = 'STR'
-        elif isinstance(the_message, unicode):
-            response_data['the_message'] = 'UNICODE'
+        try:
+            validate_email(the_email)
+        except ValidationError:
+            response_data['error'] = u'Пожалуйста, введите e-mail'
+            response_data['result'] = u'ERROR'
+        else:
+            send_mail(
+                u"ОТ: " + the_name + u" ТЕМА: " + the_subject,
+                the_message,
+                EMAIL_FROM,
+                [the_email],
+                fail_silently=False,
+            )
+            response_data['result'] = u'OK'
 
         return HttpResponse(
             json.dumps(response_data),

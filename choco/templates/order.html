@@ -1,18 +1,16 @@
 {% extends 'base.html' %}
 
 {% load static %}
-
-{% block styles %}
-    <link rel="stylesheet" type="text/css" href="{% static 'choco/css/ajax_waiting.css' %}">
-
-    <script src="{% static 'choco/js/order.js' %}"></script>
-{% endblock %}
-
 <!-- эта строка для отображения изображений из папки static -->
 {% load staticfiles %}
 
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'choco/css/ajax_waiting.css' %}">
+    <script src="{% static 'choco/js/order.js' %}"></script>
+{% endblock %}
+
 {% block content %}
-    <form id="order-form" action="{% url 'choco:order_send' %}" method="post">
+    <form id="order-form" action="" method="post">
         {% csrf_token %}
 
         <div>
@@ -58,4 +56,5 @@
 
         <input type="submit" value="Подтвердить">
     </form>
+    <div class="modal"><!-- Place at bottom of page --></div>
 {% endblock %}

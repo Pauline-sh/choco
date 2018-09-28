@@ -23,18 +23,18 @@ function send_contact_message(){
         },
 
         success: function(json) {
-            $('#id_name').val('').css('outline: none;');
-            $('#id_email').val('');
-            $('#id_subject').val('');
-            $('#id_message').val('');
-
             console.log(json);
             console.log("success");
 
             $("body").removeClass("loading");
-            // тут сделать модалочьку
-            alert("Ваше сообщение успешно отправлено!");
-            location.href="/";
+            if(json.result != "OK"){
+                alert(json.error);
+            }
+            else{
+                // тут сделать модалочьку
+                alert("Ваше сообщение успешно отправлено!");
+                location.href="/";
+            }
 
         },
         error: function(xhr, errmsg, err) {
