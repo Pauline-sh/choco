@@ -27,6 +27,7 @@
     {% load staticfiles %}
 
     <body>
+        {% csrf_token %}
         <div id="content">
             <div class="header">
                 <div class="logo">
@@ -76,8 +77,9 @@
                                             <div>{{ product.choco_name }}</div>
                                             <div>Количество: {{ item.quantity }}</div>
                                             <div>Цена: {{ item.total_price }} RUB</div>
-                                            <!--сделать красивее:-->
-                                            <a href="{% url 'choco:cart_remove' product.id %}">Удалить</a>
+                                        </div>
+                                        <div class="delete-cross-wrap">
+                                            <a href="#" class="delete-cross" remove="{{product.id}}">✕</a>
                                         </div>
                                     </div>
                                 </div>
