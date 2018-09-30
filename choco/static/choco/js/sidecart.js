@@ -12,24 +12,12 @@ window.addEventListener("load", () => {
 
 function openCart(e) {
     e.preventDefault();
-    document.getElementById("side-cart").style.width = "30%";
-
-    let items = document.getElementsByClassName("cart-item");
-    setTimeout(() => {
-        for (let item of items) {
-            item.style.whiteSpace = "normal";
-        }
-    }, 350);
+    document.getElementById("side-cart").style.transform = "translateX(-100%)";
 }
 
 function closeCart(e) {
     e.preventDefault();
-    document.getElementById("side-cart").style.width = "0";
-
-    let items = document.getElementsByClassName("cart-item");
-    for (let item of items) {
-        item.style.whiteSpace = "nowrap";
-    }
+    document.getElementById("side-cart").style.transform = "";
 }
 
 function removeSidecartItem(e) {
@@ -51,8 +39,10 @@ function removeSidecartItem(e) {
         },
 
         success: function(json) {
-            /* красивая анимация goes here */
-            itemContainer.style.display = "none";
+            itemContainer.style.opacity = 0;
+            setTimeout(() => {
+                itemContainer.style.display = "none";
+            }, 500);
             console.log(JSON.stringify(json));
         },
         error: function(xhr, errmsg, err) {
