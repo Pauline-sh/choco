@@ -41,20 +41,26 @@
     </div>
 
     <div class="pagination">
-        <span class="step-links">
             {% if chocos.has_previous %}
-                <a href="?page={{ chocos.previous_page_number }}">Назад</a>
+                <div class="button-container long">
+                    <a href="?page={{ chocos.previous_page_number }}">Назад</a>
+                </div>
             {% endif %}
             {% for pg in chocos.paginator.page_range %}
                 {% if chocos.number == pg %}
-                  <a href="?page={{ pg }}">{{ pg }}</a>
+                <div class="button-container active">
+                    <a href="?page={{ pg }}">{{ pg }}</a>
+                </div>
                 {% else %}
-                  <a href="?page={{ pg }}">{{ pg }}</a>
+                <div class="button-container">
+                    <a href="?page={{ pg }}">{{ pg }}</a>
+                </div>
                 {% endif %}
-          {% endfor %}
+            {% endfor %}
             {% if chocos.has_next %}
-                <a href="?page={{ chocos.next_page_number }}">Вперед</a>
+                <div class="button-container long">
+                    <a href="?page={{ chocos.next_page_number }}">Вперед</a>
+                </div>
             {% endif %}
-        </span>
     </div>
 {% endblock %}
