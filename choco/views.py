@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
+import os
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -7,6 +8,8 @@ from django.core.mail import send_mail
 from django.core.exceptions import ValidationError
 from django.http import HttpResponse
 from django.core.validators import validate_email
+from django.contrib.staticfiles.templatetags.staticfiles import static
+from django.conf import settings
 
 from .models import Assortment
 from .cart import Cart
@@ -34,7 +37,18 @@ def details_page(request, pk):
     choco_item = get_object_or_404(Assortment, pk=pk)
     cart_form = CartAddProductForm()
 
-    return render(request, 'details.html', {'item': choco_item, 'cart_form': cart_form})
+    if settings.DEBUG:
+        static_dir = os.path.join(settings.BASE_DIR, u"choco/static/choco/choco_pics/")
+    else:
+        static_dir = os.path.join(settings.STATIC_ROOT)
+    gallery_path = os.path.join(static_dir, choco_item.choco_dir)
+    choco_gallery = []
+
+    for f in os.listdir(gallery_path):
+        if f.endswith("jpg") or f.endswith("png"): # to avoid other files
+            choco_gallery.append("%s%s/%s" % (u"choco/choco_pics/", choco_item.choco_dir, f))
+
+    return render(request, 'details.html', {'item': choco_item, 'cart_form': cart_form, 'gallery': choco_gallery})
 
 
 def catalog_page(request):

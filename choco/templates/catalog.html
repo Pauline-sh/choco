@@ -31,7 +31,7 @@
                     
                     <form action="{% url 'choco:cart_add' item.id %}" method="post">
                         {% csrf_token %}
-                        <div style="display: none">{{ cart_form.quantity }}</div>
+                        {{ cart_form.quantity }}
                         {{ cart_form.update }}
                         <input type="submit" value="Добавить в корзину">
                     </form>
