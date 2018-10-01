@@ -36,3 +36,41 @@
     text-align: center;
     color: #FFFFFF;
 }
+
+.pagination {
+    margin: 3% auto;
+    display: flex;
+    justify-content: center;
+}
+
+.pagination .button-container {
+    width: 5%;
+    margin: 0.5%;
+    display: flex;
+    border: 3px solid #5B4D41;
+    border-radius: 3px;
+    background-color: #FDF6F0;
+}
+
+.button-container.long {
+    width: 10%;
+}
+
+.button-container.active {
+    background-color: #5B4D41;
+}
+
+.pagination .button-container > a {
+    height: 40px;
+    line-height: 40px;
+    width: 100%;
+    color: #5B4D41;
+    font-family: MarketDeco;
+    font-size: 1.2em;
+    text-align: center;
+    text-decoration: none;
+}
+
+.pagination .button-container.active > a {
+    color: #FDF6F0;
+}

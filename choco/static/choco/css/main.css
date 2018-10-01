@@ -11,5 +11,6 @@ body {
 #content {
     width: 80%;
     margin: 0 auto 0 auto;
+    padding: 0.1px; /* escape margin collapsing */
     background-color: #B49B7F;
 }
