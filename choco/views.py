@@ -8,7 +8,6 @@ from django.core.mail import send_mail
 from django.core.exceptions import ValidationError
 from django.http import HttpResponse
 from django.core.validators import validate_email
-from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.conf import settings
 
 from .models import Assortment
@@ -53,7 +52,7 @@ def details_page(request, pk):
 
 def catalog_page(request):
     chocos_list = Assortment.objects.all().order_by('id')
-    cart_form = CartAddProductForm()
+    cart_form = CartAddProductForm(auto_id=False)
 
     paginator = Paginator(chocos_list, 15)
 
