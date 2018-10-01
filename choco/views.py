@@ -43,10 +43,10 @@ def details_page(request, pk):
         static_dir = os.path.join(settings.STATIC_ROOT)
     gallery_path = os.path.join(static_dir, choco_item.choco_dir)
     choco_gallery = []
-
     for f in os.listdir(gallery_path):
         if f.endswith("jpg") or f.endswith("png"): # to avoid other files
-            choco_gallery.append("%s%s/%s" % (u"choco/choco_pics/", choco_item.choco_dir, f))
+            if not f.endswith("_tn.jpg"):
+                choco_gallery.append("%s%s/%s" % (u"choco/choco_pics/", choco_item.choco_dir, f))
 
     return render(request, 'details.html', {'item': choco_item, 'cart_form': cart_form, 'gallery': choco_gallery})
 
