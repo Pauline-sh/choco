@@ -25,13 +25,18 @@
                         {% endif %}
                     </div>
                     <div class="item-info">
-                        <a href="{{ item.get_absolute_url }}">{{ item.choco_name }}</a>
-                        <span>{{ item.choco_price }} RUB</span>
+                        <a href="{{ item.get_absolute_url }}"><strong>{{ item.choco_name }}</strong></a>
+                        <span class="price">{{ item.choco_price }} RUB</span>
                     </div>
                     
-                    <form action="{% url 'choco:cart_add' item.id %}" method="post">
+                    <form action="{% url 'choco:cart_add' item.id %}" method="post" class="cart-add-form">
                         {% csrf_token %}
-                        {{ cart_form.quantity }}
+                        <div class="placeholder"></div>
+                        <label class="quantity">
+                            {{ cart_form.quantity }}
+                            <a href="#" class="quantity-up"></a>
+                            <a href="#" class="quantity-down"></a>
+                        </label>
                         {{ cart_form.update }}
                         <input type="submit" value="Добавить в корзину">
                     </form>
