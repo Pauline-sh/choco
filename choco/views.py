@@ -39,8 +39,9 @@ def details_page(request, pk):
     if settings.DEBUG:
         static_dir = os.path.join(settings.BASE_DIR, u"choco/static/choco/choco_pics/")
     else:
-        static_dir = os.path.join(settings.STATIC_ROOT)
+        static_dir = os.path.join(settings.STATIC_ROOT, u"choco/choco_pics/")
     gallery_path = os.path.join(static_dir, choco_item.choco_dir)
+
     choco_gallery = []
     for f in os.listdir(gallery_path):
         if f.endswith("jpg") or f.endswith("png"): # to avoid other files
