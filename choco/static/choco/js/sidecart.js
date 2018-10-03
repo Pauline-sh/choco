@@ -12,6 +12,14 @@ window.addEventListener("load", () => {
 
 function openCart(e) {
     e.preventDefault();
+
+    if (window.location.pathname == "/cart/") {
+        $('html, body').animate({
+            scrollTop: $("#cart-main").offset().top
+        }, 500);
+        return;
+    }
+
     document.getElementById("side-cart").style.transform = "translateX(-100%)";
 }
 

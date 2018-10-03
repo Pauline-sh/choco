@@ -14,3 +14,15 @@ body {
     padding: 0.1px; /* escape margin collapsing */
     background-color: #B49B7F;
 }
+
+input[type="number"] {
+    -moz-appearance: textfield;
+    -webkit-appearance: textfield;
+    appearance: textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
