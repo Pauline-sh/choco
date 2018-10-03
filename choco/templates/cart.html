@@ -13,23 +13,27 @@
         <p>Ваш заказ не содержит товаров</p>
     {% else %}
         {% for item in cart %}
-            {% with product=item.product  %}
-                {{ product.choco_name }}
-                <form action="{% url 'choco:cart_add' product.id %}" method="post">
+            {% with product=item.product %}
+                <p>{{ product.choco_name }}</p>
+                {% with configuration=item.conf_object %}
+                    <p>Размер упаковки: {{ configuration.choco_size }}</p>
+                    <p>Вес: {{ configuration.choco_weight }}</p>
+                    <p>Штук в упаковке: {{ configuration.choco_quantity_in_box }}</p>
+                {% endwith %}
+                <p>Количество товара: {{ item.quantity }}</p>
+                <p>Цена: {{ item.price }} RUB</p>
+                <p>Сумма: {{ item.total_price }} RUB</p>
+                <form action="{% url 'choco:cart_add_conf' choco_pk=product.pk config_pk=item.configuration %}" method="post">
                     {% csrf_token %}
-
                     <label>
                     {{ item.update_quantity_form.quantity }}
                     <a href="#" class="quantity-up">вверх</a>
                     <a href="#" class="quantity-down">вниз</a>
                     </label>
-
                     {{ item.update_quantity_form.update }}
                     <input type="submit" value="Обновить">
                 </form>
-                <a href="{% url 'choco:cart_remove' product.id %}">Удалить</a>
-                <p>Цена: {{ product.choco_price }} RUB</p>
-                <p>Сумма: {{ item.total_price }} RUB</p>
+                <a href="{% url 'choco:cart_remove' choco_pk=product.pk config_pk=item.configuration %}">Удалить</a>
                 <br /><br />
             {% endwith %}
         {% endfor %}

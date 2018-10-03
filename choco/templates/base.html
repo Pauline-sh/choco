@@ -67,19 +67,28 @@
                         <p>Ваш заказ не содержит товаров</p>
                     {% else %}
                         {% for item in cart %}
-                            {% with product=item.product  %}
+                            {% with product=item.product %}
                                 <div class="cart-item">
                                     <div class="wrapper">
                                         <div class="cart-item-image">
-                                            <img src="https://icdn.lenta.ru/images/2017/12/16/09/20171216095223558/pic_d9e825467acbb86ef11b3de2a135a097.jpg">
+                                            {% if not product.choco_pic %}
+                                                <img src="{% static 'choco/choco_pics/default.png' %}"/>
+                                            {% else %}
+                                                {% with "choco/choco_pics/"|add:product.choco_dir|add:"/"|add:product.choco_pic as main_pic %}
+                                                    <img src="{% static main_pic %}"/>
+                                                {% endwith %}
+                                            {% endif %}
                                         </div>
                                         <div class="cart-item-info">
                                             <div>{{ product.choco_name }}</div>
+                                            {% with configuration=item.conf_object %}
+                                                <div>Вес: {{ configuration.choco_weight }}</div>
+                                            {% endwith %}
                                             <div>Количество: {{ item.quantity }}</div>
                                             <div>Цена: {{ item.total_price }} RUB</div>
                                         </div>
                                         <div class="delete-cross-wrap">
-                                            <a href="#" class="delete-cross" remove="{{product.id}}">✕</a>
+                                            <a href="#" class="delete-cross" remove="{{product.id}}" configure="{{item.configuration}}">✕</a>
                                         </div>
                                     </div>
                                 </div>
