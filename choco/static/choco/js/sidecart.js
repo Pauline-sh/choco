@@ -30,16 +30,18 @@ function closeCart(e) {
 
 function removeSidecartItem(e) {
     e.preventDefault();
-    let itemId = e.target.getAttribute("remove");
+    let itemId = e.target.getAttribute("remove"),
+        configId = e.target.getAttribute("configure");
     let csrftoken = $("[name=csrfmiddlewaretoken]").val();
     let itemContainer = e.target.parentNode.parentNode.parentNode;
 
     $.ajax({
-        url: "/remove/" + itemId + "/",
+        url: "/remove/" + itemId + "/" + configId + "/",
         type: "POST",
         dataType: "json",
         data: {
             itemId: itemId,
+            configId: configId,
         },
         
         headers:{

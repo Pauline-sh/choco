@@ -10,7 +10,7 @@ from django.http import HttpResponse
 from django.core.validators import validate_email
 from django.conf import settings
 
-from .models import Assortment
+from .models import Assortment, Configuration
 from .cart import Cart
 from .forms import CartAddProductForm, OrderForm, ContactForm
 
@@ -34,7 +34,9 @@ def contacts_page(request):
 
 def details_page(request, pk):
     choco_item = get_object_or_404(Assortment, pk=pk)
-    cart_form = CartAddProductForm()
+    choco_configs = choco_item.choco_config.all()
+
+    cart_form = CartAddProductForm(pk)
 
     if settings.DEBUG:
         static_dir = os.path.join(settings.BASE_DIR, u"choco/static/choco/choco_pics/")
@@ -48,7 +50,12 @@ def details_page(request, pk):
             if not f.endswith("_tn.jpg"):
                 choco_gallery.append("%s%s/%s" % (u"choco/choco_pics/", choco_item.choco_dir, f))
 
-    return render(request, 'details.html', {'item': choco_item, 'cart_form': cart_form, 'gallery': choco_gallery})
+    return render(request, 'details.html', {
+        'item': choco_item,
+        'configurations': choco_configs,
+        'cart_form': cart_form,
+        'gallery': choco_gallery
+    })
 
 
 def catalog_page(request):
@@ -71,30 +78,57 @@ def catalog_page(request):
 def cart_page(request):
     cart = Cart(request)
     for item in cart:
-        item['update_quantity_form'] = CartAddProductForm(initial={'quantity': item['quantity'], 'update': True})
+        item['update_quantity_form'] = CartAddProductForm(
+            item['product'].id,
+            initial={
+                'quantity': item['quantity'],
+                'update': True,
+                'configuration': item['conf_object']
+            }
+        )
 
     return render(request, 'cart.html', {'cart': cart})
 
 
-def cart_add(request, pk):
+def cart_add(request, choco_pk):
     cart = Cart(request)
-    choco_item = get_object_or_404(Assortment, pk=pk)
-    form = CartAddProductForm(request.POST)
+    choco_item = get_object_or_404(Assortment, pk=choco_pk)
+    config_item = Configuration.objects.filter(assortment__id=choco_pk).first()
+    form = CartAddProductForm(choco_pk, request.POST, initial = {'configuration': config_item.id})
     if form.is_valid():
         cd = form.cleaned_data
-        cart.add(item=choco_item, quantity=cd['quantity'], update_quantity=cd['update'])
+        cart.add(item=choco_item, configuration=config_item, quantity=cd['quantity'], update_quantity=cd['update'])
+
     return redirect('choco:cart')
 
 
-def cart_remove(request, pk):
+def cart_add_conf(request, choco_pk, config_pk):
+    cart = Cart(request)
+    choco_item = get_object_or_404(Assortment, pk=choco_pk)
+    config_item = get_object_or_404(Configuration, pk=config_pk)
+    form = CartAddProductForm(choco_pk, request.POST)
+    if form.is_valid():
+        cd = form.cleaned_data
+        cart.add(item=choco_item, configuration=config_item, quantity=cd['quantity'], update_quantity=cd['update'])
+
+    return redirect('choco:cart')
+
+
+def cart_remove(request, choco_pk, config_pk):
     cart = Cart(request)
     if request.method == 'POST':
-        product = get_object_or_404(Assortment, pk = request.POST.get('itemId'))
-        cart.remove(product)
+        product = get_object_or_404(Assortment, pk=request.POST.get('itemId'))
+        configuration = get_object_or_404(Assortment, pk=request.POST.get('configId'))
+        cart.remove(product, configuration)
         return HttpResponse(
-            json.dumps({"status:":"OK"}),
+            json.dumps({"status:": "OK"}),
             content_type="application/json"
         )
+    else:
+        product = get_object_or_404(Assortment, pk=choco_pk)
+        configuration = get_object_or_404(Assortment, pk=config_pk)
+        cart.remove(product, configuration)
+        return redirect('choco:cart')
 
 
 def order_page(request):
@@ -117,7 +151,10 @@ def order_send(request):
             counter = 1
             for item in cart:
                 product=item['product']
-                order_content_str += str(counter) + ". " + product.__str__() + u"\n\t Количество: " + str(item['quantity']) + u"\n\t Цена единицы товара: " + str(item['price']) + "\n"
+                order_content_str += str(counter) + ". " + product.__str__() + \
+                                     u"\n\t Количество: " + str(item['quantity']) + \
+                                     u"\n\t Конфигурация: " + str(item['quantity']) + \
+                                     u"\n\t Цена единицы товара: " + str(item['price']) + "\n"
                 counter = counter + 1
             order_content_str += u"\nОбщая стоимость заказа: " + str(cart.get_total_price())
             order_content_str += u"\nДанные заказчика: \n\tИмя: " + the_name

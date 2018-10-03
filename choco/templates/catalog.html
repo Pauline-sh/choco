@@ -28,7 +28,7 @@
                         <span class="price">{{ item.choco_price }} RUB</span>
                     </div>
                     
-                    <form action="{% url 'choco:cart_add' item.id %}" method="post" class="cart-add-form">
+                    <form action="{% url 'choco:cart_add' choco_pk=item.id %}" method="post" class="cart-add-form">
                         {% csrf_token %}
                         <div class="placeholder"></div>
                         <label class="quantity">
@@ -46,26 +46,26 @@
     </div>
 
     <div class="pagination">
-            {% if chocos.has_previous %}
-                <div class="button-container long">
-                    <a href="?page={{ chocos.previous_page_number }}">Назад</a>
-                </div>
+        {% if chocos.has_previous %}
+            <div class="button-container long">
+                <a href="?page={{ chocos.previous_page_number }}">Назад</a>
+            </div>
+        {% endif %}
+        {% for pg in chocos.paginator.page_range %}
+            {% if chocos.number == pg %}
+            <div class="button-container active">
+                <a href="?page={{ pg }}">{{ pg }}</a>
+            </div>
+            {% else %}
+            <div class="button-container">
+                <a href="?page={{ pg }}">{{ pg }}</a>
+            </div>
             {% endif %}
-            {% for pg in chocos.paginator.page_range %}
-                {% if chocos.number == pg %}
-                <div class="button-container active">
-                    <a href="?page={{ pg }}">{{ pg }}</a>
-                </div>
-                {% else %}
-                <div class="button-container">
-                    <a href="?page={{ pg }}">{{ pg }}</a>
-                </div>
-                {% endif %}
-            {% endfor %}
-            {% if chocos.has_next %}
-                <div class="button-container long">
-                    <a href="?page={{ chocos.next_page_number }}">Вперед</a>
-                </div>
-            {% endif %}
+        {% endfor %}
+        {% if chocos.has_next %}
+            <div class="button-container long">
+                <a href="?page={{ chocos.next_page_number }}">Вперед</a>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}

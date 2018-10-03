@@ -9,19 +9,19 @@
 {% block content %}
     <p>{{ item.choco_name }}</p>
     <p>Цена: {{ item.choco_price }}</p>
-    <p>Вес: {{ item.choco_weight }}</p>
-    <p>Размер: {{ item.choco_size }}</p>
-    <p>Количество в коробке: {{ item.choco_quantity_in_box }}</p>
     <div>
         {% for photo in gallery %}
             <img src="{% static photo %}" width="500" height="500"></img>
         {% endfor %}
     </div>
-	<form action="{% url 'choco:cart_add' item.id %}" method="post">
+	<form action="{% url 'choco:cart_add_conf' choco_pk=item.id %}" method="post">
         {% csrf_token %}
 
         {{ cart_form.quantity }}
         {{ cart_form.quantity.errors }}
+
+        {{ cart_form.configuration }}
+        {{ cart_form.configuration.errors }}
 
         {{ cart_form.update }}
         {{ cart_form.update.errors }}
