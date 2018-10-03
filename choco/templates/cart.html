@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
 
-{% block styles %}
 {% load static %}
-<script src="{% static 'choco/js/cart.js' %}"></script>
+
+{% block styles %}
+	<link rel="stylesheet" type="text/css" href="{% static 'choco/css/cart.css' %}">
 {% endblock %}
 
 <!-- эта строка для отображения изображений из папки static -->
@@ -10,40 +11,71 @@
 
 {% block content %}
     {% if cart|length < 1 %}
-        <p>Ваш заказ не содержит товаров</p>
+        <div class="cart-empty">Корзина пуста!</div>
     {% else %}
+        <table id="cart-main">
+        <tr>
+            <th></th>
+            <th>Название</th>
+            <th>Количество</th>
+            <th>Цена</th>
+            <th>Общая стоимость</th>
+            <th></th>
+        </tr>
         {% for item in cart %}
             {% with product=item.product %}
-                <p>{{ product.choco_name }}</p>
-                {% with configuration=item.conf_object %}
-                    <p>Размер упаковки: {{ configuration.choco_size }}</p>
-                    <p>Вес: {{ configuration.choco_weight }}</p>
-                    <p>Штук в упаковке: {{ configuration.choco_quantity_in_box }}</p>
-                {% endwith %}
-                <p>Количество товара: {{ item.quantity }}</p>
-                <p>Цена: {{ item.price }} RUB</p>
-                <p>Сумма: {{ item.total_price }} RUB</p>
-                <form action="{% url 'choco:cart_add_conf' choco_pk=product.pk config_pk=item.configuration %}" method="post">
-                    {% csrf_token %}
-                    <label>
-                    {{ item.update_quantity_form.quantity }}
-                    <a href="#" class="quantity-up">вверх</a>
-                    <a href="#" class="quantity-down">вниз</a>
-                    </label>
-                    {{ item.update_quantity_form.update }}
-                    <input type="submit" value="Обновить">
-                </form>
+                <tr>
+                    <td>
+                        {% if not product.choco_pic %}
+                            <img src="{% static 'choco/choco_pics/default.png' %}"/>
+                        {% else %}
+                            {% with "choco/choco_pics/"|add:product.choco_dir|add:"/"|add:product.choco_pic as main_pic %}
+                                <img src="{% static main_pic %}"/>
+                            {% endwith %}
+                        {% endif %}
+                    </td>
+                    <td class="title">
+                        <span>{{ product.choco_name }}</span>
+                        {% with configuration=item.conf_object %}
+                        <span>
+                            Размер упаковки: {{ configuration.choco_size }}
+                            Вес: {{ configuration.choco_weight }}
+                            Штук в упаковке: {{ configuration.choco_quantity_in_box }}
+                        </span>
+                        {% endwith %}
+                    </td>
+                    <td class="amount">
+                        <form action="{% url 'choco:cart_add_conf' choco_pk=product.pk config_pk=item.configuration %}" method="post" class="cart-add-form">
+                            {% csrf_token %}
 
-                <form id="cart-remove-item" action="" method="post">
-                    {% csrf_token %}
-                    <input type="hidden" id="choco-pk" value="{{ product.pk }}">
-                    <input type="hidden" id="config-pk" value="{{ item.configuration }}">
-                    <input type="submit" value="Удалить">
-                </form>
-                <!--a href="{% url 'choco:cart_remove' choco_pk=product.pk config_pk=item.configuration %}">Удалить</a-->
-                <br /><br />
+                            <label class="quantity">
+                                {{ item.update_quantity_form.quantity }}
+                                <a href="#" class="quantity-up"></a>
+                                <a href="#" class="quantity-down"></a>
+                            </label>
+
+                            {{ item.update_quantity_form.update }}
+                            <input style="display: none" type="submit" value="Обновить">
+                        </form>
+                    </td>
+                    <td>{{ product.choco_price }} RUB</td>
+                    <td>{{ item.total_price }} RUB</td>
+                    <td class="delete">
+                        <div class="delete-cross-wrap">
+                            <form id="cart-remove-item" action="" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" id="choco-pk" value="{{ product.pk }}">
+                                <input type="hidden" id="config-pk" value="{{ item.configuration }}">
+                                <a id="cart-remove-item-submit" href="#" class="">✕</a>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
             {% endwith %}
         {% endfor %}
-        <a href="{% url 'choco:order' %}">Оформить заказ</a>
+        </table>
+        <div class="checkout-btn">
+            <a href="{% url 'choco:order' %}">Оформить заказ</a>
+        </div>
     {% endif %}
 {% endblock %}

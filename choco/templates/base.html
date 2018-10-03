@@ -11,7 +11,7 @@
         <link rel="stylesheet" type="text/css" href="{% static 'choco/css/normalize.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'choco/css/main.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'choco/css/header.css' %}">
-        <link rel="stylesheet" type="text/css" href="{% static 'choco/css/cart.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'choco/css/sidecart.css' %}">
 
         <script src="{% static 'choco/jquery/jquery-3.1.1.min.js' %}"></script>
         <script src="{% static 'choco/js/cart.js' %}"></script>
@@ -64,7 +64,7 @@
                 </div>
                 <div class="cart-content">
                     {% if cart|length < 1 %}
-                        <p>Ваш заказ не содержит товаров</p>
+                        <div class="cart-empty">Корзина пуста!</div>
                     {% else %}
                         {% for item in cart %}
                             {% with product=item.product %}
@@ -96,8 +96,8 @@
                         {% endfor %}
                     {% endif %}
                 </div>
-                <div class="checkout-btn-container">
-                    <a href="{% url 'choco:cart' %}" class="checkout-btn">Перейти в корзину</a>
+                <div class="sidecart-btn">
+                    <a href="{% url 'choco:cart' %}">Перейти в корзину</a>
                 </div>
             </div>
             {% block content %}

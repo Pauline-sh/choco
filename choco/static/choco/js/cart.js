@@ -38,7 +38,7 @@ function quantityDown(e) {
 }
 
 $(document).ready(function(){
-    $('#cart-remove-item').on('submit', function(event){
+    $('#cart-remove-item-submit').on('click', function(event){
         event.preventDefault();
         console.log("form submitted!")  // sanity check
         removeCartItem();

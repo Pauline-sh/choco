@@ -5,7 +5,6 @@
 
 {% block styles %}
 	<link rel="stylesheet" type="text/css" href="{% static 'choco/css/catalog.css' %}">
-
 {% endblock %}
 
 {% block content %}
@@ -39,6 +38,7 @@
                         </label>
                         {{ cart_form.update }}
                         <input type="submit" value="Добавить в корзину">
+                        <div class="placeholder"></div>
                     </form>
                 </div>
             {% endfor %}
