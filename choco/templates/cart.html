@@ -23,7 +23,6 @@
             <th></th>
         </tr>
         {% for item in cart %}
-<<<<<<< HEAD
             {% with product=item.product  %}
                 <tr>
                     <td>
@@ -67,30 +66,6 @@
                         </div>
                     </td>
                 </tr>
-=======
-            {% with product=item.product %}
-                <p>{{ product.choco_name }}</p>
-                {% with configuration=item.conf_object %}
-                    <p>Размер упаковки: {{ configuration.choco_size }}</p>
-                    <p>Вес: {{ configuration.choco_weight }}</p>
-                    <p>Штук в упаковке: {{ configuration.choco_quantity_in_box }}</p>
-                {% endwith %}
-                <p>Количество товара: {{ item.quantity }}</p>
-                <p>Цена: {{ item.price }} RUB</p>
-                <p>Сумма: {{ item.total_price }} RUB</p>
-                <form action="{% url 'choco:cart_add_conf' choco_pk=product.pk config_pk=item.configuration %}" method="post">
-                    {% csrf_token %}
-                    <label>
-                    {{ item.update_quantity_form.quantity }}
-                    <a href="#" class="quantity-up">вверх</a>
-                    <a href="#" class="quantity-down">вниз</a>
-                    </label>
-                    {{ item.update_quantity_form.update }}
-                    <input type="submit" value="Обновить">
-                </form>
-                <a href="{% url 'choco:cart_remove' choco_pk=product.pk config_pk=item.configuration %}">Удалить</a>
-                <br /><br />
->>>>>>> 928a215ea5e4d24f2f6795fa2acf433383b40bd5
             {% endwith %}
         {% endfor %}
         </table>
