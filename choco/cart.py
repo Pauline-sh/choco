@@ -55,6 +55,8 @@ class Cart(object):
             for item_config in list(self.cart[item_id]):
                 if(item_config['configuration'] == config_id):
                     self.cart[item_id].remove(item_config)
+                    if(len(self.cart[item_id]) == 0):
+                        del self.cart[item_id]
                     self.save()
                     return
 

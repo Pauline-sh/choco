@@ -36,3 +36,38 @@ function quantityDown(e) {
 
     input.value = newValue;
 }
+
+$(document).ready(function(){
+    $('#cart-remove-item').on('submit', function(event){
+        event.preventDefault();
+        console.log("form submitted!")  // sanity check
+        removeCartItem();
+    });
+});
+
+function removeCartItem() {
+    let itemId = $('#choco-pk').val(),
+        configId = $('#config-pk').val();
+    let csrftoken = $("[name=csrfmiddlewaretoken]").val();
+
+    $.ajax({
+        url: "/remove/" + itemId + "/" + configId + "/",
+        type: "POST",
+        dataType: "json",
+        data: {
+            itemId: itemId,
+            configId: configId,
+        },
+
+        headers:{
+            "X-CSRFToken": csrftoken
+        },
+
+        success: function(json) {
+            console.log(JSON.stringify(json));
+        },
+        error: function(xhr, errmsg, err) {
+            console.log(xhr.status + ": " + xhr.responseText);
+        }
+    });
+}

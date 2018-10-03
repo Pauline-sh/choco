@@ -33,7 +33,14 @@
                     {{ item.update_quantity_form.update }}
                     <input type="submit" value="Обновить">
                 </form>
-                <a href="{% url 'choco:cart_remove' choco_pk=product.pk config_pk=item.configuration %}">Удалить</a>
+
+                <form id="cart-remove-item" action="" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" id="choco-pk" value="{{ product.pk }}">
+                    <input type="hidden" id="config-pk" value="{{ item.configuration }}">
+                    <input type="submit" value="Удалить">
+                </form>
+                <!--a href="{% url 'choco:cart_remove' choco_pk=product.pk config_pk=item.configuration %}">Удалить</a-->
                 <br /><br />
             {% endwith %}
         {% endfor %}

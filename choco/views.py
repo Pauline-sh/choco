@@ -124,7 +124,7 @@ def cart_remove(request, choco_pk, config_pk):
         configuration = get_object_or_404(Assortment, pk=request.POST.get('configId'))
         cart.remove(product, configuration)
         return HttpResponse(
-            json.dumps({"status:": "OK"}),
+            json.dumps({"status:": "OK", 'cart': cart.cart}),
             content_type="application/json"
         )
     else:
