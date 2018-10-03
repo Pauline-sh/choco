@@ -102,14 +102,17 @@ def cart_add(request, choco_pk):
     return redirect('choco:cart')
 
 
-def cart_add_conf(request, choco_pk, config_pk):
+def cart_add_conf(request, choco_pk, config_pk=-1):
     cart = Cart(request)
     choco_item = get_object_or_404(Assortment, pk=choco_pk)
-    config_item = get_object_or_404(Configuration, pk=config_pk)
     form = CartAddProductForm(choco_pk, request.POST)
     if form.is_valid():
         cd = form.cleaned_data
-        cart.add(item=choco_item, configuration=config_item, quantity=cd['quantity'], update_quantity=cd['update'])
+        if config_pk != -1:
+            config_item = get_object_or_404(Configuration, pk=config_pk)
+            cart.add(item=choco_item, configuration=config_item, quantity=cd['quantity'], update_quantity=cd['update'])
+        else:
+            cart.add(item=choco_item, configuration=cd['configuration'], quantity=cd['quantity'], update_quantity=cd['update'])
 
     return redirect('choco:cart')
 
