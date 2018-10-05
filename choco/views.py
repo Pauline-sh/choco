@@ -120,17 +120,32 @@ def cart_add_conf(request, choco_pk, config_pk=-1):
 
 def cart_remove(request, choco_pk, config_pk):
     cart = Cart(request)
-
-    product = get_object_or_404(Assortment, pk=choco_pk)
-    configuration = get_object_or_404(Assortment, pk=config_pk)
-
-    cart.remove(product, configuration)
+    if request.method == 'POST':
+        product = get_object_or_404(Assortment, pk=choco_pk)
+        configuration = get_object_or_404(Assortment, pk=config_pk)
+        cart.remove(product, configuration)
 
     return HttpResponse(
         json.dumps({'result': "OK", 'cart': cart.cart, 'total_items': len(cart)}),
         content_type="application/json"
     )
 
+def cart_update(request, choco_pk, config_pk):
+    cart = Cart(request)
+    if request.method == 'POST':
+        product = get_object_or_404(Assortment, pk=choco_pk)
+        configuration = get_object_or_404(Assortment, pk=config_pk)
+        cart.add(
+            item=product,
+            configuration=configuration,
+            quantity=int(request.POST.get('newValue')),
+            update_quantity=request.POST.get('update')
+        )
+
+    return HttpResponse(
+        json.dumps({'result': "OK", 'cart': cart.cart, 'total_items': len(cart)}),
+        content_type="application/json"
+    )
 
 def order_page(request):
     order_form = OrderForm()

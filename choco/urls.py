@@ -16,6 +16,7 @@ urlpatterns = [
     url(r'^add_conf/(?P<choco_pk>[0-9]+)/(?P<config_pk>[0-9]+)/$', views.cart_add_conf, name='cart_add_conf'),
     url(r'^add_conf/(?P<choco_pk>[0-9]+)/$', views.cart_add_conf, name='cart_add_conf'),
     url(r'^remove/(?P<choco_pk>[0-9]+)/(?P<config_pk>[0-9]+)/$', views.cart_remove, name='cart_remove'),
+    url(r'^update/(?P<choco_pk>[0-9]+)/(?P<config_pk>[0-9]+)/$', views.cart_update, name='cart_update'),
 
     url(r'^order/$', views.order_page, name='order'),
     url(r'^order/send/$', views.order_send, name='order_send'),

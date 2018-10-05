@@ -29,7 +29,7 @@
                 <form action="{% url 'choco:cart_add_conf' choco_pk=product.id config_pk=item.configuration %}" method="post" class="cart-add-form">
                     {% csrf_token %}
 
-                    <label class="quantity">
+                    <label product="{{ product.id }}" config="{{ item.configuration }}" class="quantity">
                         {{ item.update_quantity_form.quantity }}
                         <a href="#" class="quantity-up"></a>
                         <a href="#" class="quantity-down"></a>

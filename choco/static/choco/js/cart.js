@@ -27,6 +27,13 @@ function quantityUp(e) {
         newValue = 1;
     }
 
+    if(e.target.parentNode.hasAttribute("product") && e.target.parentNode.hasAttribute("config")){
+        let itemId = e.target.parentNode.getAttribute("product");
+        let configId = e.target.parentNode.getAttribute("config");
+        console.log("ajax request");
+        updateQuantity(itemId, configId, newValue);
+    }
+
     input.value = newValue;
 }
 
@@ -39,7 +46,39 @@ function quantityDown(e) {
         newValue = 1;
     }
 
+    if(e.target.parentNode.hasAttribute("product") && e.target.parentNode.hasAttribute("config")){
+        let itemId = e.target.parentNode.getAttribute("product");
+        let configId = e.target.parentNode.getAttribute("config");
+
+        updateQuantity(itemId, configId, newValue);
+    }
+
     input.value = newValue;
+}
+
+function updateQuantity(itemId, configId, newValue){
+    let csrftoken = document.querySelector("[name=csrfmiddlewaretoken]").value;
+    $.ajax({
+        url: "/update/" + itemId + "/" + configId + "/",
+        type: "POST",
+        dataType: "json",
+        data: {
+            update: true,
+            newValue: parseInt(newValue),
+        },
+
+        headers: {
+            "X-CSRFToken": csrftoken
+        },
+
+        success: function(json) {
+            //console.log(JSON.stringify(json));
+            $('#total-items').text(json.total_items);
+        },
+        error: function(xhr, errmsg, err) {
+            //console.log(xhr.status + ": " + xhr.responseText);
+        }
+    });
 }
 
 function removeCartItem(e) {
@@ -53,22 +92,18 @@ function removeCartItem(e) {
         url: "/remove/" + itemId + "/" + configId + "/",
         type: "POST",
         dataType: "json",
-        data: {
-            itemId: itemId,
-            configId: configId,
-        },
 
         headers: {
             "X-CSRFToken": csrftoken
         },
 
         success: function(json) {
-            console.log(JSON.stringify(json));
+            //console.log(JSON.stringify(json));
             $('#product-' + itemId).remove();
             $('#total-items').text(json.total_items);
         },
         error: function(xhr, errmsg, err) {
-            console.log(xhr.status + ": " + xhr.responseText);
+            //console.log(xhr.status + ": " + xhr.responseText);
         }
     });
 
