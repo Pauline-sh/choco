@@ -15,7 +15,7 @@
     {% else %}
         <table id="cart-main">
         <tr>
-            <th></th>
+            <th>Изображение</th>
             <th>Название</th>
             <th>Количество</th>
             <th>Цена</th>
@@ -35,7 +35,7 @@
                         {% endif %}
                     </td>
                     <td class="title">
-                        <span>{{ product.choco_name }}</span>
+                        <span>{{ product.choco_name }}</span><br>
                         {% with configuration=item.conf_object %}
                         <span>
                             Размер упаковки: {{ configuration.choco_size }}
@@ -62,11 +62,11 @@
                     <td>{{ item.total_price }} RUB</td>
                     <td class="delete">
                         <div class="delete-cross-wrap">
-                            <form id="cart-remove-item" action="" method="post">
+                            <form class="cart-remove-item" action="" method="post">
                                 {% csrf_token %}
-                                <input type="hidden" id="choco-pk" value="{{ product.pk }}">
-                                <input type="hidden" id="config-pk" value="{{ item.configuration }}">
-                                <a id="cart-remove-item-submit" href="#" class="">✕</a>
+                                <input type="hidden" class="choco-pk" value="{{ product.pk }}">
+                                <input type="hidden" class="config-pk" value="{{ item.configuration }}">
+                                <a class="cart-remove-item-submit" href="#">✕</a>
                             </form>
                         </div>
                     </td>

@@ -15,9 +15,22 @@
     text-align: center;
 }
 
+#cart-main td > img {
+    width: 100px;
+    height: 100px;
+}
+
 #cart-main .title {
     width: 40%;
     text-align: start;
+}
+
+#cart-main .title > span:first-child {
+    font-weight: 600;
+}
+
+#cart-main .title > span:last-child {
+    opacity: 0.8;
 }
 
 #cart-main .amount {
@@ -75,7 +88,7 @@
     transition: 0.3s;
 }
 
-.delete-cross {
+#cart-main .delete-cross-wrap a {
     display: inline-block;
     height: 20px;
     width: 20px;

@@ -3,6 +3,7 @@
 window.addEventListener("load", () => {
     let ups = document.getElementsByClassName("quantity-up");
     let downs = document.getElementsByClassName("quantity-down");
+    let removeBtns = document.getElementsByClassName("cart-remove-item-submit");
 
     for (let btn of ups) {
         btn.addEventListener("click",quantityUp);
@@ -10,6 +11,10 @@ window.addEventListener("load", () => {
 
     for (let btn of downs) {
         btn.addEventListener("click",quantityDown);
+    }
+
+    for (let btn of removeBtns) {
+        btn.addEventListener("click",removeCartItem);
     }
 })
 
@@ -37,18 +42,12 @@ function quantityDown(e) {
     input.value = newValue;
 }
 
-$(document).ready(function(){
-    $('#cart-remove-item-submit').on('click', function(event){
-        event.preventDefault();
-        console.log("form submitted!")  // sanity check
-        removeCartItem();
-    });
-});
+function removeCartItem(e) {
+    e.preventDefault();
 
-function removeCartItem() {
-    let itemId = $('#choco-pk').val(),
-        configId = $('#config-pk').val();
-    let csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    let itemId = e.target.parentNode.getElementsByClassName("choco-pk")[0].value;
+    let configId = e.target.parentNode.getElementsByClassName("config-pk")[0].value;
+    let csrftoken = document.querySelector("[name=csrfmiddlewaretoken]").value;
 
     $.ajax({
         url: "/remove/" + itemId + "/" + configId + "/",
@@ -70,4 +69,6 @@ function removeCartItem() {
             console.log(xhr.status + ": " + xhr.responseText);
         }
     });
+
+    console.log("form submitted!");  // sanity check
 }
