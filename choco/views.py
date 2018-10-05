@@ -2,13 +2,14 @@
 import json
 import os
 
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect, render_to_response
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.mail import send_mail
 from django.core.exceptions import ValidationError
-from django.http import HttpResponse
 from django.core.validators import validate_email
+from django.http import HttpResponse
 from django.conf import settings
+from django.forms.models import model_to_dict
 
 from .models import Assortment, Configuration
 from .cart import Cart
@@ -79,7 +80,7 @@ def cart_page(request):
     cart = Cart(request)
     for item in cart:
         item['update_quantity_form'] = CartAddProductForm(
-            item['product'].id,
+            item['product']['id'],
             initial={
                 'quantity': item['quantity'],
                 'update': True,
@@ -119,19 +120,16 @@ def cart_add_conf(request, choco_pk, config_pk=-1):
 
 def cart_remove(request, choco_pk, config_pk):
     cart = Cart(request)
-    if request.method == 'POST':
-        product = get_object_or_404(Assortment, pk=request.POST.get('itemId'))
-        configuration = get_object_or_404(Assortment, pk=request.POST.get('configId'))
-        cart.remove(product, configuration)
-        return HttpResponse(
-            json.dumps({"status:": "OK", 'cart': cart.cart}),
-            content_type="application/json"
-        )
-    else:
-        product = get_object_or_404(Assortment, pk=choco_pk)
-        configuration = get_object_or_404(Assortment, pk=config_pk)
-        cart.remove(product, configuration)
-        return redirect('choco:cart')
+
+    product = get_object_or_404(Assortment, pk=choco_pk)
+    configuration = get_object_or_404(Assortment, pk=config_pk)
+
+    cart.remove(product, configuration)
+
+    return HttpResponse(
+        json.dumps({'result': "OK", 'cart': cart.cart, 'total_items': len(cart)}),
+        content_type="application/json"
+    )
 
 
 def order_page(request):
@@ -153,10 +151,10 @@ def order_send(request):
             order_content_str = ""
             counter = 1
             for item in cart:
-                product=item['product']
-                order_content_str += str(counter) + ". " + product.__str__() + \
+                order_content_str += str(counter) + ". " + item['product']['choco_name'] + \
                                      u"\n\t Количество: " + str(item['quantity']) + \
-                                     u"\n\t Конфигурация: " + str(item['quantity']) + \
+                                     u"\n\t Конфигурация: размер: " + item['conf_object']['choco_size'] + \
+                                     u" вес: " + str(item['conf_object']['choco_weight']) + u" штук в упаковке: " + str(item['conf_object']['choco_quantity_in_box']) + \
                                      u"\n\t Цена единицы товара: " + str(item['price']) + "\n"
                 counter = counter + 1
             order_content_str += u"\nОбщая стоимость заказа: " + str(cart.get_total_price())
@@ -176,6 +174,7 @@ def order_send(request):
         except Exception as e:
             response_data['error'] = u'Ошибка отправки заказа. Попробуйте позже'
             response_data['result'] = u'ERROR'
+            response_data['error_text'] = str(e)
 
         return HttpResponse(
             json.dumps(response_data),

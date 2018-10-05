@@ -22,57 +22,9 @@
             <th>Общая стоимость</th>
             <th></th>
         </tr>
-        {% for item in cart %}
-            {% with product=item.product %}
-                <tr>
-                    <td>
-                        {% if not product.choco_pic %}
-                            <img src="{% static 'choco/choco_pics/default.png' %}"/>
-                        {% else %}
-                            {% with "choco/choco_pics/"|add:product.choco_dir|add:"/"|add:product.choco_pic as main_pic %}
-                                <img src="{% static main_pic %}"/>
-                            {% endwith %}
-                        {% endif %}
-                    </td>
-                    <td class="title">
-                        <span>{{ product.choco_name }}</span><br>
-                        {% with configuration=item.conf_object %}
-                        <span>
-                            Размер упаковки: {{ configuration.choco_size }}
-                            Вес: {{ configuration.choco_weight }}
-                            Штук в упаковке: {{ configuration.choco_quantity_in_box }}
-                        </span>
-                        {% endwith %}
-                    </td>
-                    <td class="amount">
-                        <form action="{% url 'choco:cart_add_conf' choco_pk=product.pk config_pk=item.configuration %}" method="post" class="cart-add-form">
-                            {% csrf_token %}
+        
+            {% include 'cart_table.html' %}
 
-                            <label class="quantity">
-                                {{ item.update_quantity_form.quantity }}
-                                <a href="#" class="quantity-up"></a>
-                                <a href="#" class="quantity-down"></a>
-                            </label>
-
-                            {{ item.update_quantity_form.update }}
-                            <input style="display: none" type="submit" value="Обновить">
-                        </form>
-                    </td>
-                    <td>{{ product.choco_price }} RUB</td>
-                    <td>{{ item.total_price }} RUB</td>
-                    <td class="delete">
-                        <div class="delete-cross-wrap">
-                            <form class="cart-remove-item" action="" method="post">
-                                {% csrf_token %}
-                                <input type="hidden" class="choco-pk" value="{{ product.pk }}">
-                                <input type="hidden" class="config-pk" value="{{ item.configuration }}">
-                                <a class="cart-remove-item-submit" href="#">✕</a>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-            {% endwith %}
-        {% endfor %}
         </table>
         <div class="checkout-btn">
             <a href="{% url 'choco:order' %}">Оформить заказ</a>

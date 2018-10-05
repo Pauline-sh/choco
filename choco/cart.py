@@ -3,6 +3,8 @@ from decimal import Decimal
 from django.conf import settings
 from .models import Assortment
 
+from .serializers import AssortmentSerializer, ConfigurationSerializer
+
 
 class Cart(object):
     def __init__(self, request):
@@ -69,13 +71,13 @@ class Cart(object):
             for conf_object in conf_objects:
                 for config in self.cart[str(item.id)]:
                     if config['configuration'] == str(conf_object.id):
-                        config['conf_object'] = conf_object
-                        config['product'] = item
+                        config['conf_object'] = ConfigurationSerializer(conf_object).data
+                        config['product'] = AssortmentSerializer(item).data
 
         for item in self.cart.values():
             for config in item:
-                config['price'] = Decimal(config['price'])
-                config['total_price'] = config['price'] * config['quantity']
+                config['price'] = config['price']
+                config['total_price'] = str(Decimal(config['price']) * config['quantity'])
                 yield config
 
     def __len__(self):

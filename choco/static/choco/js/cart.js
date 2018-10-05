@@ -3,7 +3,7 @@
 window.addEventListener("load", () => {
     let ups = document.getElementsByClassName("quantity-up");
     let downs = document.getElementsByClassName("quantity-down");
-    let removeBtns = document.getElementsByClassName("cart-remove-item-submit");
+    let removeForms = document.getElementsByClassName("cart-remove-item");
 
     for (let btn of ups) {
         btn.addEventListener("click",quantityUp);
@@ -13,8 +13,8 @@ window.addEventListener("load", () => {
         btn.addEventListener("click",quantityDown);
     }
 
-    for (let btn of removeBtns) {
-        btn.addEventListener("click",removeCartItem);
+    for (let form of removeForms) {
+        form.addEventListener("submit",removeCartItem);
     }
 })
 
@@ -45,8 +45,8 @@ function quantityDown(e) {
 function removeCartItem(e) {
     e.preventDefault();
 
-    let itemId = e.target.parentNode.getElementsByClassName("choco-pk")[0].value;
-    let configId = e.target.parentNode.getElementsByClassName("config-pk")[0].value;
+    let itemId = e.target.getElementsByClassName("choco-pk")[0].value;
+    let configId = e.target.getElementsByClassName("config-pk")[0].value;
     let csrftoken = document.querySelector("[name=csrfmiddlewaretoken]").value;
 
     $.ajax({
@@ -58,12 +58,14 @@ function removeCartItem(e) {
             configId: configId,
         },
 
-        headers:{
+        headers: {
             "X-CSRFToken": csrftoken
         },
 
         success: function(json) {
             console.log(JSON.stringify(json));
+            $('#product-' + itemId).remove();
+            $('#total-items').text(json.total_items);
         },
         error: function(xhr, errmsg, err) {
             console.log(xhr.status + ": " + xhr.responseText);
@@ -72,3 +74,4 @@ function removeCartItem(e) {
 
     console.log("form submitted!");  // sanity check
 }
+

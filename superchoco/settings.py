@@ -23,28 +23,6 @@ ALLOWED_HOSTS = [
     '*'
 ]
 
-# MANAGERS = ADMINS
-
-# If you set this to False, Django will make some optimizations so as not
-# to load the internationalization machinery.
-# USE_I18N = True
-
-# Absolute path to the directory that holds media.
-# Example: "/home/media/media.lawrence.com/"
-# MEDIA_ROOT = '/home/hosting_russianchoco/projects/russian-souvenir-staging/media'
-
-# URL that handles the media served from MEDIA_ROOT. Make sure to use a
-# trailing slash if there is a path component (optional in other cases).
-# Examples: "http://media.lawrence.com", "http://example.com/media/"
-# MEDIA_URL = '/media/'
-
-# URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
-# trailing slash.
-# Examples: "http://foo.com/media/", "/media/".
-# ADMIN_MEDIA_PREFIX = '/media/admin/'
-
-# Application definition
-
 INSTALLED_APPS = [
     'choco.apps.ChocoConfig',
     'django.contrib.admin',
@@ -53,7 +31,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_filters',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -149,3 +127,11 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, '..', "static")
 
 CART_SESSION_ID = 'cart'
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}

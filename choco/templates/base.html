@@ -14,13 +14,11 @@
         <link rel="stylesheet" type="text/css" href="{% static 'choco/css/sidecart.css' %}">
 
         <script src="{% static 'choco/jquery/jquery-3.1.1.min.js' %}"></script>
+        <script src="{% static 'choco/js/sidecart.js' %}"></script>
         <script src="{% static 'choco/js/cart.js' %}"></script>
 
 		{% block styles %}
         {% endblock %}
-
-        <script src="{% static 'choco/jquery/jquery-3.1.1.min.js' %}"></script>
-        <script src="{% static 'choco/js/sidecart.js' %}"></script>
     </head>
 
 	{% load rupluralize_filter %}
@@ -44,7 +42,7 @@
                         <span class="cart-fill">
 							{% with total_items=cart|length %}
                                 {% if cart|length > 0 %}
-                                        {{ total_items }} товар{{ total_items|rupluralize:",а,ов" }}
+                            <span id="total-items">{{ total_items }}</span>
                                     {% else %}
                                         0
                                 {% endif %}
