@@ -5,7 +5,7 @@
 
 {% for item in cart %}
     {% with product=item.product %}
-        <tr id="product-{{ product.id }}">
+        <tr id="product-{{ product.id }}-{{item.configuration}}">
             <td>
                 {% if not product.choco_pic %}
                     <img src="{% static 'choco/choco_pics/default.png' %}"/>
@@ -40,7 +40,7 @@
                 </form>
             </td>
             <td>{{ product.choco_price }} RUB</td>
-            <td>{{ item.total_price }} RUB</td>
+            <td><span id="total-price-{{ product.id }}-{{item.configuration}}">{{ item.total_price }}</span> RUB</td>
             <td class="delete">
                 <div class="delete-cross-wrap">
                     <form class="cart-remove-item" action="" method="post">

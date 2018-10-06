@@ -14,17 +14,22 @@
             <img src="{% static photo %}" width="500" height="500"></img>
         {% endfor %}
     </div>
-	<form action="{% url 'choco:cart_add_conf' choco_pk=item.id %}" method="post">
+	<form action="" method="post" class="cart-add-form">
         {% csrf_token %}
+        <div class="placeholder"></div>
+        <label class="quantity">
+            {{ cart_form.quantity }}
+            <a href="#" class="quantity-up"></a>
+            <a href="#" class="quantity-down"></a>
+        </label>
 
-        {{ cart_form.quantity }}
-        {{ cart_form.quantity.errors }}
-
-        {{ cart_form.configuration }}
+        <span class="config-pk">{{ cart_form.configuration }}</span>
         {{ cart_form.configuration.errors }}
 
         {{ cart_form.update }}
         {{ cart_form.update.errors }}
+        <input type="hidden" class="choco-pk" value="{{ item.id }}">
         <input type="submit" value="Добавить в корзину">
+        <div class="placeholder"></div>
     </form>
 {% endblock %}

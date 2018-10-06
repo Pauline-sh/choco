@@ -37,6 +37,7 @@
                             <a href="#" class="quantity-down"></a>
                         </label>
                         {{ cart_form.update }}
+                        <input type="hidden" class="choco-pk" value="{{ item.id }}">
                         <input type="submit" value="Добавить в корзину">
                         <div class="placeholder"></div>
                     </form>

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import json
 import os
+from decimal import Decimal
 
 from django.shortcuts import render, get_object_or_404, redirect, render_to_response
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -93,14 +94,23 @@ def cart_page(request):
 
 def cart_add(request, choco_pk):
     cart = Cart(request)
-    choco_item = get_object_or_404(Assortment, pk=choco_pk)
-    config_item = Configuration.objects.filter(assortment__id=choco_pk).first()
-    form = CartAddProductForm(choco_pk, request.POST, initial = {'configuration': config_item.id})
-    if form.is_valid():
-        cd = form.cleaned_data
-        cart.add(item=choco_item, configuration=config_item, quantity=cd['quantity'], update_quantity=cd['update'])
+    if request.method == 'POST':
+        choco_item = get_object_or_404(Assortment, pk=choco_pk)
+        if(request.POST.get("configId") == -1):
+            config_item = Configuration.objects.filter(assortment__id=choco_pk).first()
+        else:
+            config_item = get_object_or_404(Configuration, pk=request.POST.get("configId"))
+        cart.add(
+            item=choco_item,
+            configuration=config_item,
+            quantity=int(request.POST.get('newValue')),
+            update_quantity=False
+        )
 
-    return redirect('choco:cart')
+    return HttpResponse(
+        json.dumps({'result': "OK", 'cart': cart.cart, 'total_items': len(cart)}),
+        content_type="application/json"
+    )
 
 
 def cart_add_conf(request, choco_pk, config_pk=-1):
@@ -132,6 +142,7 @@ def cart_remove(request, choco_pk, config_pk):
 
 def cart_update(request, choco_pk, config_pk):
     cart = Cart(request)
+    total_price = 0
     if request.method == 'POST':
         product = get_object_or_404(Assortment, pk=choco_pk)
         configuration = get_object_or_404(Assortment, pk=config_pk)
@@ -139,11 +150,15 @@ def cart_update(request, choco_pk, config_pk):
             item=product,
             configuration=configuration,
             quantity=int(request.POST.get('newValue')),
-            update_quantity=request.POST.get('update')
+            update_quantity=True
         )
+        for config in cart.cart[str(choco_pk)]:
+            if config['configuration'] == config_pk:
+                total_price = str(Decimal(config['price']) * config['quantity'])
+                break
 
     return HttpResponse(
-        json.dumps({'result': "OK", 'cart': cart.cart, 'total_items': len(cart)}),
+        json.dumps({'result': "OK", 'cart': cart.cart, 'total_items': len(cart), 'total_price': total_price}),
         content_type="application/json"
     )
 
