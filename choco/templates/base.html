@@ -42,9 +42,9 @@
                         <span class="cart-fill">
 							{% with total_items=cart|length %}
                                 {% if cart|length > 0 %}
-                            <span id="total-items">{{ total_items }}</span>
+                                        <span id="total-items">{{ total_items }}</span>
                                     {% else %}
-                                        0
+                                        <span id="total-items">0</span>
                                 {% endif %}
                             {% endwith %}
 						</span>
@@ -66,7 +66,7 @@
                     {% else %}
                         {% for item in cart %}
                             {% with product=item.product %}
-                                <div class="cart-item" id="side-cart-item-{{item.product.id}}">
+                                <div class="cart-item" id="sidecart-item-{{item.product.id}}">
                                     <div class="wrapper">
                                         <div class="cart-item-image">
                                             {% if not product.choco_pic %}
@@ -82,7 +82,7 @@
                                             {% with configuration=item.conf_object %}
                                                 <div>Вес: {{ configuration.choco_weight }}</div>
                                             {% endwith %}
-                                            <div class="sidecart-quantity-{{item.product.id}}">Количество: {{ item.quantity }}</div>
+                                            <div id="sidecart-quantity-{{item.product.id}}">Количество: {{ item.quantity }}</div>
                                             <div>Цена: {{ item.total_price }} RUB</div>
                                         </div>
                                         <div class="delete-cross-wrap">

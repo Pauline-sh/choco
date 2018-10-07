@@ -35,7 +35,7 @@ function quantityUp(e) {
     if(e.target.parentNode.hasAttribute("product") && e.target.parentNode.hasAttribute("config")){
         let itemId = e.target.parentNode.getAttribute("product");
         let configId = e.target.parentNode.getAttribute("config");
-        console.log("ajax request");
+        //console.log("ajax request");
         updateQuantity(itemId, configId, newValue);
     }
 
@@ -107,13 +107,24 @@ function removeCartItem(e) {
             //console.log(JSON.stringify(json));
             $('#product-' + itemId + '-' + configId).remove();
             $('#total-items').text(json.total_items);
+            if(json.total_items == 0){
+                document.getElementById("cart-main").remove();
+                document.getElementById("checkout-btn").remove();
+                $("#main-cart-content").append('<div class="cart-empty">Корзина пуста!</div>');
+            }
         },
         error: function(xhr, errmsg, err) {
             //console.log(xhr.status + ": " + xhr.responseText);
         }
     });
 
-    console.log("form submitted!");  // sanity check
+    //console.log("form submitted!");  // sanity check
+}
+
+function isInt(value) {
+  return !isNaN(value) &&
+         parseInt(Number(value)) == value &&
+         !isNaN(parseInt(value, 10));
 }
 
 function addCartItem(e){
@@ -125,10 +136,10 @@ function addCartItem(e){
     let configClassItems = e.target.getElementsByClassName("config-pk");
     if(configClassItems.length > 0){
         configId = configClassItems[0].firstElementChild.value
-        if(!configId)
+        if(!isInt(configId))
             configId = -1;
     }
-    console.log(configId);
+    //console.log(configId);
 
     let csrftoken = document.querySelector("[name=csrfmiddlewaretoken]").value;
     let newValue = e.target.getElementsByClassName("quantity")[0].firstElementChild.value;
@@ -147,75 +158,62 @@ function addCartItem(e){
         },
 
         success: function(json) {
-            console.log(JSON.stringify(json));
+            //console.log(JSON.stringify(json));
             $('#total-items').text(json.total_items);
             reloadSideCart(json.new_item, json.static_dir);
         },
         error: function(xhr, errmsg, err) {
-            console.log(xhr.status + ": " + xhr.responseText);
+            //console.log(xhr.status + ": " + xhr.responseText);
         }
     });
 
-    console.log("form submitted!");  // sanity check
+    //console.log("form submitted!");  // sanity check
 }
 
-// TODO:: sidecart reload, two cases 1. cart was empty 2. cart had no such items 3. sidecart had such item (update quantity)
 function reloadSideCart(new_item, static_dir){
     let sideCartContentClass = document.getElementById("side-cart").getElementsByClassName("cart-content");
     if(sideCartContentClass.length > 0){
         let sideCartContent = sideCartContentClass[0];
-        // cart was empty
-        if(sideCartContent.firstElementChild.classList.contains("cart-empty")){
-            console.log("cart was empty");
-            console.log(static_dir);
-            let img = document.createElement("img");
-            img.setAttribute("src", static_dir + "default.png")
-            sideCartContent.append(img);
+
+
+        if(document.querySelector("#sidecart-item-" + new_item.product.id) == null){
+            if(sideCartContent.firstElementChild.classList.contains("cart-empty")){
+                // delete empty cart message
+                sideCartContent.firstElementChild.remove();
+            }
+                // append new item
+                let img_src = "default.png";
+                if(new_item.product.choco_dir){
+                    img_src = new_item.product.choco_dir + '/' + new_item.product.choco_pic;
+                }
+
+                let new_item_str = '<div class="cart-item" id="sidecart-item-' + new_item.product.id + '">' +
+                                        '<div class="wrapper">' +
+                                            '<div class="cart-item-image">' +
+                                                '<img src="' + static_dir + img_src + '"/>' +
+                                            '</div>' +
+                                            '<div class="cart-item-info">' +
+                                                '<div>' + new_item.product.choco_name + '</div>' +
+                                                '<div>Вес: ' + new_item.conf_object.choco_weight + '</div>' +
+                                                '<div id="sidecart-quantity-' + new_item.product.id + '">Количество: ' + new_item.quantity + '</div>' +
+                                                '<div>Цена: ' + new_item.total_price + ' RUB</div>' +
+                                            '</div>' +
+                                            '<div class="delete-cross-wrap">' +
+                                                '<a href="#" class="delete-cross" remove="' + new_item.product.id + '" configure="' + new_item.configuration + '">✕</a>' +
+                                            '</div>' +
+                                        '</div>' +
+                                    '</div>';
+
+                $("#cart-content").append(new_item_str);
+
+                let crosses = document.getElementsByClassName("delete-cross");
+                for (let cross of crosses) {
+                    cross.addEventListener("click", removeSidecartItem);
+                }
         }
         else{
-            console.log("cart had items");
-            console.log(new_item);
-            let new_item_str = '<div class="cart-item"><div class="wrapper"><div class="cart-item-image">';
-            new_item_str += '<img src="' + static_dir + 'default.png"/>'
-            new_item_str += '</div></div></div>';
-            $("#cart-content").append(new_item_str);
+            // update quantity
+            $('#sidecart-quantity-' + new_item.product.id).text("Количество: " + new_item.quantity);
         }
-/*
-            new_item_str = '<div class="cart-item"><div class="wrapper"><div class="cart-item-image">';
-            if(!new_item.product.choco_pic){
-                new_item_str += <img src="{% static 'choco/choco_pics/default.png' %}"/>
-            }
-            else{
-
-            }
-            new_item_str += '</div></div></div>';
-            sideCartContent.append(
-                <div class="cart-item">
-                    <div class="wrapper">
-                        <div class="cart-item-image">
-                            {% if not product.choco_pic %}
-                                <img src="{% static 'choco/choco_pics/default.png' %}"/>
-                            {% else %}
-                                {% with "choco/choco_pics/"|add:product.choco_dir|add:"/"|add:product.choco_pic as main_pic %}
-                                    <img src="{% static main_pic %}"/>
-                                {% endwith %}
-                            {% endif %}
-                        </div>
-                        <div class="cart-item-info">
-                            <div>{{ product.choco_name }}</div>
-                            {% with configuration=item.conf_object %}
-                                <div>Вес: {{ configuration.choco_weight }}</div>
-                            {% endwith %}
-                            <div>Количество: {{ item.quantity }}</div>
-                            <div>Цена: {{ item.total_price }} RUB</div>
-                        </div>
-                        <div class="delete-cross-wrap">
-                            <a href="#" class="delete-cross" remove="{{product.id}}" configure="{{item.configuration}}">✕</a>
-                        </div>
-                    </div>
-                </div>
-            );
-        }
-        */
     }
 }

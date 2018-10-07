@@ -35,6 +35,8 @@ function removeSidecartItem(e) {
     let csrftoken = $("[name=csrfmiddlewaretoken]").val();
     let itemContainer = e.target.parentNode.parentNode.parentNode;
 
+    //console.log(itemContainer);
+
     $.ajax({
         url: "/remove/" + itemId + "/" + configId + "/",
         type: "POST",
@@ -53,10 +55,17 @@ function removeSidecartItem(e) {
             setTimeout(() => {
                 itemContainer.style.display = "none";
             }, 500);
-            console.log(JSON.stringify(json));
+            //console.log(JSON.stringify(json));
+
+            itemContainer.removeAttribute("id");
+            itemContainer.remove();
+
+            if(json.total_items == 0){
+                $("#cart-content").append('<div class="cart-empty">Корзина пуста!</div>');
+            }
         },
         error: function(xhr, errmsg, err) {
-            console.log(xhr.status + ": " + xhr.responseText);
+            //console.log(xhr.status + ": " + xhr.responseText);
         }
     });
 } 

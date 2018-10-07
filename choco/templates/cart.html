@@ -10,24 +10,24 @@
 {% load staticfiles %}
 
 {% block content %}
-    {% if cart|length < 1 %}
-        <div class="cart-empty">Корзина пуста!</div>
-    {% else %}
-        <table id="cart-main">
-        <tr>
-            <th>Изображение</th>
-            <th>Название</th>
-            <th>Количество</th>
-            <th>Цена</th>
-            <th>Общая стоимость</th>
-            <th></th>
-        </tr>
-        
-            {% include 'cart_table.html' %}
-
-        </table>
-        <div class="checkout-btn">
-            <a href="{% url 'choco:order' %}">Оформить заказ</a>
-        </div>
-    {% endif %}
+    <div id="main-cart-content">
+        {% if cart|length < 1 %}
+            <div class="cart-empty">Корзина пуста!</div>
+        {% else %}
+            <table id="cart-main">
+                <tr>
+                    <th>Изображение</th>
+                    <th>Название</th>
+                    <th>Количество</th>
+                    <th>Цена</th>
+                    <th>Общая стоимость</th>
+                    <th></th>
+                </tr>
+                {% include 'cart_table.html' %}
+            </table>
+            <div class="checkout-btn" id="checkout-btn">
+                <a href="{% url 'choco:order' %}">Оформить заказ</a>
+            </div>
+        {% endif %}
+    </div>
 {% endblock %}
