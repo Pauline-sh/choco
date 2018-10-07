@@ -39,3 +39,16 @@ class Assortment(models.Model):
     def get_absolute_url(self):
         from django.urls import reverse
         return reverse('choco:details', args=[str(self.id)])
+
+
+class Orders(models.Model):
+    client_name = models.CharField(max_length=100)
+    client_city = models.CharField(max_length=100)
+    client_phone = models.CharField(max_length=20)
+    client_note = models.CharField(max_length=100)
+    product_name = models.CharField(max_length=100)
+    product_conf = models.CharField(max_length=100)
+    order_price = models.DecimalField(max_digits=10, decimal_places=2)
+
+    class Meta:
+        ordering = ('id',)
