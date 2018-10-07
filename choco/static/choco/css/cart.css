@@ -84,18 +84,21 @@
     justify-content: center;
     align-items: center;
     border: 2px solid #FDF6F0;
-    border-radius: 15px;
+    border-radius: 20px;
     transition: 0.3s;
 }
 
-#cart-main .delete-cross-wrap a {
-    display: inline-block;
-    height: 20px;
+#cart-main .delete-cross-wrap input[type="submit"] {
     width: 20px;
-    text-decoration: none;
+    height: 20px;
+    padding: 0;
+    border: 0;
+    background: 0;
+    cursor: pointer;
     text-align: center;
     font-weight: 700;
     color: #FDF6F0;
+    transition: 0.3s;
 }
 
 .checkout-btn {

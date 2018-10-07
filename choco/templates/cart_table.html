@@ -19,9 +19,9 @@
                 <span>{{ product.choco_name }}</span><br>
                 {% with configuration=item.conf_object %}
                 <span>
-                    Размер упаковки: {{ configuration.choco_size }}
-                    Вес: {{ configuration.choco_weight }}
-                    Штук в упаковке: {{ configuration.choco_quantity_in_box }}
+                    Размер упаковки: {{ configuration.choco_size }},
+                    Вес: {{ configuration.choco_weight }} г,
+                    Шт. в упаковке: {{ configuration.choco_quantity_in_box }}.
                 </span>
                 {% endwith %}
             </td>
