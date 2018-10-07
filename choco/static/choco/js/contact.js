@@ -8,6 +8,7 @@ $(document).ready(function(){
 function send_contact_message(){
     $("body").addClass("loading");
     let csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    console.log($('#id_email').val());
     $.ajax({
         url: "send/",
         type: "POST",
@@ -39,6 +40,7 @@ function send_contact_message(){
         },
         error: function(xhr, errmsg, err) {
             $("body").removeClass("loading");
+            alert("Что-то пошло не так, попробуйте позже");
             console.log(xhr.status + ": " + xhr.responseText);
         }
     });

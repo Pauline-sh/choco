@@ -10,14 +10,13 @@ from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.http import HttpResponse
 from django.conf import settings
-from django.forms.models import model_to_dict
 
 from .models import Assortment, Configuration
 from .cart import Cart
 from .forms import CartAddProductForm, OrderForm, ContactForm
 
 
-EMAIL_FROM = 'pauline-sh-hub@yandex.ru'
+EMAIL_FROM = 'russian.memento@gmail.com'
 EMAIL_TO = EMAIL_FROM
 
 
@@ -241,9 +240,9 @@ def message_send(request):
         else:
             send_mail(
                 u"ОТ: " + the_name + u" ТЕМА: " + the_subject,
-                the_message,
+                u"e-mail отправителя: " + the_email + "\n" + the_message,
                 EMAIL_FROM,
-                [the_email],
+                [EMAIL_TO],
                 fail_silently=False,
             )
             response_data['result'] = u'OK'
