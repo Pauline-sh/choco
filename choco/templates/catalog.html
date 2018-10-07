@@ -19,7 +19,7 @@
                             <img src="{% static 'choco/choco_pics/default.png' %}"/>
                         {% else %}
                             {% with "choco/choco_pics/"|add:item.choco_dir|add:"/"|add:item.choco_pic as main_pic %}
-                                <img src="{% static main_pic %}"/>
+                        <a href="{{ item.get_absolute_url }}><img src="{% static main_pic %}"/></a>
                             {% endwith %}
                         {% endif %}
                     </div>

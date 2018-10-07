@@ -149,7 +149,7 @@ function addCartItem(e){
         success: function(json) {
             console.log(JSON.stringify(json));
             $('#total-items').text(json.total_items);
-            
+
             // TODO:: sidecart reload, two cases 1. cart was empty 2. cart had items
             reloadSideCart(json.cart);
         },
