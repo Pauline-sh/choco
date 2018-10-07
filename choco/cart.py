@@ -39,12 +39,22 @@ class Cart(object):
                 for item_config in self.cart[item_id]:
                     if(item_config['configuration'] == config_id):
                         item_config['quantity'] = quantity
+                        new_item = item_config
+                        break
             else:
                 for item_config in self.cart[item_id]:
                     if(item_config['configuration'] == config_id):
                         item_config['quantity'] += quantity
+                        new_item = item_config
+                        break
+
+            new_item['product'] = AssortmentSerializer(item).data
+            new_item['conf_object'] = ConfigurationSerializer(configuration).data
+            new_item['total_price'] = str(Decimal(new_item['price']) * new_item['quantity'])
 
             self.save()
+
+            return new_item
 
     def save(self):
         self.session[settings.CART_SESSION_ID] = self.cart
@@ -76,7 +86,6 @@ class Cart(object):
 
         for item in self.cart.values():
             for config in item:
-                config['price'] = config['price']
                 config['total_price'] = str(Decimal(config['price']) * config['quantity'])
                 yield config
 

@@ -60,13 +60,13 @@
                     <div class="cart-title">Корзина</div>
                     <div class="placeholder"></div>
                 </div>
-                <div class="cart-content">
+                <div class="cart-content" id="cart-content">
                     {% if cart|length < 1 %}
                         <div class="cart-empty">Корзина пуста!</div>
                     {% else %}
                         {% for item in cart %}
                             {% with product=item.product %}
-                                <div class="cart-item">
+                                <div class="cart-item" id="side-cart-item-{{item.product.id}}">
                                     <div class="wrapper">
                                         <div class="cart-item-image">
                                             {% if not product.choco_pic %}
@@ -82,7 +82,7 @@
                                             {% with configuration=item.conf_object %}
                                                 <div>Вес: {{ configuration.choco_weight }}</div>
                                             {% endwith %}
-                                            <div>Количество: {{ item.quantity }}</div>
+                                            <div class="sidecart-quantity-{{item.product.id}}">Количество: {{ item.quantity }}</div>
                                             <div>Цена: {{ item.total_price }} RUB</div>
                                         </div>
                                         <div class="delete-cross-wrap">

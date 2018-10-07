@@ -96,15 +96,22 @@ def cart_add(request, choco_pk):
     cart = Cart(request)
     if request.method == 'POST':
         choco_item = get_object_or_404(Assortment, pk=choco_pk)
-        if(request.POST.get("configId") == -1):
+        if(int(request.POST.get("configId")) == -1):
             config_item = Configuration.objects.filter(assortment__id=choco_pk).first()
         else:
             config_item = get_object_or_404(Configuration, pk=request.POST.get("configId"))
-        cart.add(
+        new_item = cart.add(
             item=choco_item,
             configuration=config_item,
             quantity=int(request.POST.get('newValue')),
             update_quantity=False
+        )
+
+        static_dir = u"/static/choco/choco_pics/"
+
+        return HttpResponse(
+            json.dumps({'result': "OK", 'cart': cart.cart, 'total_items': len(cart), "new_item": new_item, "static_dir": static_dir}),
+            content_type="application/json"
         )
 
     return HttpResponse(
