@@ -3,7 +3,6 @@
 window.addEventListener("load", () => {
     let ups = document.getElementsByClassName("quantity-up");
     let downs = document.getElementsByClassName("quantity-down");
-    let removeForms = document.getElementsByClassName("cart-remove-item");
     let addCatalogForms = document.getElementsByClassName("cart-add-form");
 
     for (let btn of ups) {
@@ -14,13 +13,11 @@ window.addEventListener("load", () => {
         btn.addEventListener("click", quantityDown);
     }
 
-    for (let form of removeForms) {
-        form.addEventListener("submit", removeCartItem);
-    }
-
     for (let form of addCatalogForms) {
         form.addEventListener("submit", addCartItem);
     }
+
+    addRemovalEvents();
 })
 
 function quantityUp(e) {
@@ -35,7 +32,6 @@ function quantityUp(e) {
     if(e.target.parentNode.hasAttribute("product") && e.target.parentNode.hasAttribute("config")){
         let itemId = e.target.parentNode.getAttribute("product");
         let configId = e.target.parentNode.getAttribute("config");
-        //console.log("ajax request");
         updateQuantity(itemId, configId, newValue);
     }
 
@@ -76,11 +72,9 @@ function updateQuantity(itemId, configId, newValue){
         },
 
         success: function(json) {
-            //console.log(JSON.stringify(json));
             $('#total-items').text(json.total_items);
             $('#price-' + itemId + '-' + configId).text(json.choco_price);
             $('#total-price-' + itemId + '-' + configId).text(json.total_price);
-            //console.log(json.total_price);
         },
         error: function(xhr, errmsg, err) {
             console.log(xhr.status + ": " + xhr.responseText);
@@ -105,21 +99,42 @@ function removeCartItem(e) {
         },
 
         success: function(json) {
-            //console.log(JSON.stringify(json));
-            $('#product-' + itemId + '-' + configId).remove();
-            $('#total-items').text(json.total_items);
-            if(json.total_items == 0){
-                document.getElementById("cart-main").remove();
-                document.getElementById("checkout-btn").remove();
-                $("#main-cart-content").append('<div class="cart-empty">Корзина пуста!</div>');
+            document.getElementById("total-items").innerHTML = json.total_items;
+
+            //removing from sidecart
+            if (e.target.className.indexOf("sidecart") != -1) {
+                let itemContainer = e.target.parentNode.parentNode.parentNode;
+                itemContainer.style.opacity = 0;
+    
+                setTimeout(() => {
+                    itemContainer.removeAttribute("id");
+                    itemContainer.remove();
+    
+                    if(json.total_items == 0) {
+                        $("#cart-content").append('<div class="cart-empty">Корзина пуста!</div>');
+                    }
+                }, 500);
+                return;
             }
+
+            //removing from the cart page
+            let itemContainer = e.target.parentNode.parentNode.parentNode;
+            console.log(itemContainer);
+            itemContainer.style.opacity = 0;
+
+            setTimeout(() => {
+                $('#product-' + itemId + '-' + configId).remove();
+                if(json.total_items == 0) {
+                    document.getElementById("cart-main").remove();
+                    document.getElementById("checkout-btn").remove();
+                    $("#main-cart-content").append('<div class="cart-empty">Корзина пуста!</div>');
+                }
+            }, 500);
         },
         error: function(xhr, errmsg, err) {
             console.log(xhr.status + ": " + xhr.responseText);
         }
     });
-
-    //console.log("form submitted!");  // sanity check
 }
 
 function isInt(value) {
@@ -140,7 +155,6 @@ function addCartItem(e){
         if(!isInt(configId))
             configId = -1;
     }
-    //console.log(configId);
 
     let csrftoken = document.querySelector("[name=csrfmiddlewaretoken]").value;
     let newValue = e.target.getElementsByClassName("quantity")[0].firstElementChild.value;
@@ -159,7 +173,6 @@ function addCartItem(e){
         },
 
         success: function(json) {
-            console.log(JSON.stringify(json.new_item));
             $('#total-items').text(json.total_items);
             reloadSideCart(json.new_item, json.static_dir);
 
@@ -167,62 +180,7 @@ function addCartItem(e){
             setTimeout(() => {closeCart(e)},1500);
         },
         error: function(xhr, errmsg, err) {
-            //console.log(xhr.status + ": " + xhr.responseText);
+            console.log(xhr.status + ": " + xhr.responseText);
         }
     });
-
-    //console.log("form submitted!");  // sanity check
 }
-
-function reloadSideCart(new_item, static_dir){
-    let sideCartContentClass = document.getElementById("side-cart").getElementsByClassName("cart-content");
-    if(sideCartContentClass.length > 0){
-        let sideCartContent = sideCartContentClass[0];
-
-        if(document.querySelector("#sidecart-item-" + new_item.product.id + '-' + new_item.configuration) == null){
-            if(sideCartContent.firstElementChild.classList.contains("cart-empty")){
-                // delete empty cart message
-                sideCartContent.firstElementChild.remove();
-            }
-                // append new item
-                let img_src = "default.png";
-                if(new_item.product.choco_dir){
-                    img_src = new_item.product.choco_dir + '/' + new_item.product.choco_pic;
-                }
-
-                let new_item_str = '<div class="cart-item" id="sidecart-item-' + new_item.product.id + '-' + new_item.configuration + '">' +
-                                        '<div class="wrapper">' +
-                                            '<div class="cart-item-image">' +
-                                                '<img src="' + static_dir + img_src + '"/>' +
-                                            '</div>' +
-                                            '<div class="cart-item-info">' +
-                                                '<div>' + new_item.product.choco_name + '</div>' +
-                                                '<div>Вес: ' + new_item.conf_object.choco_weight + '</div>' +
-                                                '<div id="sidecart-quantity-' + new_item.product.id + '-' + new_item.configuration + '">Количество: ' + new_item.quantity + '</div>' +
-                                                '<div>Цена: ' + new_item.total_price + ' RUB</div>' +
-                                            '</div>' +
-                                            '<div class="delete-cross-wrap">' +
-                                                '<a href="#" class="delete-cross" remove="' + new_item.product.id + '" configure="' + new_item.configuration + '">✕</a>' +
-                                            '</div>' +
-                                        '</div>' +
-                                    '</div>';
-
-                $("#cart-content").append(new_item_str);
-
-                let crosses = document.getElementsByClassName("delete-cross");
-                for (let cross of crosses) {
-                    cross.addEventListener("click", removeSidecartItem);
-                }
-        }
-        else{
-            // update quantity
-            $('#sidecart-quantity-' + new_item.product.id + '-' + new_item.configuration).text("Количество: " + new_item.quantity);
-        }
-    }
-}
-
-/*
-function makeTemplate(id, config, ) {
-
-}
-*/

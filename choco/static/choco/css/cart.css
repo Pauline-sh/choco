@@ -88,7 +88,7 @@
     transition: 0.3s;
 }
 
-#cart-main .delete-cross-wrap input[type="submit"] {
+.delete-cross-wrap input[type="submit"] {
     width: 20px;
     height: 20px;
     padding: 0;

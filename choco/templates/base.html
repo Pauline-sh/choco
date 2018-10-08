@@ -5,12 +5,13 @@
         <meta charset="utf-8">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <!--meta name="viewport" content="width=device-width, initial-scale=1"-->
-        <title>Russian memento</title>
+        <title>Russian Memento</title>
 
         {% load static %}
         <link rel="stylesheet" type="text/css" href="{% static 'choco/css/normalize.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'choco/css/main.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'choco/css/header.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'choco/css/cart.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'choco/css/sidecart.css' %}">
 
         <script src="{% static 'choco/jquery/jquery-3.1.1.min.js' %}"></script>
@@ -86,7 +87,12 @@
                                             <div>Цена: {{ item.total_price }} RUB</div>
                                         </div>
                                         <div class="delete-cross-wrap">
-                                            <a href="#" class="delete-cross" remove="{{product.id}}" configure="{{item.configuration}}">✕</a>
+                                            <form class="cart-remove-item sidecart" action="" method="post">
+                                                {% csrf_token %}
+                                                <input type="hidden" class="choco-pk" value="{{ product.id }}">
+                                                <input type="hidden" class="config-pk" value="{{ item.configuration }}">
+                                                <input type="submit" value="✕">
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
