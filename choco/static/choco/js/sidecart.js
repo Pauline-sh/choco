@@ -53,16 +53,15 @@ function removeSidecartItem(e) {
         success: function(json) {
             itemContainer.style.opacity = 0;
             setTimeout(() => {
-                itemContainer.style.display = "none";
+                itemContainer.removeAttribute("id");
+                itemContainer.remove();
+
+                if(json.total_items == 0){
+                    $("#cart-content").append('<div class="cart-empty">Корзина пуста!</div>');
+                }
             }, 500);
             //console.log(JSON.stringify(json));
 
-            itemContainer.removeAttribute("id");
-            itemContainer.remove();
-
-            if(json.total_items == 0){
-                $("#cart-content").append('<div class="cart-empty">Корзина пуста!</div>');
-            }
         },
         error: function(xhr, errmsg, err) {
             //console.log(xhr.status + ": " + xhr.responseText);

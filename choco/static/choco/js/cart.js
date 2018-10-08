@@ -78,11 +78,12 @@ function updateQuantity(itemId, configId, newValue){
         success: function(json) {
             //console.log(JSON.stringify(json));
             $('#total-items').text(json.total_items);
+            $('#price-' + itemId + '-' + configId).text(json.choco_price);
             $('#total-price-' + itemId + '-' + configId).text(json.total_price);
             //console.log(json.total_price);
         },
         error: function(xhr, errmsg, err) {
-            //console.log(xhr.status + ": " + xhr.responseText);
+            console.log(xhr.status + ": " + xhr.responseText);
         }
     });
 }
@@ -114,7 +115,7 @@ function removeCartItem(e) {
             }
         },
         error: function(xhr, errmsg, err) {
-            //console.log(xhr.status + ": " + xhr.responseText);
+            console.log(xhr.status + ": " + xhr.responseText);
         }
     });
 
@@ -158,9 +159,12 @@ function addCartItem(e){
         },
 
         success: function(json) {
-            //console.log(JSON.stringify(json));
+            console.log(JSON.stringify(json.new_item));
             $('#total-items').text(json.total_items);
             reloadSideCart(json.new_item, json.static_dir);
+
+            openCart(e);
+            setTimeout(() => {closeCart(e)},1500);
         },
         error: function(xhr, errmsg, err) {
             //console.log(xhr.status + ": " + xhr.responseText);
@@ -175,8 +179,7 @@ function reloadSideCart(new_item, static_dir){
     if(sideCartContentClass.length > 0){
         let sideCartContent = sideCartContentClass[0];
 
-
-        if(document.querySelector("#sidecart-item-" + new_item.product.id) == null){
+        if(document.querySelector("#sidecart-item-" + new_item.product.id + '-' + new_item.configuration) == null){
             if(sideCartContent.firstElementChild.classList.contains("cart-empty")){
                 // delete empty cart message
                 sideCartContent.firstElementChild.remove();
@@ -187,7 +190,7 @@ function reloadSideCart(new_item, static_dir){
                     img_src = new_item.product.choco_dir + '/' + new_item.product.choco_pic;
                 }
 
-                let new_item_str = '<div class="cart-item" id="sidecart-item-' + new_item.product.id + '">' +
+                let new_item_str = '<div class="cart-item" id="sidecart-item-' + new_item.product.id + '-' + new_item.configuration + '">' +
                                         '<div class="wrapper">' +
                                             '<div class="cart-item-image">' +
                                                 '<img src="' + static_dir + img_src + '"/>' +
@@ -195,7 +198,7 @@ function reloadSideCart(new_item, static_dir){
                                             '<div class="cart-item-info">' +
                                                 '<div>' + new_item.product.choco_name + '</div>' +
                                                 '<div>Вес: ' + new_item.conf_object.choco_weight + '</div>' +
-                                                '<div id="sidecart-quantity-' + new_item.product.id + '">Количество: ' + new_item.quantity + '</div>' +
+                                                '<div id="sidecart-quantity-' + new_item.product.id + '-' + new_item.configuration + '">Количество: ' + new_item.quantity + '</div>' +
                                                 '<div>Цена: ' + new_item.total_price + ' RUB</div>' +
                                             '</div>' +
                                             '<div class="delete-cross-wrap">' +
@@ -213,7 +216,13 @@ function reloadSideCart(new_item, static_dir){
         }
         else{
             // update quantity
-            $('#sidecart-quantity-' + new_item.product.id).text("Количество: " + new_item.quantity);
+            $('#sidecart-quantity-' + new_item.product.id + '-' + new_item.configuration).text("Количество: " + new_item.quantity);
         }
     }
 }
+
+/*
+function makeTemplate(id, config, ) {
+
+}
+*/

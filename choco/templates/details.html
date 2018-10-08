@@ -16,7 +16,6 @@
     </div>
 	<form action="" method="post" class="cart-add-form">
         {% csrf_token %}
-        <div class="placeholder"></div>
         <label class="quantity">
             {{ cart_form.quantity }}
             <a href="#" class="quantity-up"></a>
@@ -30,6 +29,5 @@
         {{ cart_form.update.errors }}
         <input type="hidden" class="choco-pk" value="{{ item.id }}">
         <input type="submit" value="Добавить в корзину">
-        <div class="placeholder"></div>
     </form>
 {% endblock %}

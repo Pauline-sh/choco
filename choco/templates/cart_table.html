@@ -39,7 +39,7 @@
                     <input style="display: none" type="submit" value="Обновить">
                 </form>
             </td>
-            <td>{{ product.choco_price }} RUB</td>
+            <td><span id="price-{{ product.id }}-{{item.configuration}}">{{ product.choco_price }}</span> RUB</td>
             <td><span id="total-price-{{ product.id }}-{{item.configuration}}">{{ item.total_price }}</span> RUB</td>
             <td class="delete">
                 <div class="delete-cross-wrap">

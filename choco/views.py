@@ -138,7 +138,7 @@ def cart_remove(request, choco_pk, config_pk):
     cart = Cart(request)
     if request.method == 'POST':
         product = get_object_or_404(Assortment, pk=choco_pk)
-        configuration = get_object_or_404(Assortment, pk=config_pk)
+        configuration = get_object_or_404(Configuration, pk=config_pk)
         cart.remove(product, configuration)
 
     return HttpResponse(
@@ -151,7 +151,7 @@ def cart_update(request, choco_pk, config_pk):
     total_price = 0
     if request.method == 'POST':
         product = get_object_or_404(Assortment, pk=choco_pk)
-        configuration = get_object_or_404(Assortment, pk=config_pk)
+        configuration = get_object_or_404(Configuration, pk=config_pk)
         cart.add(
             item=product,
             configuration=configuration,
