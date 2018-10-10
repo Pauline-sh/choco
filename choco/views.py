@@ -36,6 +36,7 @@ def contacts_page(request):
 def details_page(request, pk):
     choco_item = get_object_or_404(Assortment, pk=pk)
     choco_configs = choco_item.choco_config.all()
+    first_choco_config = choco_item.choco_config.first()
 
     cart_form = CartAddProductForm(pk)
 
@@ -55,7 +56,9 @@ def details_page(request, pk):
         'item': choco_item,
         'configurations': choco_configs,
         'cart_form': cart_form,
-        'gallery': choco_gallery
+        'gallery': choco_gallery,
+        'config_types_quantity': len(choco_item.choco_config.all()),
+        'first_choco_config': first_choco_config
     })
 
 
@@ -118,7 +121,7 @@ def cart_add(request, choco_pk):
         content_type="application/json"
     )
 
-
+"""
 def cart_add_conf(request, choco_pk, config_pk=-1):
     cart = Cart(request)
     choco_item = get_object_or_404(Assortment, pk=choco_pk)
@@ -132,7 +135,7 @@ def cart_add_conf(request, choco_pk, config_pk=-1):
             cart.add(item=choco_item, configuration=cd['configuration'], quantity=cd['quantity'], update_quantity=cd['update'])
 
     return redirect('choco:cart')
-
+"""
 
 def cart_remove(request, choco_pk, config_pk):
     cart = Cart(request)

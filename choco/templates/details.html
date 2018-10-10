@@ -29,9 +29,14 @@
                 <div class="price">Цена: {{ item.choco_price }} RUB</div>
                 <form action="" method="post" class="cart-add-form">
                     {% csrf_token %}
-                    
-                    <span class="config-pk">{{ cart_form.configuration }}</span>
-                    {{ cart_form.configuration.errors }}
+
+                    <p>Характеристики</p>
+                    {% if config_types_quantity > 1 %}
+                        <span class="config-pk">{{ cart_form.configuration }}</span>
+                        {{ cart_form.configuration.errors }}
+                    {% else %}
+                        <div>{{ first_choco_config }}</div>
+                    {% endif %}
 
                     <label class="quantity">
                         {{ cart_form.quantity }}

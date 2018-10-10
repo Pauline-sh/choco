@@ -12,5 +12,5 @@ class DetailTest(TestCase):
     pass
 
 
-class BasketTest(TestCase):
+class CartTest(TestCase):
     pass
