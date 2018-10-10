@@ -7,27 +7,45 @@
 {% load staticfiles %}
 
 {% block content %}
-    <p>{{ item.choco_name }}</p>
-    <p>Цена: {{ item.choco_price }}</p>
-    <div>
-        {% for photo in gallery %}
-            <img src="{% static photo %}" width="500" height="500"></img>
-        {% endfor %}
+    <div id="main">
+        <div id="details">
+            <div id="gallery">
+                <div id="gallery-main">
+                    <img src="{% static gallery.0 %}">
+                </div>
+                {% if gallery.1 %}
+                    <div id="gallery-selection">
+                        {% for photo in gallery %}
+                            <div class="gallery-small">
+                                <img src="{% static photo %}">
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="vr"></div>
+            <div class="item-info">
+                <div class="title">{{ item.choco_name }}</div>
+                <div class="price">Цена: {{ item.choco_price }} RUB</div>
+                <form action="" method="post" class="cart-add-form">
+                    {% csrf_token %}
+                    
+                    <span class="config-pk">{{ cart_form.configuration }}</span>
+                    {{ cart_form.configuration.errors }}
+
+                    <label class="quantity">
+                        {{ cart_form.quantity }}
+                        <a href="#" class="quantity-up"></a>
+                        <a href="#" class="quantity-down"></a>
+                    </label>
+
+                    {{ cart_form.update }}
+                    {{ cart_form.update.errors }}
+
+                    <input type="hidden" class="choco-pk" value="{{ item.id }}">
+                    <input type="submit" value="Добавить в корзину">
+                </form>
+            </div>
+        </div>
     </div>
-	<form action="" method="post" class="cart-add-form">
-        {% csrf_token %}
-        <label class="quantity">
-            {{ cart_form.quantity }}
-            <a href="#" class="quantity-up"></a>
-            <a href="#" class="quantity-down"></a>
-        </label>
-
-        <span class="config-pk">{{ cart_form.configuration }}</span>
-        {{ cart_form.configuration.errors }}
-
-        {{ cart_form.update }}
-        {{ cart_form.update.errors }}
-        <input type="hidden" class="choco-pk" value="{{ item.id }}">
-        <input type="submit" value="Добавить в корзину">
-    </form>
 {% endblock %}

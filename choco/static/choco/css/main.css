@@ -10,9 +10,14 @@ body {
 
 #content {
     width: 80%;
-    margin: 0 auto 0 auto;
+    margin: 0 auto;
     padding: 0.1px; /* escape margin collapsing */
     background-color: #B49B7F;
+}
+
+#main {
+    width: 95%;
+    margin: 0 auto;
 }
 
 input[type="number"] {
