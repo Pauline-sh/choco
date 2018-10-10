@@ -34,7 +34,11 @@
                         <span class="config-pk">{{ cart_form.configuration }}</span>
                         {{ cart_form.configuration.errors }}
                     {% else %}
-                        <div class="additional-info">{{ first_choco_config }}</div>
+                        <div class="additional-info">
+                            Размер упаковки: {{ first_choco_config.choco_size }} <br/>
+                            Вес: {{ first_choco_config.choco_weight }} <br/>
+                            Шт. в упаковке: {{ first_choco_config.choco_quantity_in_box }}
+                        </div>
                     {% endif %}
 
                     <label class="quantity">
