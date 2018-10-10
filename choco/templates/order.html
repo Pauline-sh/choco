@@ -10,32 +10,23 @@
 {% endblock %}
 
 {% block content %}
-    <form id="order-form" action="" method="post">
+    <form id="order-form" action="" method="post" class="standart-form">
         {% csrf_token %}
-
-        <div>
-            <label>
-                <span>Имя*:</span>
-                {{ order_form.name }}
-            </label>
+        <div class="input-container">
+            <div class="input-name required">Имя</div>
+            <div class="input-area required">{{ order_form.name }}</div>
         </div>
-        <div>
-            <label>
-                <span>Город*:</span>
-                {{ order_form.city }}
-            </label>
+        <div class="input-container">
+            <div class="input-name required">Город</div>
+            <div class="input-area required">{{ order_form.city }}</div>
         </div>
-        <div>
-            <label>
-                <span>Контактный номер*:</span>
-                {{ order_form.phone_number }}
-            </label>
+        <div class="input-container">
+            <div class="input-name required">Контактный номер</div>
+            <div class="input-area required">{{ order_form.phone_number }}</div>
         </div>
-        <div>
-            <label>
-                <span>Дополнительная информация:</span>
-                {{ order_form.note }}
-            </label>
+        <div class="input-container">
+            <div class="input-name">Дополнительная информация</div>
+            <div class="input-area">{{ order_form.note }}</div>
         </div>
         <div>
             {% if order_form.errors %}

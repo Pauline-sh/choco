@@ -10,9 +10,6 @@
     <div id="main">
         <div id="details">
             <div id="gallery">
-                <div id="gallery-main">
-                    <img src="{% static gallery.0 %}">
-                </div>
                 {% if gallery.1 %}
                     <div id="gallery-selection">
                         {% for photo in gallery %}
@@ -22,8 +19,10 @@
                         {% endfor %}
                     </div>
                 {% endif %}
+                <div id="gallery-main">
+                    <img src="{% static gallery.0 %}">
+                </div>
             </div>
-            <div class="vr"></div>
             <div class="item-info">
                 <div class="title">{{ item.choco_name }}</div>
                 <div class="price">Цена: {{ item.choco_price }} RUB</div>
