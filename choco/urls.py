@@ -13,7 +13,7 @@ urlpatterns = [
     url(r'^cart/$', views.cart_page, name='cart'),
 
     url(r'^add/(?P<choco_pk>[0-9]+)/$', views.cart_add, name='cart_add'),
-    #url(r'^add_conf/(?P<choco_pk>[0-9]+)/(?P<config_pk>[0-9]+)/$', views.cart_add_conf, name='cart_add_conf'),
+    url(r'^add_conf/(?P<choco_pk>[0-9]+)/(?P<config_pk>[0-9]+)/$', views.cart_add_conf, name='cart_add_conf'),
     #url(r'^add_conf/(?P<choco_pk>[0-9]+)/$', views.cart_add_conf, name='cart_add_conf'),
     url(r'^remove/(?P<choco_pk>[0-9]+)/(?P<config_pk>[0-9]+)/$', views.cart_remove, name='cart_remove'),
     url(r'^update/(?P<choco_pk>[0-9]+)/(?P<config_pk>[0-9]+)/$', views.cart_update, name='cart_update'),

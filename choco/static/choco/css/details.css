@@ -95,8 +95,13 @@
     height: 80%;
 }
 
-select[name="configuration"] {
+select[name="configuration"],
+.additional-info {
     margin-bottom: 3%;
+}
+
+.additional-info {
+    opacity: 0.9;
 }
 
 .cart-add-form input[type="submit"] {
