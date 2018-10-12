@@ -11,6 +11,21 @@
 {% load staticfiles %}
 
 {% block content %}
+    <div id="main" class="textpage">
+        <p>
+            <strong>Адрес офиса:</strong><br>
+            ул. Плеханова, д.17, оф.612, тел. 8-963-668-13-72
+        </p>
+        <p>
+            <strong>chocosuvenir@yandex.ru</strong>
+        </p>
+        <p>
+            <strong>Адрес магазина:</strong><br>
+            Зелёный проспект, д 3а с1, 1-й этаж, тел. 8-968-750-72-37
+        </p>
+
+        <iframe src="https://yandex.ru/map-widget/v1/-/CBBOZOHKsC" width="800" height="600" frameborder="1" allowfullscreen="true"></iframe>
+    <!--
     <form id="contact-form" method="post" action="" class="standart-form">
         {% csrf_token %}
 
@@ -49,4 +64,6 @@
 
         <input type="submit" value="Подтвердить">
     </form>
+    -->
+    </div>
 {% endblock %}

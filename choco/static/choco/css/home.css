@@ -1,0 +1,29 @@
+.images-home {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.images-home > .wrapper {
+    width: 45%;
+}
+
+.images-home img {
+    width: 100%;
+    border: 3px solid #FDF6F0;
+    border-radius: 5px;
+    box-sizing: border-box;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.images-home img:hover {
+    border-color: #5B4D41;
+}
+
+.image-info {
+    font-size: 0.9em;
+    font-style: italic;
+    text-align: center;
+    opacity: 0.8;
+}

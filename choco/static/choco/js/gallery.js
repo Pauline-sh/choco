@@ -5,7 +5,12 @@ window.addEventListener("load", () => {
         document.querySelector('select[name="configuration"]').firstElementChild.innerHTML = "Выберите характеристики";
     }
 
-    document.getElementById("gallery-main").addEventListener("click",openImgModal);
+    //document.getElementById("gallery-main").addEventListener("click",openImgModal);
+
+    $(".img-zoomable").each(function() {
+        this.addEventListener("click",openImgModal);
+    })
+    
     document.getElementById("img-modal").addEventListener("click", closeModal);
     $(".close-modal").each(function() {
         this.addEventListener("click", closeModal);

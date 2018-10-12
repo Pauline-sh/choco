@@ -20,6 +20,17 @@ body {
     margin: 0 auto;
 }
 
+#main.textpage {
+    width: 85%;
+    margin: 3% auto;
+    color: #FDF6F0;
+}
+
+#main.textpage p {
+    font-size: 1.1em;
+}
+
+
 input[type="number"] {
     -moz-appearance: textfield;
     -webkit-appearance: textfield;
