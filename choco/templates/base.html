@@ -86,7 +86,7 @@
                                             <div>{{ product.choco_name }}</div>
                                             {% with configuration=item.conf_object %}
                                                 {% if configuration.weight %}
-                                                    <div>Вес: {{ configuration.weight }}</div>
+                                                    <div>Вес: {{ configuration.weight }} г</div>
                                                 {% endif %}
                                             {% endwith %}
                                             <div id="sidecart-quantity-{{item.product.id}}-{{item.configuration}}">Количество: {{ item.quantity }}</div>

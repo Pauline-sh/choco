@@ -94,7 +94,7 @@ function reloadSideCart(new_item, static_dir){
 
     let config_str = "";
     if(new_item.conf_object.weight){
-        config_str = '<div>Вес: ' + new_item.conf_object.weight + '</div>'
+        config_str = '<div>Вес: ' + new_item.conf_object.weight + ' г</div>'
     }
 
     let new_item_child = makeTemplate(new_item.product.id, new_item.configuration,
