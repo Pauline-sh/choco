@@ -30,8 +30,8 @@ class Configuration(models.Model):
             config_str += u"Размер упаковки: ".encode("utf-8") + self.size.encode("utf-8") + u"; ".encode("utf-8")
         if self.weight:
             config_str += u"Вес: ".encode("utf-8") + str(self.weight).encode("utf-8") + u"; ".encode("utf-8")
-        if self.quantity:
-            config_str += u"Количество: ".encode('utf-8') + str(self.quantity).encode("utf-8") + u"; ".encode("utf-8")
+        if self.quantity and self.quantity > 1:
+            config_str += u"Штук: ".encode('utf-8') + str(self.quantity).encode("utf-8") + u"; ".encode("utf-8")
         if self.diameter:
             config_str += u"Диаметр: ".encode("utf-8") + str(self.diameter).encode("utf-8") + u"; ".encode("utf-8")
         if self.length:
