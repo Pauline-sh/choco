@@ -12,4 +12,4 @@ class ConfigurationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Configuration
-        fields = ('id', 'size', 'weight', 'quantity', 'diameter', 'height', 'weight', 'length')
+        fields = ('id', 'size', 'weight', 'stock', 'diameter', 'height', 'weight', 'length')
