@@ -29,6 +29,7 @@ function send_order_message(){
 
             if(json.result != "OK"){
                 alert(json.error);
+                console.log(json);
             }
             else{
                 // тут сделать модалочьку

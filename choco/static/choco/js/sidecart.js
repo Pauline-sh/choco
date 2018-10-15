@@ -91,16 +91,22 @@ function reloadSideCart(new_item, static_dir){
     if(new_item.product.choco_dir){
         img_src = new_item.product.choco_dir + '/' + new_item.product.choco_pic;
     }
+
+    let config_str = "";
+    if(new_item.conf_object.weight){
+        config_str = '<div>Вес: ' + new_item.conf_object.weight + '</div>'
+    }
+
     let new_item_child = makeTemplate(new_item.product.id, new_item.configuration,
                                       static_dir, img_src, new_item.product.choco_name,
-                                      new_item.conf_object.choco_weight, new_item.quantity, 
+                                      config_str, new_item.quantity,
                                       new_item.total_price);
 
     $("#cart-content").append(new_item_child);
     addRemovalEvents();
 }
 
-function makeTemplate(id, config, static_dir, img, name, weight, quantity, price) {
+function makeTemplate(id, config, static_dir, img, name, config_str, quantity, price) {
     return ('<div class="cart-item" id="sidecart-item-' + id + '-' + config + '">' +
                 '<div class="wrapper">' +
                     '<div class="cart-item-image">' +
@@ -108,7 +114,7 @@ function makeTemplate(id, config, static_dir, img, name, weight, quantity, price
                     '</div>' +
                     '<div class="cart-item-info">' +
                         '<div>' + name + '</div>' +
-                        '<div>Вес: ' + weight + '</div>' +
+                        config_str +
                         '<div id="sidecart-quantity-' + id + '-' + config + '">Количество: ' + quantity + '</div>' +
                         '<div>Цена: ' + price + ' RUB</div>' +
                     '</div>' +

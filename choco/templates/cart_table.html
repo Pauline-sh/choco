@@ -7,26 +7,52 @@
     {% with product=item.product %}
         <tr id="product-{{ product.id }}-{{item.configuration}}">
             <td>
-                {% if not product.choco_pic %}
-                    <img src="{% static 'choco/choco_pics/default.png' %}"/>
-                {% else %}
-                    {% with "choco/choco_pics/"|add:product.choco_dir|add:"/"|add:product.choco_pic as main_pic %}
-                        <img src="{% static main_pic %}"/>
-                    {% endwith %}
-                {% endif %}
+                <a href="{% url 'choco:details' product.id %}">
+                    {% if not product.choco_pic %}
+                        <img src="{% static 'choco/choco_pics/default.png' %}"/>
+                    {% else %}
+                        {% with "choco/choco_pics/"|add:product.choco_dir|add:"/"|add:product.choco_pic as main_pic %}
+                            <img src="{% static main_pic %}"/>
+                        {% endwith %}
+                    {% endif %}
+                </a>
             </td>
             <td class="title">
-                <span>{{ product.choco_name }}</span><br>
+                <a href="{% url 'choco:details' product.id %}"><span>{{ product.choco_name }}</span></a><br>
                 {% with configuration=item.conf_object %}
                 <span>
-                    Размер упаковки: {{ configuration.choco_size }},
-                    Вес: {{ configuration.choco_weight }} г,
-                    Шт. в упаковке: {{ configuration.choco_quantity_in_box }}.
+                    {% if configuration.size %}
+                        Размер: {{ configuration.size }};
+                    {% endif %}
+
+                    {% if configuration.weight %}
+                        Вес: {{ configuration.weight }};
+                    {% endif %}
+
+                    {% if configuration.diameter %}
+                        Диаметр: {{ configuration.diameter }};
+                    {% endif %}
+
+                    {% if configuration.height %}
+                        Высота: {{ configuration.height }};
+                    {% endif %}
+
+                    {% if configuration.width %}
+                        Ширина: {{ configuration.width }};
+                    {% endif %}
+
+                    {% if configuration.length %}
+                        Длина: {{ configuration.length }};
+                    {% endif %}
+
+                    {% if configuration.quantity %}
+                        Количество: {{ configuration.quantity }};
+                    {% endif %}
                 </span>
                 {% endwith %}
             </td>
             <td class="amount">
-                <form action="{% url 'choco:cart_add_conf' choco_pk=product.id config_pk=item.configuration %}" method="post" class="cart-add-form">
+                <form action="" method="post" class="cart-add-form">
                     {% csrf_token %}
 
                     <label product="{{ product.id }}" config="{{ item.configuration }}" class="quantity">
@@ -36,7 +62,7 @@
                     </label>
 
                     {{ item.update_quantity_form.update }}
-                    <input style="display: none" type="submit" value="Обновить">
+                    <!--input style="display: none" type="submit" value="Обновить"-->
                 </form>
             </td>
             <td><span id="price-{{ product.id }}-{{item.configuration}}">{{ product.choco_price }}</span> RUB</td>

@@ -30,14 +30,17 @@
                 <form action="" method="post" class="cart-add-form">
                     {% csrf_token %}
 
+                    {% if item.description %}
+                        <div>{{ item.description }}</div>
+                        <br />
+                    {% endif %}
+
                     {% if config_types_quantity > 1 %}
                         <span class="config-pk">{{ cart_form.configuration }}</span>
                         {{ cart_form.configuration.errors }}
                     {% else %}
                         <div class="additional-info">
-                            Размер упаковки: {{ first_choco_config.choco_size }} <br/>
-                            Вес: {{ first_choco_config.choco_weight }} <br/>
-                            Шт. в упаковке: {{ first_choco_config.choco_quantity_in_box }}
+                            {{ first_choco_config }}
                         </div>
                     {% endif %}
 

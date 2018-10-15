@@ -39,8 +39,8 @@
 
                 <div class="header-menu">
                     <div><a href="{% url 'choco:home' %}">Главная</a></div>
-                    <div><a href="{% url 'choco:catalog' %}">Изделия из шоколада</a></div>
-                    <div><a href="{% url 'choco:catalog' %}">Изделия из бересты</a></div>
+                    <div><a href="{% url 'choco:catalog_choco' %}">Изделия из шоколада</a></div>
+                    <div><a href="{% url 'choco:catalog_beresta' %}">Изделия из бересты</a></div>
                     <div><a href="{% url 'choco:contacts' %}">Контакты</a></div>
                     <div><a id="open-cart" href="#">
                         <img class="shopping-cart" src="{% static 'choco/images/shopping-cart.svg' %}">
@@ -85,7 +85,9 @@
                                         <div class="cart-item-info">
                                             <div>{{ product.choco_name }}</div>
                                             {% with configuration=item.conf_object %}
-                                                <div>Вес: {{ configuration.choco_weight }}</div>
+                                                {% if configuration.weight %}
+                                                    <div>Вес: {{ configuration.weight }}</div>
+                                                {% endif %}
                                             {% endwith %}
                                             <div id="sidecart-quantity-{{item.product.id}}-{{item.configuration}}">Количество: {{ item.quantity }}</div>
                                             <div>Цена: {{ item.total_price }} RUB</div>

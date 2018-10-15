@@ -47,10 +47,11 @@ def details_page(request, pk):
     gallery_path = os.path.join(static_dir, choco_item.choco_dir)
 
     choco_gallery = []
-    for f in os.listdir(gallery_path):
-        if f.endswith("jpg") or f.endswith("png"): # to avoid other files
-            if not f.endswith("_tn.jpg"):
-                choco_gallery.append("%s%s/%s" % (u"choco/choco_pics/", choco_item.choco_dir, f))
+    if os.path.isdir(gallery_path):
+        for f in os.listdir(gallery_path):
+            if f.endswith("jpg") or f.endswith("png"): # to avoid other files
+                if not f.endswith("_tn.jpg"):
+                    choco_gallery.append("%s%s/%s" % (u"choco/choco_pics/", choco_item.choco_dir, f))
 
     return render(request, 'details.html', {
         'item': choco_item,
@@ -62,21 +63,38 @@ def details_page(request, pk):
     })
 
 
-def catalog_page(request):
-    chocos_list = Assortment.objects.all().order_by('id')
+def catalog_choco(request):
+    items_list = Assortment.objects.filter(category_id=1, available=1).order_by('id')
     cart_form = CartAddProductForm(auto_id=False)
 
-    paginator = Paginator(chocos_list, 15)
+    paginator = Paginator(items_list, 15)
 
     page = request.GET.get('page')
     try:
-        chocos = paginator.page(page)
+        items = paginator.page(page)
     except PageNotAnInteger:
-        chocos = paginator.page(1)
+        items = paginator.page(1)
     except EmptyPage:
-        chocos = paginator.page(paginator.num_pages)
+        items = paginator.page(paginator.num_pages)
 
-    return render(request, 'catalog.html', {'chocos': chocos, 'cart_form': cart_form})
+    return render(request, 'catalog.html', {'chocos': items, 'cart_form': cart_form})
+
+
+def catalog_beresta(request):
+    items_list = Assortment.objects.filter(category_id=2, available=1).order_by('id')
+    cart_form = CartAddProductForm(auto_id=False)
+
+    paginator = Paginator(items_list, 15)
+
+    page = request.GET.get('page')
+    try:
+        items = paginator.page(page)
+    except PageNotAnInteger:
+        items = paginator.page(1)
+    except EmptyPage:
+        items = paginator.page(paginator.num_pages)
+
+    return render(request, 'catalog.html', {'chocos': items, 'cart_form': cart_form})
 
 
 def cart_page(request):
@@ -188,17 +206,19 @@ def order_send(request):
             order_content_str = ""
             counter = 1
             for item in cart:
-                order_content_str += str(counter) + ". " + item['product']['choco_name'] + \
-                                     u"\n\t Количество: " + str(item['quantity']) + \
-                                     u"\n\t Конфигурация: размер: " + item['conf_object']['choco_size'] + \
-                                     u" вес: " + str(item['conf_object']['choco_weight']) + u" штук в упаковке: " + str(item['conf_object']['choco_quantity_in_box']) + \
+                configuration = Configuration.objects.get(pk=item['configuration'])
+                order_content_str += str(counter) + u". " + item['product']['choco_name'] + \
+                                     u"\n\t Количество товаров: " + str(item['quantity']) + \
+                                     u"\n\t Конфигурация: " + configuration.__str__().decode('utf-8') + \
                                      u"\n\t Цена единицы товара: " + str(item['price']) + "\n"
                 counter = counter + 1
+
             order_content_str += u"\nОбщая стоимость заказа: " + str(cart.get_total_price())
             order_content_str += u"\nДанные заказчика: \n\tИмя: " + the_name
             order_content_str += u"\n\tТелефон:" + the_phone_number
             order_content_str += u"\n\tГород: " + the_city
             order_content_str += u"\n\tЗаметка о заказе: " + the_note
+
 
             send_mail(
                 u"Новый заказ",
