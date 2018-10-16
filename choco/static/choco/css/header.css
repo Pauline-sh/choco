@@ -17,6 +17,10 @@
     text-align: center;
 }
 
+.header-menu > div:last-child {
+    width: 10%;
+}
+
 .header-menu a {
     font-family: MarketDeco;
     transition: 0.3s color ease;

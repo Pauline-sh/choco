@@ -38,8 +38,8 @@ class Configuration(models.Model):
             config_str += u"Ширина: ".encode("utf-8") + str(self.width).encode("utf-8") + u" см; ".encode("utf-8")
         if self.height:
             config_str += u"Высота: ".encode("utf-8") + str(self.height).encode("utf-8") + u" см; ".encode("utf-8")
-        if self.stock:
-            config_str += u"На складе: ".encode("utf-8") + str(self.stock).encode("utf-8") + u" шт; ".encode("utf-8")
+        #if self.stock:
+            #config_str += u"На складе: ".encode("utf-8") + str(self.stock).encode("utf-8") + u" шт; ".encode("utf-8")
 
         return config_str
 

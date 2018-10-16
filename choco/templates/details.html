@@ -35,7 +35,9 @@
                     {% endif %}
 
                     {% if config_types_quantity > 1 %}
-                        <span class="config-pk">{{ cart_form.configuration }}</span>
+                        <div>
+                            <span class="config-pk">{{ cart_form.configuration }}</span>
+                        </div>
                         {{ cart_form.configuration.errors }}
                     {% else %}
                         <div class="additional-info">

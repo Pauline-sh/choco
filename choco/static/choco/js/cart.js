@@ -175,9 +175,12 @@ function addCartItem(e){
         success: function(json) {
             $('#total-items').text(json.total_items);
             reloadSideCart(json.new_item, json.static_dir);
-
-            openCart(e);
-            setTimeout(() => {closeCart(e)},1500);
+            
+            let closeTimer = null;
+            if (document.getElementById("side-cart").style.transform == "") {
+                openCart(e);
+                closeTimer = setTimeout(() => {closeCart(e)},1500);
+            }
         },
         error: function(xhr, errmsg, err) {
             console.log(xhr.status + ": " + xhr.responseText);

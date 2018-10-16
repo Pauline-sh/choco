@@ -15,7 +15,7 @@
     text-align: center;
 }
 
-#cart-main td > img {
+#cart-main td img {
     width: 100px;
     height: 100px;
 }
@@ -25,11 +25,13 @@
     text-align: start;
 }
 
-#cart-main .title > span:first-child {
+#cart-main .title > *:first-child {
     font-weight: 600;
+    color: #FDF6F0;
+    text-decoration: none;
 }
 
-#cart-main .title > span:last-child {
+#cart-main .title > *:last-child {
     opacity: 0.8;
 }
 
