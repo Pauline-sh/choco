@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import json
 import os
+import logging
 from decimal import Decimal
 
 from django.shortcuts import render, get_object_or_404, redirect, render_to_response
@@ -49,8 +50,8 @@ def details_page(request, pk):
     choco_gallery = []
     if os.path.isdir(gallery_path):
         for f in os.listdir(gallery_path):
-            if f.endswith("jpg") or f.endswith("png"): # to avoid other files
-                if not f.endswith("_tn.jpg"):
+            if f.lower().endswith("jpg") or f.lower().endswith("png"): # to avoid other files
+                if not f.lower().endswith("_tn.jpg"):
                     choco_gallery.append("%s%s/%s" % (u"choco/choco_pics/", choco_item.choco_dir, f))
 
     return render(request, 'details.html', {
