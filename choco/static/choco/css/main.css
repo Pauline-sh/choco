@@ -30,6 +30,10 @@ body {
     font-size: 1.1em;
 }
 
+#main.textpage a {
+    color: #FDF6F0;
+    text-decoration: none;
+}
 
 input[type="number"] {
     -moz-appearance: textfield;
