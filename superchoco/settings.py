@@ -23,6 +23,8 @@ ALLOWED_HOSTS = [
     '*'
 ]
 
+SECURE_SSL_REDIRECT = True
+
 INSTALLED_APPS = [
     'choco.apps.ChocoConfig',
     'django.contrib.admin',
