@@ -5,6 +5,9 @@
 .logo {
     display: flex;
     justify-content: center;
+    font-family: AncientKyiv;
+    font-size: 7.0em;
+    color: #5b4641;
 }
 
 .header-menu {

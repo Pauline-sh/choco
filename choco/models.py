@@ -13,7 +13,7 @@ class Category (models.Model):
 
 
 class Configuration(models.Model):
-    size = models.CharField(max_length=11, blank=True)
+    size = models.CharField(max_length=20, blank=True)
     weight = models.PositiveSmallIntegerField(blank=True)
 
     stock = models.PositiveSmallIntegerField(blank=True)
@@ -27,7 +27,7 @@ class Configuration(models.Model):
         config_str = u"".encode("utf-8")
 
         if self.size:
-            config_str += u"Размер упаковки: ".encode("utf-8") + self.size.encode("utf-8") + u" см; ".encode("utf-8")
+            config_str += u"Размер: ".encode("utf-8") + self.size.encode("utf-8") + u" ".encode("utf-8")
         if self.weight:
             config_str += u"Вес: ".encode("utf-8") + str(self.weight).encode("utf-8") + u" г; ".encode("utf-8")
         if self.diameter:

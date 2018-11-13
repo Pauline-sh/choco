@@ -97,6 +97,21 @@ def catalog_beresta(request):
 
     return render(request, 'catalog.html', {'chocos': items, 'cart_form': cart_form})
 
+def catalog_wood(request):
+    items_list = Assortment.objects.filter(category_id=3, available=1).order_by('id')
+    cart_form = CartAddProductForm(auto_id=False)
+
+    paginator = Paginator(items_list, 15)
+
+    page = request.GET.get('page')
+    try:
+        items = paginator.page(page)
+    except PageNotAnInteger:
+        items = paginator.page(1)
+    except EmptyPage:
+        items = paginator.page(paginator.num_pages)
+
+    return render(request, 'catalog.html', {'chocos': items, 'cart_form': cart_form})
 
 def cart_page(request):
     cart = Cart(request)

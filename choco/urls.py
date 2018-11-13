@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^contacts/$', views.contacts_page, name='contacts'),
     url(r'^catalog/choco/$', views.catalog_choco, name='catalog_choco'),
     url(r'^catalog/beresta/$', views.catalog_beresta, name='catalog_beresta'),
+    url(r'^catalog/wood/$', views.catalog_wood, name='catalog_wood'),
     url(r'^catalog/(?P<pk>[0-9]+)/$', views.details_page, name='details'),
     url(r'^cart/$', views.cart_page, name='cart'),
 
