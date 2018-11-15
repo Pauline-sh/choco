@@ -78,3 +78,19 @@
     border: 2px solid #FDF6F0;
     border-radius: 15px;
 }
+
+.package-selection {
+    display: flex;
+    justify-content: space-between;
+}
+
+.package-selection > div {
+    width: 20%;
+    height: 40px;
+    line-height: 40px;
+    font-size: 20px;
+    font-style: italic;
+    text-align: center;
+    border: 5px double #5b4641;
+    border-radius: 5px;
+}
