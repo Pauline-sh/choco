@@ -100,7 +100,7 @@
 }
 
 select[name="configuration"],
-.additional-info {
+#details .item-info .additional-info {
     margin-bottom: 3%;
 }
 

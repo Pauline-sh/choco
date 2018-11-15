@@ -203,6 +203,9 @@ def cart_update(request, choco_pk, config_pk):
         content_type="application/json"
     )
 
+def gift_page(request):
+    return render(request, 'gift.html')
+
 def order_page(request):
     order_form = OrderForm()
     return render(request, 'order.html', {'order_form': order_form})

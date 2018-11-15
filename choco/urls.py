@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^catalog/wood/$', views.catalog_wood, name='catalog_wood'),
     url(r'^catalog/(?P<pk>[0-9]+)/$', views.details_page, name='details'),
     url(r'^cart/$', views.cart_page, name='cart'),
+    url(r'^gift/$', views.gift_page, name='gift'),
 
     url(r'^add/(?P<choco_pk>[0-9]+)/$', views.cart_add, name='cart_add'),
     url(r'^add_conf/(?P<choco_pk>[0-9]+)/(?P<config_pk>[0-9]+)/$', views.cart_add_conf, name='cart_add_conf'),
