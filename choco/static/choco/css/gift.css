@@ -94,3 +94,9 @@
     border: 5px double #5b4641;
     border-radius: 5px;
 }
+
+.gift-catalog-modal {
+    display: none;
+    width: 80%;
+    height: 80%;
+}

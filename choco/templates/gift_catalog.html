@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+<!-- эта строка для отображения изображений из папки static -->
+{% load staticfiles %}
+
+{% block styles %}
+	<link rel="stylesheet" type="text/css" href="{% static 'choco/css/catalog.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div id="assortment">
+        {% if items|length < 1 %}
+            <p>Сейчас ассортимент пуст. Заходите позже!</p>
+        {% else %}
+            {% for item in items %}
+                <div class="item-wrap">
+                    <div class="item-image">
+                        {% if not item.choco_pic %}
+                            <img src="{% static 'choco/choco_pics/default.png' %}"/>
+                        {% else %}
+                            {% with "choco/choco_pics/"|add:item.choco_dir|add:"/"|add:item.choco_pic as main_pic %}
+                                <img src="{% static main_pic %}"/>
+                            {% endwith %}
+                        {% endif %}
+                    </div>
+                    <div class="item-info">
+                        <strong>{{ item.choco_name }}</strong>
+                        <span class="price">{{ item.choco_price }} RUB</span>
+                    </div>
+
+                    <form action="{% url 'choco:gift_add' choco_pk=item.id %}" method="post" class="cart-add-form">
+                        {% csrf_token %}
+                        <div class="placeholder"></div>
+                        <label class="quantity">
+                            {{ cart_form.quantity }}
+                            <a href="#" class="quantity-up"></a>
+                            <a href="#" class="quantity-down"></a>
+                        </label>
+                        {{ cart_form.update }}
+                        <input type="hidden" class="choco-pk" value="{{ item.id }}">
+                        <input type="submit" value="Добавить в подарок">
+                        <div class="placeholder"></div>
+                    </form>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <div class="pagination">
+        {% if items.has_previous %}
+            <div class="button-container long">
+                <a href="?page={{ items.previous_page_number }}">Назад</a>
+            </div>
+        {% endif %}
+        {% for pg in items.paginator.page_range %}
+            {% if items.number == pg %}
+            <div class="button-container active">
+                <a href="?page={{ pg }}">{{ pg }}</a>
+            </div>
+            {% else %}
+            <div class="button-container">
+                <a href="?page={{ pg }}">{{ pg }}</a>
+            </div>
+            {% endif %}
+        {% endfor %}
+        {% if items.has_next %}
+            <div class="button-container long">
+                <a href="?page={{ items.next_page_number }}">Вперед</a>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

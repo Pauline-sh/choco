@@ -13,13 +13,17 @@ urlpatterns = [
     url(r'^catalog/wood/$', views.catalog_wood, name='catalog_wood'),
     url(r'^catalog/(?P<pk>[0-9]+)/$', views.details_page, name='details'),
     url(r'^cart/$', views.cart_page, name='cart'),
-    url(r'^gift/$', views.gift_page, name='gift'),
 
     url(r'^add/(?P<choco_pk>[0-9]+)/$', views.cart_add, name='cart_add'),
     url(r'^add_conf/(?P<choco_pk>[0-9]+)/(?P<config_pk>[0-9]+)/$', views.cart_add_conf, name='cart_add_conf'),
-    #url(r'^add_conf/(?P<choco_pk>[0-9]+)/$', views.cart_add_conf, name='cart_add_conf'),
     url(r'^remove/(?P<choco_pk>[0-9]+)/(?P<config_pk>[0-9]+)/$', views.cart_remove, name='cart_remove'),
     url(r'^update/(?P<choco_pk>[0-9]+)/(?P<config_pk>[0-9]+)/$', views.cart_update, name='cart_update'),
+
+    url(r'^gift/$', views.gift_page, name='gift'),
+
+    url(r'^gift/add/(?P<choco_pk>[0-9]+)/$', views.gift_add, name='gift_add'),
+    url(r'^gift/remove/(?P<choco_pk>[0-9]+)/$', views.gift_add, name='gift_remove'),
+    url(r'^gift/get_items/(?P<category_pk>[0-9]+)/$', views.gift_get_items, name='gift_get_items'),
 
     url(r'^order/$', views.order_page, name='order'),
     url(r'^order/send/$', views.order_send, name='order_send'),

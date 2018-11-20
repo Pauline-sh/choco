@@ -62,6 +62,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'choco.context_processors.cart',
+                'choco.context_processors.gift',
             ],
         },
     },
@@ -129,6 +130,8 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, '..', "static")
 
 CART_SESSION_ID = 'cart'
+
+GIFT_SESSION_ID = 'gift'
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,

@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
 import os
-import logging
 from decimal import Decimal
 
 from django.shortcuts import render, get_object_or_404, redirect, render_to_response
@@ -13,8 +12,9 @@ from django.http import HttpResponse
 from django.conf import settings
 
 from .models import Assortment, Configuration, PackageStyle
-from .cart import Cart
-from .forms import CartAddProductForm, OrderForm, ContactForm
+from .cart import Cart, Gift
+from .forms import CartAddProductForm, GiftAddProductForm, OrderForm, ContactForm
+from .serializers import AssortmentSerializer
 
 
 EMAIL_FROM = 'russian.memento@gmail.com'
@@ -192,7 +192,33 @@ def cart_update(request, choco_pk, config_pk):
 
 def gift_page(request):
     package_styles = PackageStyle.objects.all()
-    return render(request, 'gift.html', {'package_styles': package_styles})
+
+    return render(request, 'gift.html', {
+        'package_styles': package_styles,
+    })
+
+def gift_add(request, choco_pk):
+    pass
+
+def gift_remove(request, choco_pk):
+    pass
+
+def gift_get_items(request, category_pk):
+    if request.method == 'POST':
+        items_list = Assortment.objects.filter(category_id=category_pk, available=1).order_by('id')
+        items = []
+        for item in items_list:
+            items.append(AssortmentSerializer(item).data)
+
+        return HttpResponse(
+            json.dumps(items),
+            content_type="application/json"
+        )
+    else:
+        return HttpResponse(
+            json.dumps({"nothing to see": "this isn't happening"}),
+            content_type="application/json"
+        )
 
 
 def order_page(request):

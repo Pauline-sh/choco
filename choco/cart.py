@@ -106,3 +106,19 @@ class Cart(object):
     def clear(self):
         del self.session[settings.CART_SESSION_ID]
         self.session.modified = True
+
+
+class Gift(Cart):
+    def __init__(self, request):
+        self.session = request.session
+        cart = self.session.get(settings.GIFT_SESSION_ID)
+        if not cart:
+            cart = self.session[settings.GIFT_SESSION_ID] = {}
+        self.cart = cart
+        self.package = 1
+
+    def get_package(self):
+        return self.package
+
+    def set_package(self, package_id):
+        self.package = package_id

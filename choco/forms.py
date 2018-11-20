@@ -15,6 +15,18 @@ class CartAddProductForm(forms.Form):
             self.fields['configuration'].queryset = Assortment.objects.get(pk=item_id).choco_config.all()
 
 
+class GiftAddProductForm(forms.Form):
+    quantity = forms.IntegerField(min_value=1, label="", initial=1)
+    update = forms.BooleanField(required=False, initial=False, widget=forms.HiddenInput)
+    configuration = forms.ModelChoiceField(required=False, queryset=Configuration.objects.all())
+    old_configuration = forms.ModelChoiceField(required=False, initial=None, queryset=Configuration.objects.all())
+
+    def __init__(self, item_id=-1, *args, **kwargs):
+        super(GiftAddProductForm, self).__init__(*args, **kwargs)
+        if item_id != -1:
+            self.fields['configuration'].queryset = Assortment.objects.get(pk=item_id).choco_config.all()
+
+
 class OrderForm(forms.Form):
     name = forms.CharField(label="Имя*")
     city = forms.CharField(label="Город", required=False)

@@ -89,6 +89,7 @@ class Orders(models.Model):
 
 class PackageStyle(models.Model):
     package_name = models.CharField(max_length=30)
+    package_price = models.DecimalField(max_digits=10, decimal_places=2)
     package_pic = models.CharField(max_length=50)
 
     def __str__(self):
