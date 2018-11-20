@@ -85,3 +85,13 @@ class Orders(models.Model):
 
     class Meta:
         ordering = ('id',)
+
+
+class PackageStyle(models.Model):
+    package_name = models.CharField(max_length=30)
+
+    def __str__(self):
+        return self.package_name
+
+    class Meta:
+        ordering = ('id',)
