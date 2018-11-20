@@ -89,6 +89,7 @@ class Orders(models.Model):
 
 class PackageStyle(models.Model):
     package_name = models.CharField(max_length=30)
+    package_pic = models.CharField(max_length=50)
 
     def __str__(self):
         return self.package_name

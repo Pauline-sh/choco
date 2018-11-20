@@ -12,7 +12,7 @@ from django.core.validators import validate_email
 from django.http import HttpResponse
 from django.conf import settings
 
-from .models import Assortment, Configuration
+from .models import Assortment, Configuration, PackageStyle
 from .cart import Cart
 from .forms import CartAddProductForm, OrderForm, ContactForm
 
@@ -191,8 +191,8 @@ def cart_update(request, choco_pk, config_pk):
 
 
 def gift_page(request):
-    #package_styles =
-    return render(request, 'gift.html')
+    package_styles = PackageStyle.objects.all()
+    return render(request, 'gift.html', {'package_styles': package_styles})
 
 
 def order_page(request):

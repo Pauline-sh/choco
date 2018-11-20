@@ -56,25 +56,16 @@
     <h2>Выберите упаковку:</h2>
     <form>
     <div class="package-selection">
-        <div>
-            <label>
-                <input type="radio" name="package">
-                <span>Плёнка</span>
-            </label>
-        </div>
-        <div>
-            <label>
-                <input type="radio" name="package">
-                <span>Пакет</span>
-            </label>
-        </div>
-        <div>
-            <label>
-                <input type="radio" name="package">
-                <span>Корзинка</span>
-            </label>
-        </div>
+        {% for style in package_styles %}
+            <div>
+                <label>
+                    <input type="radio" name="package">
+                    <span>{{ style.package_name }}</span>
+                </label>
+            </div>
+        {% endfor %}
     </div>
+    <input type="submit" value="Заказать">
     </form>
 </div>
 {% endblock %}
