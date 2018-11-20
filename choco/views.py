@@ -64,9 +64,7 @@ def details_page(request, pk):
     })
 
 
-def catalog_choco(request):
-    items_list = Assortment.objects.filter(category_id=1, available=1).order_by('id')
-    cart_form = CartAddProductForm(auto_id=False)
+def add_catalog_pagination(request, items_list):
 
     paginator = Paginator(items_list, 15)
 
@@ -78,40 +76,29 @@ def catalog_choco(request):
     except EmptyPage:
         items = paginator.page(paginator.num_pages)
 
-    return render(request, 'catalog.html', {'chocos': items, 'cart_form': cart_form})
+    return items
 
+def catalog_choco(request):
+    items_list = Assortment.objects.filter(category_id=1, available=1).order_by('id')
+    cart_form = CartAddProductForm(auto_id=False)
+    items = add_catalog_pagination(request, items_list)
+
+    return render(request, 'catalog.html', {'chocos': items, 'cart_form': cart_form})
 
 def catalog_beresta(request):
     items_list = Assortment.objects.filter(category_id=2, available=1).order_by('id')
     cart_form = CartAddProductForm(auto_id=False)
-
-    paginator = Paginator(items_list, 15)
-
-    page = request.GET.get('page')
-    try:
-        items = paginator.page(page)
-    except PageNotAnInteger:
-        items = paginator.page(1)
-    except EmptyPage:
-        items = paginator.page(paginator.num_pages)
+    items = add_catalog_pagination(request, items_list)
 
     return render(request, 'catalog.html', {'chocos': items, 'cart_form': cart_form})
 
 def catalog_wood(request):
     items_list = Assortment.objects.filter(category_id=3, available=1).order_by('id')
     cart_form = CartAddProductForm(auto_id=False)
-
-    paginator = Paginator(items_list, 15)
-
-    page = request.GET.get('page')
-    try:
-        items = paginator.page(page)
-    except PageNotAnInteger:
-        items = paginator.page(1)
-    except EmptyPage:
-        items = paginator.page(paginator.num_pages)
+    items = add_catalog_pagination(request, items_list)
 
     return render(request, 'catalog.html', {'chocos': items, 'cart_form': cart_form})
+
 
 def cart_page(request):
     cart = Cart(request)
@@ -126,7 +113,6 @@ def cart_page(request):
         )
 
     return render(request, 'cart.html', {'cart': cart})
-
 
 def cart_add(request, choco_pk):
     cart = Cart(request)
@@ -203,13 +189,15 @@ def cart_update(request, choco_pk, config_pk):
         content_type="application/json"
     )
 
+
 def gift_page(request):
+    #package_styles =
     return render(request, 'gift.html')
+
 
 def order_page(request):
     order_form = OrderForm()
     return render(request, 'order.html', {'order_form': order_form})
-
 
 def order_send(request):
     if request.method == 'POST':
