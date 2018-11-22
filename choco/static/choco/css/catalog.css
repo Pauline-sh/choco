@@ -14,12 +14,14 @@
     align-items: center;
 }
 
-.cart-add-form {
+#assortment .cart-add-form,
+#catalog-modal .cart-add-form  {
     display: flex;
     justify-content: space-between;
 }
 
-.cart-add-form .quantity {
+#assortment .cart-add-form .quantity,
+#catalog-modal .cart-add-form .quantity {
     position: relative;
     width: 20%;
 }
@@ -86,12 +88,12 @@
     color: #FFFFFF;
 }
 
-#assortment .item-info a {
+#assortment .item-info a, #catalog-modal .item-info a {
     text-decoration: none;
     color: #FDF6F0;
 }
 
-#assortment .item-info .price {
+#assortment .item-info .price, #catalog-modal .item-info .price{
     opacity: 0.8;
 }
 

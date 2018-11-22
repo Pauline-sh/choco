@@ -13,8 +13,9 @@
         <link rel="stylesheet" type="text/css" href="{% static 'choco/css/normalize.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'choco/css/main.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'choco/css/header.css' %}">
-        <link rel="stylesheet" type="text/css" href="{% static 'choco/css/cart.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'choco/css/sidecart.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'choco/css/catalog.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'choco/css/cart.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'choco/css/details.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'choco/css/forms.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'choco/css/home.css' %}">
@@ -117,11 +118,20 @@
 
         <!--div class="footer"><p class="test">dat me, bottom hook</p></div-->
 
-        <div id="img-modal">
+        <div class="modal" id="img-modal">
             <div class="modal-body">
                 <div class="close-modal">✕</div>
                 <img src="">         
             </div>
+        </div>
+
+        <div class="modal" id="catalog-modal">
+            <div class="modal-body">
+                <div id="catalog-modal-main">
+
+                </div>
+            </div>
+            <div class="close-modal-outside">✕</div>
         </div>
     </body>
 </html>

@@ -52,12 +52,14 @@
                     {% csrf_token %}
 
                     <label product="{{ product.id }}" config="{{ item.configuration }}" class="quantity">
-                        {{ item.update_quantity_form.quantity }}
+                        {#{ item.update_quantity_form.quantity }#}
+                        <input type="number" name="quantity" value="{{ item.quantity }}" required="" id="id_quantity" min="1">
                         <a href="#" class="quantity-up"></a>
                         <a href="#" class="quantity-down"></a>
                     </label>
 
-                    {{ item.update_quantity_form.update }}
+                    <input type="hidden" name="update" value="True" id="id_update">
+                    {#{ item.update_quantity_form.update }#}
                     <!--input style="display: none" type="submit" value="Обновить"-->
                 </form>
             </td>

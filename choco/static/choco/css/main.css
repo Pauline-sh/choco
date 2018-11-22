@@ -54,7 +54,7 @@ input::-webkit-inner-spin-button {
 
 /* modals */
 
-#img-modal {
+.modal {
     display: none;
     position: fixed;
     top: 0;
@@ -74,6 +74,7 @@ input::-webkit-inner-spin-button {
     height: 90%;
     border: 5px solid #5B4D41;
     border-radius: 5px;
+    background-color: #B49B7F;
 }
 
 #img-modal img {
@@ -82,10 +83,24 @@ input::-webkit-inner-spin-button {
     background-color: #FDF6F0;
 }
 
-.close-modal {
+#catalog-modal {
+    overflow: auto;
+}
+
+#catalog-modal .modal-body {
+    height: auto;
+}
+
+#catalog-modal-main {
+    display: flex;
+    flex-wrap: wrap;
+    overflow: hidden;
+}
+
+.close-modal{
     position: absolute;
-    top: 1%;
-    right: 1%;
+    top: 15px;
+    right: 15px;
     width: 30px;
     height: 30px;
     display: flex;
@@ -98,11 +113,37 @@ input::-webkit-inner-spin-button {
     cursor: pointer;
 }
 
-.close-modal:before {
+.close-modal:before{
     content: "";
     position: absolute;
     width: 25px;
     height: 25px;
+    border: 3px solid #5B4D41;
+    border-radius: 50%;
+}
+
+.close-modal-outside {
+    position: fixed;
+    top: 30px;
+    right: 40px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: #FDF6F0;
+    color: #5B4D41;
+    font-weight: 700;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.close-modal-outside::before {
+    content: "";
+    position: fixed;
+    width: 45px;
+    height: 45px;
     border: 3px solid #5B4D41;
     border-radius: 50%;
 }

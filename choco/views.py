@@ -102,6 +102,7 @@ def catalog_wood(request):
 
 def cart_page(request):
     cart = Cart(request)
+    """
     for item in cart:
         item['update_quantity_form'] = CartAddProductForm(
             item['product']['id'],
@@ -111,7 +112,7 @@ def cart_page(request):
                 'configuration': item['conf_object']
             }
         )
-
+    """
     return render(request, 'cart.html', {'cart': cart})
 
 def cart_add(request, choco_pk):
