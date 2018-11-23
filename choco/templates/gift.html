@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% load static %}
+{% load mathfilters %}
 
 {% block styles %}
    <link rel="stylesheet" type="text/css" href="{% static 'choco/css/gift.css' %}">
@@ -15,38 +16,54 @@
 <div id="main" class="textpage">
     <h2>Соберите подарок:</h2>
     <!-- с выбранным товаром -->
-    <div class="gift-item">
-        <div class="wrapper">
-            <div class="img-container">
-                <img src="https://russian-memento.ru/static/choco/choco_pics/3/%D0%BD%D0%B0%D0%B1%D0%BE%D1%80%E2%84%963.jpg">
-            </div>
-            <div class="item-info">
-                <div class="title">Набор подарочный №3 Замок</div>
-                <div class="price">Цена: <strike>880,00 RUB</strike> 836,00 RUB</div>
-                <div class="additional-info">Размер: 12*24 см Вес: 180 г;</div>
-            </div>
-            <div class="delete-cross-wrap">
-                <input type="submit" value="✕">
-            </div>
-        </div>
-    </div>
-
     {% for item in gift %}
-        <div class="gift-item">
-            <div class="wrapper">
-                <div class="img-container">
-                    <img src="https://russian-memento.ru/static/choco/choco_pics/3/%D0%BD%D0%B0%D0%B1%D0%BE%D1%80%E2%84%963.jpg">
-                </div>
-                <div class="item-info">
-                    <div class="title">Набор подарочный №3 Замок</div>
-                    <div class="price">Цена: <strike>880,00 RUB</strike> 836,00 RUB</div>
-                    <div class="additional-info">Размер: 12*24 см Вес: 180 г;</div>
-                </div>
-                <div class="delete-cross-wrap">
-                    <input type="submit" value="✕">
+        {% with product=item.product %}
+            <div class="gift-item" id="product-{{ product.id }}-{{item.configuration}}">
+                <div class="wrapper">
+                    <div class="img-container">
+                        {% if not product.choco_pic %}
+                            <img src="{% static 'choco/choco_pics/default.png' %}"/>
+                        {% else %}
+                            {% with "choco/choco_pics/"|add:product.choco_dir|add:"/"|add:product.choco_pic as main_pic %}
+                                <img src="{% static main_pic %}"/>
+                            {% endwith %}
+                        {% endif %}
+                    </div>
+                    <div class="item-info">
+                        <div class="title">{{ product.choco_name }}</div>
+                        <div class="price">Цена: <strike>{{ product.choco_price }} RUB</strike> {{ product.choco_price|mul:0.95 }} RUB</div>
+                        {% with configuration=item.conf_object %}
+                            <div class="additional-info">
+                                Количество: {{ item.quantity }};
+                                {% if configuration.size %}
+                                    Размер: {{ configuration.size }};
+                                {% endif %}
+                                {% if configuration.weight %}
+                                    Вес: {{ configuration.weight }};
+                                {% endif %}
+                                {% if configuration.diameter %}
+                                    Диаметр: {{ configuration.diameter }};
+                                {% endif %}
+                                {% if configuration.height %}
+                                    Высота: {{ configuration.height }};
+                                {% endif %}
+                                {% if configuration.width %}
+                                    Ширина: {{ configuration.width }};
+                                {% endif %}
+                                {% if configuration.length %}
+                                    Длина: {{ configuration.length }};
+                                {% endif %}
+                            </div>
+                        {% endwith %}
+                    </div>
+                    <div class="delete-cross-wrap">
+                        <input class="gift-remove-item" type="submit" value="✕">
+                        <input type="hidden" class="choco-pk" value="{{ product.id }}">
+                        <input type="hidden" class="config-pk" value="{{ item.configuration }}">
+                    </div>
                 </div>
             </div>
-        </div>
+        {% endwith %}
     {% endfor %}
 
     <!-- без выбранного товара -->
@@ -75,22 +92,18 @@
         </div>
     </div>
     <h2>Выберите упаковку:</h2>
-    <form>
-    <div class="package-selection">
-        {% for style in package_styles %}
-            <div>
-                <label>
-                    <input type="radio" name="package">
-                    <span>{{ style.package_name }}</span>
-                </label>
-            </div>
-        {% endfor %}
-    </div>
-    <input type="submit" value="Заказать">
+    <form id="gift-checkout-btn">
+        <div class="package-selection">
+            {% for style in package_styles %}
+                <div>
+                    <label>
+                        <input value="{{style.id}}" type="radio" name="package">
+                        <span>{{ style.package_name }}</span>
+                    </label>
+                </div>
+            {% endfor %}
+        </div>
+        <input type="submit" value="Заказать">
     </form>
-</div>
-
-<div class="gift-catalog-modal">
-
 </div>
 {% endblock %}

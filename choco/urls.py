@@ -22,7 +22,7 @@ urlpatterns = [
     url(r'^gift/$', views.gift_page, name='gift'),
 
     url(r'^gift/add/(?P<choco_pk>[0-9]+)/$', views.gift_add, name='gift_add'),
-    url(r'^gift/remove/(?P<choco_pk>[0-9]+)/$', views.gift_add, name='gift_remove'),
+    url(r'^gift/remove/(?P<choco_pk>[0-9]+)/(?P<config_pk>[0-9]+)/$', views.gift_remove, name='gift_remove'),
     url(r'^gift/get_items/(?P<category_pk>[0-9]+)/$', views.gift_get_items, name='gift_get_items'),
 
     url(r'^order/$', views.order_page, name='order'),

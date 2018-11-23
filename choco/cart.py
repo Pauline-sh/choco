@@ -117,6 +117,14 @@ class Gift(Cart):
         self.cart = cart
         self.package = 1
 
+    def save(self):
+        self.session[settings.GIFT_SESSION_ID] = self.cart
+        self.session.modified = True
+
+    def clear(self):
+        del self.session[settings.GIFT_SESSION_ID]
+        self.session.modified = True
+
     def get_package(self):
         return self.package
 

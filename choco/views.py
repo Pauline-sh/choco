@@ -199,10 +199,43 @@ def gift_page(request):
     })
 
 def gift_add(request, choco_pk):
-    pass
+    gift = Gift(request)
+    if request.method == 'POST':
+        choco_item = get_object_or_404(Assortment, pk=choco_pk)
+        if(int(request.POST.get("configId")) == -1):
+            config_item = Configuration.objects.filter(assortment__id=choco_pk).first()
+        else:
+            config_item = get_object_or_404(Configuration, pk=request.POST.get("configId"))
+        new_item = gift.add(
+            item=choco_item,
+            configuration=config_item,
+            quantity=int(request.POST.get('newValue')),
+            update_quantity=False
+        )
 
-def gift_remove(request, choco_pk):
-    pass
+        static_dir = u"/static/choco/choco_pics/"
+
+        return HttpResponse(
+            json.dumps({'result': "OK", 'gift': gift.cart, 'total_items': len(gift), "new_item": new_item, "static_dir": static_dir}),
+            content_type="application/json"
+        )
+    return HttpResponse(
+        json.dumps({'result': "OK", 'gift': gift.cart, 'total_items': len(gift)}),
+        content_type="application/json"
+    )
+
+def gift_remove(request, choco_pk, config_pk):
+    gift = Gift(request)
+    if request.method == 'POST':
+        product = get_object_or_404(Assortment, pk=choco_pk)
+        configuration = get_object_or_404(Configuration, pk=config_pk)
+        gift.remove(product, configuration)
+
+    return HttpResponse(
+        json.dumps({'result': "OK", 'gift': gift.cart, 'total_items': len(gift)}),
+        content_type="application/json"
+    )
+
 
 def gift_get_items(request, category_pk):
     if request.method == 'POST':

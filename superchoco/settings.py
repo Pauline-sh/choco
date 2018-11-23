@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'mathfilters',
 ]
 
 MIDDLEWARE = [
@@ -132,6 +133,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, '..', "static")
 CART_SESSION_ID = 'cart'
 
 GIFT_SESSION_ID = 'gift'
+
+GIFT_STATE = False
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
