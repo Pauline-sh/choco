@@ -248,11 +248,29 @@ def gift_get_items(request, category_pk):
             json.dumps(items),
             content_type="application/json"
         )
-    else:
+    return HttpResponse(
+        json.dumps({"nothing to see": "this isn't happening"}),
+        content_type="application/json"
+    )
+
+def gift_state(request):
+    if request.method == 'POST':
+        gift = Gift(request)
+        if len(gift) == 0:
+            return HttpResponse(
+                json.dumps({'result': 'NOT OK', 'error': 'Нет выбранных товаров!'}),
+                content_type="application/json"
+            )
+        request.session['gift_state'] = True
+        gift.set_package(request.POST.get("packageValue"))
         return HttpResponse(
-            json.dumps({"nothing to see": "this isn't happening"}),
+            json.dumps({'result': 'OK'}),
             content_type="application/json"
         )
+    return HttpResponse(
+        json.dumps({"nothing to see": "this isn't happening"}),
+        content_type="application/json"
+    )
 
 
 def order_page(request):
@@ -268,19 +286,32 @@ def order_send(request):
 
         response_data = {}
         try:
-            cart = Cart(request)
-
             order_content_str = ""
             counter = 1
-            for item in cart:
-                configuration = Configuration.objects.get(pk=item['configuration'])
-                order_content_str += str(counter) + u". " + item['product']['choco_name'] + \
-                                     u"\n\t Количество товаров: " + str(item['quantity']) + \
-                                     u"\n\t Конфигурация: " + configuration.__str__().decode('utf-8') + \
-                                     u"\n\t Цена единицы товара: " + str(item['price']) + "\n"
-                counter = counter + 1
 
-            order_content_str += u"\nОбщая стоимость заказа: " + str(cart.get_total_price())
+            if not request.session.get('gift_state', False):
+                cart = Cart(request)
+                for item in cart:
+                    configuration = Configuration.objects.get(pk=item['configuration'])
+                    order_content_str += str(counter) + u". " + item['product']['choco_name'] + \
+                                         u"\n\t Количество товаров: " + str(item['quantity']) + \
+                                         u"\n\t Конфигурация: " + configuration.__str__().decode('utf-8') + \
+                                         u"\n\t Цена единицы товара: " + str(item['price']) + "\n"
+                    counter = counter + 1
+                order_content_str += u"\nОбщая стоимость заказа: " + str(cart.get_total_price())
+            else:
+                cart = Gift(request)
+                packageStyle = get_object_or_404(PackageStyle, pk=cart.get_package())
+                for item in cart:
+                    configuration = Configuration.objects.get(pk=item['configuration'])
+                    order_content_str += str(counter) + u". " + item['product']['choco_name'] + \
+                                         u"\n\t Количество товаров: " + str(item['quantity']) + \
+                                         u"\n\t Конфигурация: " + configuration.__str__().decode('utf-8') + \
+                                         u"\n\t Цена единицы товара: " + str(round(Decimal(item['price']) * Decimal(0.95), 2)) + "\n"
+                    counter = counter + 1
+                order_content_str += u"\nОбщая стоимость заказа: " + str(round(cart.get_total_price() * Decimal(0.95), 2))
+                order_content_str += u"\nВыбранная упаковка и ее цена: " + packageStyle.package_name + u" " + str(packageStyle.package_price)
+
             order_content_str += u"\nДанные заказчика: \n\tИмя: " + the_name
             order_content_str += u"\n\tТелефон:" + the_phone_number
             order_content_str += u"\n\tГород: " + the_city
@@ -294,6 +325,7 @@ def order_send(request):
                 [EMAIL_TO],
             )
             cart.clear()
+            request.session['gift_state'] = False
             response_data['result'] = u'OK'
         except Exception as e:
             response_data['error'] = u'Ошибка отправки заказа. Попробуйте позже'

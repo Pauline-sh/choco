@@ -24,6 +24,10 @@ urlpatterns = [
     url(r'^gift/add/(?P<choco_pk>[0-9]+)/$', views.gift_add, name='gift_add'),
     url(r'^gift/remove/(?P<choco_pk>[0-9]+)/(?P<config_pk>[0-9]+)/$', views.gift_remove, name='gift_remove'),
     url(r'^gift/get_items/(?P<category_pk>[0-9]+)/$', views.gift_get_items, name='gift_get_items'),
+    url(r'^gift/state/$', views.gift_state, name='gift_state'),
+
+    url(r'^gift/order/$', views.order_page),
+    url(r'^gift/order/send/$', views.order_send),
 
     url(r'^order/$', views.order_page, name='order'),
     url(r'^order/send/$', views.order_send, name='order_send'),

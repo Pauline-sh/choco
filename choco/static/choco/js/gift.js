@@ -150,21 +150,42 @@ function renderGiftItem(newItem) {
 
 function orderGift(e) {
     e.preventDefault();
+
     let packageRadios = document.getElementsByName('package');
     let packageValue = -1
-
     for (let packageRadio of packageRadios) {
         if (packageRadio.checked) {
             packageValue = packageRadio.value;
         }
     }
-
     if(packageValue == -1) {
         alert("Нужно выбрать вид упаковки!");
         return;
     }
 
-    window.location = "order.html";
+    $.ajax({
+        url: "state/",
+        type: "POST",
+        dataType: "json",
+
+        headers: {
+            "X-CSRFToken": getCookie('csrftoken')
+        },
+        data: {
+            packageValue: packageValue,
+        },
+        success: function(json) {
+            if(json.result == 'OK') {
+                window.location = "order";
+            }
+            else{
+                alert(json.error);
+            }
+        },
+        error: function(xhr, errmsg, err) {
+            console.log(xhr.status + ": " + xhr.responseText);
+        }
+    });
 }
 
 window.addEventListener("load", () => {
