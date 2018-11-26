@@ -15,58 +15,65 @@
 {% block content %}
 <div id="main" class="textpage">
     <h2>Соберите подарок:</h2>
+
     <!-- с выбранным товаром -->
-    {% for item in gift %}
-        {% with product=item.product %}
-            <div class="gift-item" id="product-{{ product.id }}-{{item.configuration}}">
-                <div class="wrapper">
-                    <div class="img-container">
-                        {% if not product.choco_pic %}
-                            <img src="{% static 'choco/choco_pics/default.png' %}"/>
-                        {% else %}
-                            {% with "choco/choco_pics/"|add:product.choco_dir|add:"/"|add:product.choco_pic as main_pic %}
-                                <img src="{% static main_pic %}"/>
+
+    <div id="gift-body">
+        {% for item in gift %}
+            {% with product=item.product %}
+                <div class="gift-item" id="product-{{ product.id }}-{{item.configuration}}">
+                    <div class="wrapper">
+                        <div class="img-container">
+                            {% if not product.choco_pic %}
+                                <img src="{% static 'choco/choco_pics/default.png' %}"/>
+                            {% else %}
+                                {% with "choco/choco_pics/"|add:product.choco_dir|add:"/"|add:product.choco_pic as main_pic %}
+                                    <img src="{% static main_pic %}"/>
+                                {% endwith %}
+                            {% endif %}
+                        </div>
+                        <div class="item-info">
+                            <div class="title">{{ product.choco_name }}</div>
+                            <div class="price">Цена: <strike>{{ product.choco_price }} RUB</strike> {{ product.choco_price|mul:0.95 }} RUB</div>
+                            {% with configuration=item.conf_object %}
+                                <div class="additional-info">
+                                    <span class="item-quantity">
+                                        Количество: {{ item.quantity }};
+                                    </span>
+                                    {% if configuration.size %}
+                                        Размер: {{ configuration.size }};
+                                    {% endif %}
+                                    {% if configuration.weight %}
+                                        Вес: {{ configuration.weight }};
+                                    {% endif %}
+                                    {% if configuration.diameter %}
+                                        Диаметр: {{ configuration.diameter }};
+                                    {% endif %}
+                                    {% if configuration.height %}
+                                        Высота: {{ configuration.height }};
+                                    {% endif %}
+                                    {% if configuration.width %}
+                                        Ширина: {{ configuration.width }};
+                                    {% endif %}
+                                    {% if configuration.length %}
+                                        Длина: {{ configuration.length }};
+                                    {% endif %}
+                                </div>
                             {% endwith %}
-                        {% endif %}
-                    </div>
-                    <div class="item-info">
-                        <div class="title">{{ product.choco_name }}</div>
-                        <div class="price">Цена: <strike>{{ product.choco_price }} RUB</strike> {{ product.choco_price|mul:0.95 }} RUB</div>
-                        {% with configuration=item.conf_object %}
-                            <div class="additional-info">
-                                Количество: {{ item.quantity }};
-                                {% if configuration.size %}
-                                    Размер: {{ configuration.size }};
-                                {% endif %}
-                                {% if configuration.weight %}
-                                    Вес: {{ configuration.weight }};
-                                {% endif %}
-                                {% if configuration.diameter %}
-                                    Диаметр: {{ configuration.diameter }};
-                                {% endif %}
-                                {% if configuration.height %}
-                                    Высота: {{ configuration.height }};
-                                {% endif %}
-                                {% if configuration.width %}
-                                    Ширина: {{ configuration.width }};
-                                {% endif %}
-                                {% if configuration.length %}
-                                    Длина: {{ configuration.length }};
-                                {% endif %}
-                            </div>
-                        {% endwith %}
-                    </div>
-                    <div class="delete-cross-wrap">
-                        <input class="gift-remove-item" type="submit" value="✕">
-                        <input type="hidden" class="choco-pk" value="{{ product.id }}">
-                        <input type="hidden" class="config-pk" value="{{ item.configuration }}">
+                        </div>
+                        <div class="delete-cross-wrap">
+                            <input class="gift-remove-item" type="submit" value="✕">
+                            <input type="hidden" class="choco-pk" value="{{ product.id }}">
+                            <input type="hidden" class="config-pk" value="{{ item.configuration }}">
+                        </div>
                     </div>
                 </div>
-            </div>
-        {% endwith %}
-    {% endfor %}
+            {% endwith %}
+        {% endfor %}
+    </div>
 
     <!-- без выбранного товара -->
+
     <div id="open-choco-catalog" class="gift-item empty">
         <div class="wrapper">
             <div class="img-container">+</div>

@@ -4,6 +4,7 @@
     margin: 1.5% auto;
     border: 3px solid #FDF6F0;
     border-radius: 5px;
+    transition: 0.5s;
 }
 
 .gift-item.empty {

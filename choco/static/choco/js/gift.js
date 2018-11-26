@@ -98,9 +98,16 @@ function addToGift(modal) {
                 "X-CSRFToken": csrftoken
             },
             success: function(json) {
-                // TODO: render item, add remove event
-                console.log(json);
-                renderGiftItem(json.new_item);
+                const item = json.new_item;
+
+                if(!isDuplicate(item)) {
+                    $("#gift-body").append(makeGiftItemTemplate(item));
+                    $("#gift-body")[0].lastElementChild.querySelector(".gift-remove-item").addEventListener("click", removeFromGift);
+                } else {
+                    const giftElem = document.querySelector(`#product-${item.product.id}-${item.configuration}`);
+                    giftElem.querySelector(".item-quantity").innerHTML = "Количество: " + item.quantity + ";";
+                }
+
                 modal.hide();
             },
             error: function(xhr, errmsg, err) {
@@ -108,6 +115,10 @@ function addToGift(modal) {
                 modal.hide();
             }
         });
+    }
+
+    function isDuplicate(newItem) {
+        return Boolean(document.querySelector(`#product-${newItem.product.id}-${newItem.configuration}`));
     }
 }
 
@@ -144,8 +155,30 @@ function removeFromGift(e) {
     });
 }
 
-function renderGiftItem(newItem) {
-    // TODO
+function makeGiftItemTemplate(item) {
+    return (`<div class="gift-item" id="product-${item.product.id}-${item.configuration}">
+    <div class="wrapper">
+        <div class="img-container">
+            <img src="/static/choco/choco_pics/${item.product.choco_dir}/${item.product.choco_pic}"/>
+        </div>
+        <div class="item-info">
+            <div class="title">${item.product.choco_name}</div>
+            <div class="price">
+                Цена: 
+                <strike>${item.product.choco_price} RUB</strike> 
+                ${(Number(item.product.choco_price) * 0.95).toFixed(2)} RUB</div>
+                <div class="additional-info">
+                    <span class="item-quantity">Количество: ${item.quantity};</span>
+                    ${stringifyConfig(item.conf_object)}
+                </div>
+        </div>
+            <div class="delete-cross-wrap">
+                <input class="gift-remove-item" type="submit" value="✕">
+                <input type="hidden" class="choco-pk" value="${item.product.id}">
+                <input type="hidden" class="config-pk" value="${item.configuration}">
+            </div>
+        </div>
+    </div>`);
 }
 
 function orderGift(e) {
@@ -246,4 +279,15 @@ function openCatalog(categoryId, modal){
             }
         });
     }
+}
+
+function stringifyConfig(conf) {
+    let confStr = "";
+    if (conf.size) confStr += `Размер: ${conf.size}; `;
+    if (conf.weight) confStr += `Вес: ${conf.weight} г; `;
+    if (conf.diameter) confStr += `Диаметр: ${conf.diameter} см; `;
+    if (conf.height) confStr += `Высота: ${conf.height} см; `;
+    if (conf.width) confStr += `Ширина: ${conf.width} см; `;
+    if (conf.length) confStr += `Длина: ${conf.length} см; `;
+    return confStr;
 }
