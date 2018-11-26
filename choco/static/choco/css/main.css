@@ -52,6 +52,16 @@ input::-webkit-inner-spin-button {
     margin: 0;
 }
 
+#gift-banner {
+    width: 80%;
+    margin: 0 auto;
+}
+
+#gift-banner img {
+    width: 100%;
+    height: 110px;
+}
+
 /* modals */
 
 .modal {
