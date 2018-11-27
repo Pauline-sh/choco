@@ -7,6 +7,12 @@
 {% load staticfiles %}
 
 {% block content %}
+    <div id="gift-banner">
+            <a href="{% url 'choco:gift'%}">
+                <img src="{% static 'choco/images/gift_banner.png'%}">
+            </a>
+        </div>
+    <hr>
     <div id="main" class="textpage">
         <p>
             Мы рады предложить Вам уникальную продукцию – высококачественный шоколад, отлитый в форму предметов быта и стилизованный  мастерами под «винтаж».

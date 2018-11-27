@@ -124,3 +124,39 @@
     background-color: #FDF6F0;
     color: #5B4D41;
 }
+
+.checkout-btn input {
+    padding: 0;
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+    border-style: none;
+    font-size: 1.2em;
+    background-color: #FDF6F0;
+    color: #5B4D41;
+    cursor: pointer;
+}
+
+#total {
+    color: #FDF6F0;
+    font-size: 1.3em;
+    text-align: center;
+}
+
+#main-cart-content #gift {
+    width: 40%;
+    margin: 1.5% auto;
+    border: 5px double #5b4641;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 1.2em;
+    color: #FDF6F0;
+}
+
+#main-cart-content #gift > .wrapper {
+    margin: 2.5%;
+}
+
+#main-cart-content #gift #package-selection.hidden {
+    display: none
+}

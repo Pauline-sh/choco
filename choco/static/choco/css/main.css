@@ -54,7 +54,7 @@ input::-webkit-inner-spin-button {
 
 #gift-banner {
     width: 80%;
-    margin: 0 auto;
+    margin: 0 auto 2.5% auto;
 }
 
 #gift-banner img {

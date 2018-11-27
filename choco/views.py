@@ -102,6 +102,7 @@ def catalog_wood(request):
 
 def cart_page(request):
     cart = Cart(request)
+    total_price = cart.get_total_price()
     """
     for item in cart:
         item['update_quantity_form'] = CartAddProductForm(
@@ -113,7 +114,7 @@ def cart_page(request):
             }
         )
     """
-    return render(request, 'cart.html', {'cart': cart})
+    return render(request, 'cart.html', {'cart': cart, 'total_price': total_price})
 
 def cart_add(request, choco_pk):
     cart = Cart(request)
@@ -192,10 +193,13 @@ def cart_update(request, choco_pk, config_pk):
 
 
 def gift_page(request):
+    gift = Gift(request)
     package_styles = PackageStyle.objects.all()
+    total_price = gift.get_total_price()
 
     return render(request, 'gift.html', {
         'package_styles': package_styles,
+        'total_price': total_price,
     })
 
 def gift_add(request, choco_pk):

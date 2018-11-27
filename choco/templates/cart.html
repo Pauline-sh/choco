@@ -24,6 +24,37 @@
                 </tr>
                 {% include 'cart_table.html' %}
             </table>
+            <div id="total">Общая стоимость: <span>{{ total_price }}</span> RUB</div>
+
+            <div id="gift">
+                <div class="wrapper">
+                    <label>
+                        <input type="checkbox" name="order-as-gift">
+                        <span>Заказать как подарок</span>
+                    </label>
+                    <div id="package-selection" class="hidden">
+                        <p>Выберите упаковку:</p>
+                        <label>
+                            <input type="radio" name="package">
+                            <span>Пленка</span>
+                            <span>+100 RUB</span>
+                        </label>
+                        <br>
+                        <label>
+                            <input type="radio" name="package">
+                            <span>Корзинка</span>
+                            <span>+150 RUB</span>
+                        </label>
+                        <br>
+                        <label>
+                            <input type="radio" name="package">
+                            <span>Пакет</span>
+                            <span>+50 RUB</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
             <div class="checkout-btn" id="checkout-btn">
                 <a href="{% url 'choco:order' %}">Оформить заказ</a>
             </div>

@@ -18,6 +18,11 @@ window.addEventListener("load", () => {
     }
 
     addRemovalEvents();
+
+    document.querySelector('input[name="order-as-gift"]').checked = false;
+    document.querySelector('input[name="order-as-gift"]').addEventListener("change", () => {
+        document.querySelector("#package-selection").classList.toggle("hidden");
+    })
 })
 
 function quantityUp(e) {
@@ -72,9 +77,11 @@ function updateQuantity(itemId, configId, newValue){
         },
 
         success: function(json) {
+            //console.log(json);
             $('#total-items').text(json.total_items);
             $('#price-' + itemId + '-' + configId).text(json.choco_price);
             $('#total-price-' + itemId + '-' + configId).text(json.total_price);
+            document.querySelector("#total>span").innerHTML = calculateTotal(json.cart);
         },
         error: function(xhr, errmsg, err) {
             console.log(xhr.status + ": " + xhr.responseText);
@@ -121,12 +128,14 @@ function removeCartItem(e) {
             let itemContainer = e.target.parentNode.parentNode.parentNode;
             console.log(itemContainer);
             itemContainer.style.opacity = 0;
+            document.querySelector("#total>span").innerHTML = calculateTotal(json.cart);
 
             setTimeout(() => {
                 $('#product-' + itemId + '-' + configId).remove();
                 if(json.total_items == 0) {
                     document.getElementById("cart-main").remove();
                     document.getElementById("checkout-btn").remove();
+                    document.getElementById("total").remove();
                     $("#main-cart-content").append('<div class="cart-empty">Корзина пуста!</div>');
                 }
             }, 500);
@@ -186,4 +195,12 @@ function addCartItem(e){
             console.log(xhr.status + ": " + xhr.responseText);
         }
     });
+}
+
+function calculateTotal(cart) {
+    let total = 0;
+    for (let item of Object.keys(cart)) {
+        total += Number(cart[item][0].total_price);
+    }
+    return total.toFixed(2);
 }
