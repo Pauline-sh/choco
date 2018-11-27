@@ -18,6 +18,8 @@ urlpatterns = [
     url(r'^add_conf/(?P<choco_pk>[0-9]+)/(?P<config_pk>[0-9]+)/$', views.cart_add_conf, name='cart_add_conf'),
     url(r'^remove/(?P<choco_pk>[0-9]+)/(?P<config_pk>[0-9]+)/$', views.cart_remove, name='cart_remove'),
     url(r'^update/(?P<choco_pk>[0-9]+)/(?P<config_pk>[0-9]+)/$', views.cart_update, name='cart_update'),
+    url(r'^cart_as_gift/$', views.cart_as_gift, name='cart_as_gift'),
+    url(r'^cart_as_gift_package/(?P<package_pk>[0-9]+)/$', views.cart_as_gift_package, name='cart_as_gift_package'),
 
     url(r'^gift/$', views.gift_page, name='gift'),
 

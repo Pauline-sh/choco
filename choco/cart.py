@@ -101,6 +101,7 @@ class Cart(object):
         for item in self.cart.values():
             for config in item:
                 sum += Decimal(config['price']) * config['quantity']
+        sum = round(sum, 2)
         return sum
 
     def clear(self):

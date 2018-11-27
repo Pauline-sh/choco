@@ -17,13 +17,21 @@ window.addEventListener("load", () => {
         form.addEventListener("submit", addCartItem);
     }
 
+    //document.getElementById("gift-switch").addEventListener("click", setAsGift);
+
     addRemovalEvents();
 
     if (document.querySelector('input[name="order-as-gift"]')) {
         document.querySelector('input[name="order-as-gift"]').checked = false;
         document.querySelector('input[name="order-as-gift"]').addEventListener("change", () => {
             document.querySelector("#package-selection").classList.toggle("hidden");
+            setAsGift();
         })
+    }
+
+    let cartPackageRadios = document.getElementsByName('package-style');
+    for (let packageRadio of cartPackageRadios) {
+        packageRadio.addEventListener("click", setCartPackageStyle);
     }
 })
 
@@ -83,7 +91,8 @@ function updateQuantity(itemId, configId, newValue){
             $('#total-items').text(json.total_items);
             $('#price-' + itemId + '-' + configId).text(json.choco_price);
             $('#total-price-' + itemId + '-' + configId).text(json.total_price);
-            document.querySelector("#total>span").innerHTML = calculateTotal(json.cart);
+            document.querySelector("#total>span").innerHTML = json.total_cart_price;
+            //document.querySelector("#total>span").innerHTML = calculateTotal(json.cart);
         },
         error: function(xhr, errmsg, err) {
             console.log(xhr.status + ": " + xhr.responseText);
@@ -130,7 +139,8 @@ function removeCartItem(e) {
             let itemContainer = e.target.parentNode.parentNode.parentNode;
             console.log(itemContainer);
             itemContainer.style.opacity = 0;
-            document.querySelector("#total>span").innerHTML = calculateTotal(json.cart);
+            //document.querySelector("#total>span").innerHTML = calculateTotal(json.cart);
+            document.querySelector("#total>span").innerHTML = json.total_cart_price;
 
             setTimeout(() => {
                 $('#product-' + itemId + '-' + configId).remove();
@@ -205,4 +215,65 @@ function calculateTotal(cart) {
         total += Number(cart[item][0].total_price);
     }
     return total.toFixed(2);
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        let cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            let cookie = jQuery.trim(cookies[i]);
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+function setAsGift(e) {
+    let gift_switch = document.getElementById("gift-switch");
+    $.ajax({
+        url: "/cart_as_gift/",
+        type: "POST",
+        dataType: "json",
+        data: {
+            gift_switch: gift_switch.checked,
+        },
+
+        headers: {
+            "X-CSRFToken": getCookie('csrftoken')
+        },
+
+        success: function(json) {
+            //console.log(json);
+            document.querySelector("#total>span").innerHTML = json.total_price;
+        },
+        error: function(xhr, errmsg, err) {
+            console.log(xhr.status + ": " + xhr.responseText);
+        }
+    });
+}
+
+function setCartPackageStyle(e) {
+    let packageId = e.target.value;
+    let csrftoken = getCookie('csrftoken');
+    $.ajax({
+        url: "/cart_as_gift_package/" + packageId + "/",
+        type: "POST",
+        dataType: "json",
+
+        headers: {
+            "X-CSRFToken": csrftoken
+        },
+
+        success: function(json) {
+            //console.log(json);
+            //document.querySelector("#total>span").innerHTML = json.total_price;
+        },
+        error: function(xhr, errmsg, err) {
+            console.log(xhr.status + ": " + xhr.responseText);
+        }
+    });
 }

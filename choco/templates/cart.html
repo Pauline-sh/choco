@@ -29,28 +29,19 @@
             <div id="gift">
                 <div class="wrapper">
                     <label>
-                        <input type="checkbox" name="order-as-gift">
+                        <input type="checkbox" name="order-as-gift" id="gift-switch">
                         <span>Заказать как подарок</span>
                     </label>
                     <div id="package-selection" class="hidden">
                         <p>Выберите упаковку:</p>
-                        <label>
-                            <input type="radio" name="package">
-                            <span>Пленка</span>
-                            <span>+100 RUB</span>
-                        </label>
-                        <br>
-                        <label>
-                            <input type="radio" name="package">
-                            <span>Корзинка</span>
-                            <span>+150 RUB</span>
-                        </label>
-                        <br>
-                        <label>
-                            <input type="radio" name="package">
-                            <span>Пакет</span>
-                            <span>+50 RUB</span>
-                        </label>
+                        {% for style in package_styles %}
+                            <label>
+                                <input value="{{style.id}}" type="radio" name="package-style">
+                                <span>{{ style.package_name }}</span>
+                                <span>+{{ style.package_price }} RUB</span>
+                            </label>
+                            <br>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
