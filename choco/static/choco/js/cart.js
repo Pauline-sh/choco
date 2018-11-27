@@ -19,10 +19,12 @@ window.addEventListener("load", () => {
 
     addRemovalEvents();
 
-    document.querySelector('input[name="order-as-gift"]').checked = false;
-    document.querySelector('input[name="order-as-gift"]').addEventListener("change", () => {
-        document.querySelector("#package-selection").classList.toggle("hidden");
-    })
+    if (document.querySelector('input[name="order-as-gift"]')) {
+        document.querySelector('input[name="order-as-gift"]').checked = false;
+        document.querySelector('input[name="order-as-gift"]').addEventListener("change", () => {
+            document.querySelector("#package-selection").classList.toggle("hidden");
+        })
+    }
 })
 
 function quantityUp(e) {
