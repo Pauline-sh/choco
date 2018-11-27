@@ -23,7 +23,7 @@ function send_order_message(){
         },
 
         success: function(json) {
-            console.log(json);
+            //console.log(json);
 
             $("body").removeClass("loading");
 

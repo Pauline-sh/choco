@@ -384,7 +384,6 @@ def order_send(request):
                     order_content_str += u"\nОбщая стоимость заказа: " + str(cart.get_total_price())
             else:
                 cart = Gift(request)
-                packageStyle = get_object_or_404(PackageStyle, pk=cart.get_package())
                 for item in cart:
                     configuration = Configuration.objects.get(pk=item['configuration'])
                     order_content_str += str(counter) + u". " + item['product']['choco_name'] + \
@@ -393,7 +392,7 @@ def order_send(request):
                                          u"\n\t Цена единицы товара: " + str(round(Decimal(item['price']) * Decimal(0.95), 2)) + "\n"
                     counter = counter + 1
                 order_content_str += u"\nОбщая стоимость заказа: " + str(cart.get_total_price())
-                order_content_str += u"\nВыбранная упаковка и ее цена: " + packageStyle.package_name + u" " + str(packageStyle.package_price)
+                order_content_str += u"\nВыбранная упаковка и ее цена: " + cart.package['package_name'] + u" " + str(cart.package['package_price'])
                 request.session['gift_state'] = False
 
             order_content_str += u"\nДанные заказчика: \n\tИмя: " + the_name
