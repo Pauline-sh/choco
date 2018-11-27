@@ -216,11 +216,20 @@ def gift_add(request, choco_pk):
             quantity=int(request.POST.get('newValue')),
             update_quantity=False
         )
-
+        package = gift.get_package()
+        total_price = gift.get_total_price()
         static_dir = u"/static/choco/choco_pics/"
 
         return HttpResponse(
-            json.dumps({'result': "OK", 'gift': gift.cart, 'total_items': len(gift), "new_item": new_item, "static_dir": static_dir}),
+            json.dumps({
+                'result': "OK",
+                'gift': gift.cart,
+                'total_items': len(gift),
+                "total_price": total_price,
+                "new_item": new_item,
+                "static_dir": static_dir,
+                'package':package
+            }),
             content_type="application/json"
         )
     return HttpResponse(
@@ -235,8 +244,11 @@ def gift_remove(request, choco_pk, config_pk):
         configuration = get_object_or_404(Configuration, pk=config_pk)
         gift.remove(product, configuration)
 
+    package = gift.get_package()
+    total_price = gift.get_total_price()
+
     return HttpResponse(
-        json.dumps({'result': "OK", 'gift': gift.cart, 'total_items': len(gift)}),
+        json.dumps({'result': "OK", 'gift': gift.cart, 'total_items': len(gift), "total_price": total_price, 'package': package}),
         content_type="application/json"
     )
 
@@ -276,6 +288,20 @@ def gift_state(request):
         content_type="application/json"
     )
 
+def gift_get_total_price(request, package_pk):
+    if request.method == 'POST':
+        gift = Gift(request)
+        gift.set_package(package_pk)
+        total_price = gift.get_total_price()
+        package = gift.get_package()
+        return HttpResponse(
+            json.dumps({'result': 'OK', 'total_price': total_price, 'package': package}),
+            content_type="application/json"
+        )
+    return HttpResponse(
+        json.dumps({"nothing to see": "this isn't happening"}),
+        content_type="application/json"
+    )
 
 def order_page(request):
     order_form = OrderForm()

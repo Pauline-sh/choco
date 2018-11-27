@@ -107,7 +107,8 @@ function addToGift(modal) {
                     const giftElem = document.querySelector(`#product-${item.product.id}-${item.configuration}`);
                     giftElem.querySelector(".item-quantity").innerHTML = "Количество: " + item.quantity + ";";
                 }
-
+                $("#total-number").text(json.total_price);
+                //console.log(json);
                 modal.hide();
             },
             error: function(xhr, errmsg, err) {
@@ -128,7 +129,7 @@ function removeFromGift(e) {
     let configId = e.target.parentNode.getElementsByClassName("config-pk")[0].value;
     let csrftoken = getCookie('csrftoken');
 
-    console.log(itemId, configId);
+    //console.log(itemId, configId);
 
     $.ajax({
         url: "remove/" + itemId + "/" + configId + "/",
@@ -147,6 +148,8 @@ function removeFromGift(e) {
                 setTimeout(() => {
                     $('#product-' + itemId + '-' + configId).remove();
                 }, 500);
+                //console.log(json);
+                $("#total-number").text(json.total_price);
             }
         },
         error: function(xhr, errmsg, err) {
@@ -227,6 +230,11 @@ window.addEventListener("load", () => {
     let wood_catalog = document.getElementById("open-wood-catalog");
     let catalog_modal = new CatalogModal();
 
+    let packageRadios = document.getElementsByName('package');
+    for (let packageRadio of packageRadios) {
+        packageRadio.addEventListener("click", setPackage);
+    }
+
     let orderGiftBtn = document.getElementById("gift-checkout-btn");
 
     let removeCrosses = document.getElementsByClassName("gift-remove-item");
@@ -270,7 +278,7 @@ function openCatalog(categoryId, modal){
             },
 
             success: function(json) {
-                console.log(json);
+                //console.log(json);
                 modal.fill(json);
                 modal.show();
             },
@@ -290,4 +298,28 @@ function stringifyConfig(conf) {
     if (conf.width) confStr += `Ширина: ${conf.width} см; `;
     if (conf.length) confStr += `Длина: ${conf.length} см; `;
     return confStr;
+}
+
+function setPackage(e) {
+    e.preventDefault();
+    let packageId = e.target.value;
+    let csrftoken = getCookie('csrftoken');
+    $.ajax({
+        url: "get_total_price/" + packageId + "/",
+        type: "POST",
+        dataType: "json",
+
+        headers: {
+            "X-CSRFToken": csrftoken
+        },
+
+        success: function(json) {
+            //console.log(json);
+            e.target.checked = true;
+            $("#total-number").text(json.total_price);
+        },
+        error: function(xhr, errmsg, err) {
+            console.log(xhr.status + ": " + xhr.responseText);
+        }
+    });
 }

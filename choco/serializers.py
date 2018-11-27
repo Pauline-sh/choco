@@ -20,4 +20,4 @@ class PackageStyleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PackageStyle
-        fields = ('id', 'package_name', 'package_pic')
+        fields = ('id', 'package_name', 'package_price', 'package_pic')

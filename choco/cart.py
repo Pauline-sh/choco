@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 from decimal import Decimal
 from django.conf import settings
-from .models import Assortment
+from .models import Assortment, PackageStyle
 
-from .serializers import AssortmentSerializer, ConfigurationSerializer
+from .serializers import AssortmentSerializer, ConfigurationSerializer, PackageStyleSerializer
 
 
 class Cart(object):
@@ -114,19 +114,45 @@ class Gift(Cart):
         cart = self.session.get(settings.GIFT_SESSION_ID)
         if not cart:
             cart = self.session[settings.GIFT_SESSION_ID] = {}
+
+        package = self.session.get(settings.PACKAGE_SESSION_ID)
+        if not package:
+            package = self.session[settings.PACKAGE_SESSION_ID] = False
         self.cart = cart
-        self.package = 1
+        self.package = package
 
     def save(self):
         self.session[settings.GIFT_SESSION_ID] = self.cart
+        self.session[settings.PACKAGE_SESSION_ID] = self.package
         self.session.modified = True
 
     def clear(self):
         del self.session[settings.GIFT_SESSION_ID]
+        del self.session[settings.PACKAGE_SESSION_ID]
         self.session.modified = True
 
     def get_package(self):
         return self.package
 
     def set_package(self, package_id):
-        self.package = package_id
+        try:
+            package_query = PackageStyle.objects.get(pk=package_id)
+            self.package = PackageStyleSerializer(package_query).data
+        except:
+            package_id = 1
+            package_query = PackageStyle.objects.get(pk=package_id)
+            self.package = PackageStyleSerializer(package_query).data
+        self.save()
+
+    def get_total_price(self):
+        sum = 0
+        for item in self.cart.values():
+            for config in item:
+                sum += Decimal(config['price']) * config['quantity']
+        sum = sum * Decimal(0.95)
+
+        if self.package:
+            sum = sum + Decimal(self.package['package_price'])
+
+        sum = round(sum, 2)
+        return sum
