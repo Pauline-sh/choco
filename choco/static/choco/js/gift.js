@@ -3,7 +3,9 @@
 class CatalogModal {
     constructor() {
         this.modalNode = document.getElementById("catalog-modal");
-        this.modalContent = $("#catalog-modal-main");
+        this.modalContent = document.getElementById("catalog-modal-main");
+        this.pages = [];
+        this.ITEMS_ON_PAGE = 15;
 
         this.modalNode.getElementsByClassName("close-modal-outside")[0].addEventListener("click", () => {
             this.hide();
@@ -16,26 +18,72 @@ class CatalogModal {
 
     hide() {
         this.modalNode.style.display = "";
-        this.clear();
+        this.clearAll();
     }
 
     fill(data) {
-        for (let item of data) {
-            this.modalContent.append(this.makeTemplate(item));
-        }
-        let ups = this.modalContent[0].getElementsByClassName("quantity-up");
-        let downs = this.modalContent[0].getElementsByClassName("quantity-down");
-        let giftAddForms = this.modalContent[0].getElementsByClassName("gift-add-form");
+        const numPages = Math.ceil(data.length / this.ITEMS_ON_PAGE);
+        this.pages = Array(numPages).fill(null);
+        this.makePages(numPages,data);
+        if (numPages > 1) {
+            this.makePagination(numPages)
+        };
 
-        for (let btn of ups) {
-            btn.addEventListener("click", quantityUp);
+        this.showPage(1);
+    }
+
+    makePagination(pages) {
+        this.modalContent.insertAdjacentHTML("afterend", '<div class="pagination"></div>');
+        document.querySelector(".pagination").insertAdjacentHTML(
+            "beforeend",
+            `<div class="button-container active">
+                <a href="#" data-pagenum="1">1</a>
+            </div>`)
+        
+        for (let i = 2; i <= pages; i++) {
+            document.querySelector(".pagination").insertAdjacentHTML(
+                "beforeend",
+                `<div class="button-container">
+                    <a href="#" data-pagenum="${i}">${i}</a>
+                </div>`)
         }
-        for (let btn of downs) {
-            btn.addEventListener("click", quantityDown);
+
+        const pageBtns = document.querySelectorAll(".button-container > a");
+        for (const btn of pageBtns) {
+            btn.addEventListener("click", (e) => {
+                e.preventDefault();
+                document.querySelector(".button-container.active").classList.remove("active");
+                e.target.parentNode.classList.add("active");
+                $('#catalog-modal').animate({
+                    scrollTop: "0px"
+                }, 500);
+
+                this.showPage(Number(e.target.dataset.pagenum));
+            })
         }
-        for (let form of giftAddForms) {
-            form.addEventListener("submit", addToGift(this));
+    }
+
+    makePages(pages,data) {
+        for (let i = 0; i < pages; i++) {
+            this.pages[i] = Array(this.ITEMS_ON_PAGE);
+
+            for (let j = 0; j < this.ITEMS_ON_PAGE; j++) {
+                this.pages[i][j] = data[j + i * this.ITEMS_ON_PAGE];
+            }
         }
+        console.log(this.pages);
+    }
+
+    showPage(num) {
+        this.clearPage();
+
+        const pageArr = this.pages[num - 1];
+        for (const item of pageArr) {
+            if (!item) break;
+            this.modalContent.insertAdjacentHTML("beforeend",this.makeTemplate(item));
+        }
+        
+        this.addItemEvents();
     }
 
     makeTemplate(item) {
@@ -64,8 +112,33 @@ class CatalogModal {
                 </div>`);
     }
 
-    clear() {
-        this.modalContent.empty();
+    addItemEvents() {
+        const ups = this.modalContent.getElementsByClassName("quantity-up");
+        const downs = this.modalContent.getElementsByClassName("quantity-down");
+        const giftAddForms = this.modalContent.getElementsByClassName("gift-add-form");
+        for (const btn of ups) {
+            btn.addEventListener("click", quantityUp);
+        }
+        for (const btn of downs) {
+            btn.addEventListener("click", quantityDown);
+        }
+        for (const form of giftAddForms) {
+            form.addEventListener("submit", addToGift(this));
+        }
+    }
+
+    clearPage() {
+        while(this.modalContent.firstChild) {
+            this.modalContent.removeChild(this.modalContent.firstChild);
+        }
+    }
+
+    clearAll() {
+        this.clearPage();
+        this.pages = [];
+        if (document.querySelector(".pagination")) {
+            document.querySelector(".pagination").remove();
+        }
     }
 }
 
