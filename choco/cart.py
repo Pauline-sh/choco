@@ -5,6 +5,8 @@ from .models import Assortment, PackageStyle
 
 from .serializers import AssortmentSerializer, ConfigurationSerializer, PackageStyleSerializer
 
+sale_percent = Decimal(0.9)
+
 
 class Cart(object):
     def __init__(self, request):
@@ -150,7 +152,7 @@ class Gift(Cart):
         for item in self.cart.values():
             for config in item:
                 sum += Decimal(config['price']) * config['quantity']
-        sum = sum * Decimal(0.95)
+        sum = sum * sale_percent
 
         if self.package:
             sum = sum + Decimal(self.package['package_price'])

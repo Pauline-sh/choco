@@ -3,7 +3,7 @@ import json
 import os
 from decimal import Decimal
 
-from django.shortcuts import render, get_object_or_404, redirect, render_to_response
+from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.mail import send_mail
 from django.core.exceptions import ValidationError
@@ -13,9 +13,11 @@ from django.conf import settings
 
 from .models import Assortment, Configuration, PackageStyle
 from .cart import Cart, Gift
-from .forms import CartAddProductForm, GiftAddProductForm, OrderForm, ContactForm
+from .forms import CartAddProductForm, OrderForm, ContactForm
 from .serializers import AssortmentSerializer, PackageStyleSerializer
 
+
+sale_percent = Decimal(0.9)
 
 EMAIL_FROM = 'russian.memento@gmail.com'
 EMAIL_TO = EMAIL_FROM
@@ -107,6 +109,14 @@ def cart_page(request):
     package_styles = PackageStyle.objects.all()
     return render(request, 'cart.html', {'cart': cart, 'total_price': total_price, 'package_styles':package_styles})
 
+
+def cart_as_gift_total_price(request, cart):
+    total_price = cart.get_total_price()
+    if request.session['cart_as_gift']:
+        return round(Decimal(total_price) * sale_percent + Decimal(request.session['cart_package']['package_price']), 2)
+    return total_price
+
+
 def cart_add(request, choco_pk):
     cart = Cart(request)
     if request.method == 'POST':
@@ -158,9 +168,7 @@ def cart_remove(request, choco_pk, config_pk):
 
         total_cart_price = round(cart.get_total_price(), 2)
         if request.session.get('cart_as_gift', False):
-            total_cart_price = round(Decimal(total_cart_price) * Decimal(0.95), 2)
-            #if request.session.get('cart_package', False):
-            #    total_cart_price = round(Decimal(total_cart_price) + Decimal(request.session['cart_package']['package_price']), 2)
+            total_cart_price = cart_as_gift_total_price(request, cart)
 
     return HttpResponse(
         json.dumps({'result': "OK", 'cart': cart.cart, 'total_items': len(cart), 'total_cart_price': total_cart_price}),
@@ -185,11 +193,8 @@ def cart_update(request, choco_pk, config_pk):
                 total_price = str(Decimal(config['price']) * config['quantity'])
                 break
 
-        total_cart_price = round(cart.get_total_price(), 2)
         if request.session.get('cart_as_gift', False):
-            total_cart_price = round(Decimal(total_cart_price) * Decimal(0.95), 2)
-            #if request.session.get('cart_package', False):
-            #    total_cart_price = round(Decimal(total_cart_price) + Decimal(request.session['cart_package']['package_price']), 2)
+            total_cart_price = cart_as_gift_total_price(request, cart)
 
     return HttpResponse(
         json.dumps({'result': "OK",
@@ -205,12 +210,8 @@ def cart_as_gift(request):
     cart = Cart(request)
     total_price = cart.get_total_price()
     if request.method == 'POST':
-        gift_switch = request.POST.get('gift_switch')
-        if gift_switch == "true":
-            request.session['cart_as_gift'] = True
-            total_price = round(Decimal(total_price) * Decimal(0.95), 2)
-        else:
-            request.session['cart_as_gift'] = False
+        request.session['cart_as_gift'] = False
+        request.session['cart_package'] = False
     return HttpResponse(
         json.dumps({'result': "OK", 'cart': cart.cart, 'total_items': len(cart), 'total_price': total_price}),
         content_type="application/json"
@@ -220,10 +221,15 @@ def cart_as_gift_package(request, package_pk):
     cart = Cart(request)
     total_price = cart.get_total_price()
     if request.method == 'POST':
-        if request.session['cart_as_gift']:
+        gift_switch = request.POST.get('gift_switch')
+        if gift_switch == "true":
+            request.session['cart_as_gift'] = True
             package_query = PackageStyle.objects.get(pk=package_pk)
             request.session['cart_package'] = PackageStyleSerializer(package_query).data
-            #total_price = round(Decimal(total_price) * Decimal(0.95) + Decimal(request.session['cart_package']['package_price']), 2)
+            total_price = cart_as_gift_total_price(request, cart)
+        else:
+            request.session['cart_as_gift'] = False
+            request.session['cart_package'] = False
     return HttpResponse(
         json.dumps({'result': "OK", 'cart': cart.cart, 'total_items': len(cart), 'total_price': total_price}),
         content_type="application/json"
@@ -238,6 +244,7 @@ def gift_page(request):
     return render(request, 'gift.html', {
         'package_styles': package_styles,
         'total_price': total_price,
+        'sale_percent': sale_percent,
     })
 
 def gift_add(request, choco_pk):
@@ -364,11 +371,11 @@ def order_send(request):
                         order_content_str += str(counter) + u". " + item['product']['choco_name'] + \
                                              u"\n\t Количество товаров: " + str(item['quantity']) + \
                                              u"\n\t Конфигурация: " + configuration.__str__().decode('utf-8') + \
-                                             u"\n\t Цена единицы товара: " + str(round(Decimal(item['price']) * Decimal(0.95), 2)) + "\n"
+                                             u"\n\t Цена единицы товара: " + str(round(Decimal(item['price']) * sale_percent, 2)) + "\n"
                         counter = counter + 1
                     packageStyle = request.session['cart_package']
                     order_content_str += u"\nВыбранная упаковка и ее цена: " + packageStyle['package_name'] + u" " + str(packageStyle['package_price'])
-                    total_price = Decimal(cart.get_total_price()) * Decimal(0.95) + Decimal(packageStyle['package_price'])
+                    total_price = Decimal(cart.get_total_price()) * sale_percent + Decimal(packageStyle['package_price'])
                     order_content_str += u"\nОбщая стоимость заказа: " + str(round(total_price, 2))
 
                     request.session['cart_as_gift'] = False
@@ -389,7 +396,7 @@ def order_send(request):
                     order_content_str += str(counter) + u". " + item['product']['choco_name'] + \
                                          u"\n\t Количество товаров: " + str(item['quantity']) + \
                                          u"\n\t Конфигурация: " + configuration.__str__().decode('utf-8') + \
-                                         u"\n\t Цена единицы товара: " + str(round(Decimal(item['price']) * Decimal(0.95), 2)) + "\n"
+                                         u"\n\t Цена единицы товара: " + str(round(Decimal(item['price']) * sale_percent, 2)) + "\n"
                     counter = counter + 1
                 order_content_str += u"\nОбщая стоимость заказа: " + str(cart.get_total_price())
                 order_content_str += u"\nВыбранная упаковка и ее цена: " + cart.package['package_name'] + u" " + str(cart.package['package_price'])

@@ -17,20 +17,19 @@ window.addEventListener("load", () => {
         form.addEventListener("submit", addCartItem);
     }
 
-    //document.getElementById("gift-switch").addEventListener("click", setAsGift);
-
     addRemovalEvents();
 
     if (document.querySelector('input[name="order-as-gift"]')) {
         document.querySelector('input[name="order-as-gift"]').checked = false;
         document.querySelector('input[name="order-as-gift"]').addEventListener("change", () => {
             document.querySelector("#package-selection").classList.toggle("hidden");
-            setAsGift();
+            switchCartAsGift();
         })
     }
 
     let cartPackageRadios = document.getElementsByName('package-style');
     for (let packageRadio of cartPackageRadios) {
+        packageRadio.checked = false;
         packageRadio.addEventListener("click", setCartPackageStyle);
     }
 })
@@ -87,12 +86,10 @@ function updateQuantity(itemId, configId, newValue){
         },
 
         success: function(json) {
-            //console.log(json);
             $('#total-items').text(json.total_items);
             $('#price-' + itemId + '-' + configId).text(json.choco_price);
             $('#total-price-' + itemId + '-' + configId).text(json.total_price);
             document.querySelector("#total>span").innerHTML = json.total_cart_price;
-            //document.querySelector("#total>span").innerHTML = calculateTotal(json.cart);
         },
         error: function(xhr, errmsg, err) {
             console.log(xhr.status + ": " + xhr.responseText);
@@ -137,9 +134,7 @@ function removeCartItem(e) {
 
             //removing from the cart page
             let itemContainer = e.target.parentNode.parentNode.parentNode;
-            console.log(itemContainer);
             itemContainer.style.opacity = 0;
-            //document.querySelector("#total>span").innerHTML = calculateTotal(json.cart);
             document.querySelector("#total>span").innerHTML = json.total_cart_price;
 
             setTimeout(() => {
@@ -209,13 +204,13 @@ function addCartItem(e){
     });
 }
 
-function calculateTotal(cart) {
+/*function calculateTotal(cart) {
     let total = 0;
     for (let item of Object.keys(cart)) {
         total += Number(cart[item][0].total_price);
     }
     return total.toFixed(2);
-}
+}*/
 
 function getCookie(name) {
     let cookieValue = null;
@@ -232,18 +227,21 @@ function getCookie(name) {
     return cookieValue;
 }
 
-function setAsGift(e) {
+function setCartPackageStyle(e) {
     let gift_switch = document.getElementById("gift-switch");
+    let packageId = e.target.value;
+    let csrftoken = getCookie('csrftoken');
     $.ajax({
-        url: "/cart_as_gift/",
+        url: "/cart_as_gift_package/" + packageId + "/",
         type: "POST",
         dataType: "json",
+
         data: {
             gift_switch: gift_switch.checked,
         },
 
         headers: {
-            "X-CSRFToken": getCookie('csrftoken')
+            "X-CSRFToken": csrftoken
         },
 
         success: function(json) {
@@ -256,24 +254,31 @@ function setAsGift(e) {
     });
 }
 
-function setCartPackageStyle(e) {
-    let packageId = e.target.value;
-    let csrftoken = getCookie('csrftoken');
-    $.ajax({
-        url: "/cart_as_gift_package/" + packageId + "/",
-        type: "POST",
-        dataType: "json",
-
-        headers: {
-            "X-CSRFToken": csrftoken
-        },
-
-        success: function(json) {
-            //console.log(json);
-            //document.querySelector("#total>span").innerHTML = json.total_price;
-        },
-        error: function(xhr, errmsg, err) {
-            console.log(xhr.status + ": " + xhr.responseText);
-        }
-    });
+function switchCartAsGift(e){
+    let cartPackageRadios = document.getElementsByName('package-style');
+    for (let packageRadio of cartPackageRadios) {
+        packageRadio.checked = false;
+    }
+    let gift_switch = document.getElementById("gift-switch");
+    if(gift_switch.checked === false){
+        let csrftoken = getCookie('csrftoken');
+        $.ajax({
+            url: "/cart_as_gift/",
+            type: "POST",
+            dataType: "json",
+            data: {
+                gift_switch: gift_switch.checked,
+            },
+            headers: {
+                "X-CSRFToken": csrftoken
+            },
+            success: function(json) {
+                //console.log(json);
+                document.querySelector("#total>span").innerHTML = json.total_price;
+            },
+            error: function(xhr, errmsg, err) {
+                console.log(xhr.status + ": " + xhr.responseText);
+            }
+        });
+    }
 }

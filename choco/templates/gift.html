@@ -3,6 +3,9 @@
 {% load static %}
 {% load mathfilters %}
 
+{% load mathround %}
+
+
 {% block styles %}
    <link rel="stylesheet" type="text/css" href="{% static 'choco/css/gift.css' %}">
 
@@ -34,7 +37,11 @@
                         </div>
                         <div class="item-info">
                             <div class="title">{{ product.choco_name }}</div>
-                            <div class="price">Цена: <strike>{{ product.choco_price }} RUB</strike> {{ product.choco_price|mul:0.95 }} RUB</div>
+                            <div class="price">Цена: <strike>{{ product.choco_price }} RUB</strike>
+                                {% with product.choco_price|mul:sale_percent as new_price %}
+                                    {{ new_price|mathround:2 }} RUB
+                                {% endwith %}
+                            </div>
                             {% with configuration=item.conf_object %}
                                 <div class="additional-info">
                                     <span class="item-quantity">

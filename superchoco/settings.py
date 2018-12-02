@@ -131,10 +131,9 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, '..', "static")
 
 CART_SESSION_ID = 'cart'
-
 GIFT_SESSION_ID = 'gift'
-
 PACKAGE_SESSION_ID = 'package_style'
+
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
