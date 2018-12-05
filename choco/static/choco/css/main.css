@@ -55,6 +55,31 @@ input::-webkit-inner-spin-button {
 #gift-banner {
     width: 80%;
     margin: 0 auto 2.5% auto;
+    text-align: center;
+    border: 1px solid;
+    border-radius: 5px;
+    border-color: rgba(255,255,255,0);
+    transition: 0.3s;
+}
+
+#gift-banner:hover {
+    border-color: rgba(255,255,255,1)
+}
+
+#gift-banner a {
+    display: block;
+    height: 110px;
+    line-height: 110px;
+    text-decoration: none;
+    font-size: 70px;
+    color: #3DC9D2;
+    font-family: AncientKyiv;
+    text-shadow:
+       3px 3px 0 #000,
+     -1px -1px 0 #000,  
+      1px -1px 0 #000,
+      -1px 1px 0 #000,
+       1px 1px 0 #000;
 }
 
 #gift-banner img {
