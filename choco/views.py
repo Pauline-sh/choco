@@ -252,7 +252,10 @@ def gift_page(request):
     total_price = gift.get_total_price()
     gift_len = len(gift)
 
-    gift_package_id = int(gift.get_package()['id'])
+    if gift.get_package():
+        gift_package_id = int(gift.get_package()['id'])
+    else:
+        gift_package_id = -1
 
     return render(request, 'gift.html', {
         'package_styles': package_styles,

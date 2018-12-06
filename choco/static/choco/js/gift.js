@@ -175,7 +175,7 @@ function addToGift(modal) {
                 const item = json.new_item;
 
                 if(!isDuplicate(item)) {
-                    $("#gift-body").append(makeGiftItemTemplate(item));
+                    $("#gift-body").append(makeGiftItemTemplate(item, json.total_items);
                     $("#gift-body")[0].lastElementChild.querySelector(".gift-remove-item").addEventListener("click", removeFromGift);
                 } else {
                     const giftElem = document.querySelector(`#product-${item.product.id}-${item.configuration}`);
@@ -232,7 +232,8 @@ function removeFromGift(e) {
     });
 }
 
-function makeGiftItemTemplate(item) {
+function makeGiftItemTemplate(item, total_items) {
+    // TODO: если total_items меньше 2 то не зачеркивать и не делать скидку
     return (`<div class="gift-item" id="product-${item.product.id}-${item.configuration}">
     <div class="wrapper">
         <div class="img-container">
@@ -243,7 +244,7 @@ function makeGiftItemTemplate(item) {
             <div class="price">
                 Цена: 
                 <strike>${item.product.choco_price} RUB</strike> 
-                ${(Number(item.product.choco_price) * 0.95).toFixed(2)} RUB</div>
+                ${(Number(item.product.choco_price) * 0.90).toFixed(2)} RUB</div>
                 <div class="additional-info">
                     <span class="item-quantity">Количество: ${item.quantity};</span>
                     ${stringifyConfig(item.conf_object)}
