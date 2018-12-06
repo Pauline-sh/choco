@@ -89,12 +89,10 @@ class CatalogModal {
     makeTemplate(item) {
         return(`<div class="item-wrap">
                     <div class="item-image">
-                        <a href="/catalog/${item.id}" target="_blank">
-                            <img src="/static/choco/choco_pics/${item.choco_dir}/${item.choco_pic}"/>
-                        </a>
+                        <img src="/static/choco/choco_pics/${item.choco_dir}/${item.choco_pic}"/>
                     </div>
                     <div class="item-info">
-                        <a href="/catalog/${item.id}" target="_blank"><strong>${item.choco_name}</strong></a>
+                        <strong>${item.choco_name}</strong><br>
                         <span class="price">${item.choco_price} RUB</span>
                     </div>
                     <form action="" method="post" class="gift-add-form">
