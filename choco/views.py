@@ -386,9 +386,9 @@ def order_send(request):
                 cart = Cart(request)
                 if request.session.get('cart_as_gift', False) and request.session.get('cart_package', False):
                     if len(cart) < 2:
-                        sale_percent = 1
+                        sale_percent = Decimal(1)
                     else:
-                        sale_percent = 0.9
+                        sale_percent = Decimal(0.9)
                     for item in cart:
                         configuration = Configuration.objects.get(pk=item['configuration'])
                         order_content_str += str(counter) + u". " + item['product']['choco_name'] + \
@@ -415,9 +415,9 @@ def order_send(request):
             else:
                 cart = Gift(request)
                 if len(cart) < 2:
-                    sale_percent = 1
+                    sale_percent = Decimal(1)
                 else:
-                    sale_percent = 0.9
+                    sale_percent = Decimal(0.9)
                 for item in cart:
                     configuration = Configuration.objects.get(pk=item['configuration'])
                     item_price = str(round(Decimal(item['price']) * sale_percent, 2))
