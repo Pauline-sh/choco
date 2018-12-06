@@ -142,11 +142,35 @@ class CatalogModal {
     }
 }
 
+window.addEventListener("load", () => {
+    let choco_catalog = document.getElementById("open-choco-catalog");
+    let beresta_catalog = document.getElementById("open-beresta-catalog");
+    let wood_catalog = document.getElementById("open-wood-catalog");
+    let catalog_modal = new CatalogModal();
+
+    let packageRadios = document.getElementsByName('package');
+    for (let packageRadio of packageRadios) {
+        packageRadio.addEventListener("click", setPackage);
+    }
+
+    let orderGiftBtn = document.getElementById("gift-checkout-btn");
+
+    let removeCrosses = document.getElementsByClassName("gift-remove-item");
+    for (let cross of removeCrosses) {
+        cross.addEventListener("click", removeFromGift);
+    }
+
+    choco_catalog.addEventListener("click", openCatalog(1, catalog_modal));
+    beresta_catalog.addEventListener("click", openCatalog(2, catalog_modal));
+    wood_catalog.addEventListener("click", openCatalog(3, catalog_modal));
+
+    orderGiftBtn.addEventListener("submit", orderGift);
+});
+
 function addToGift(modal) {
     // TODO: когда добавляешь второй предмет, цена первого должна зачеркиваться и показываться со скидкой
     return function(e) {
         e.preventDefault();
-
         // if configuration is not chosen it is set to -1 and back-end sets it to the first found config in db
         let itemId = e.target.getElementsByClassName("choco-pk")[0].value,
             configId = -1;
@@ -173,13 +197,18 @@ function addToGift(modal) {
             },
             success: function(json) {
                 const item = json.new_item;
+                let discount = (json.total_items >= 2);
 
                 if(!isDuplicate(item)) {
-                    $("#gift-body").append(makeGiftItemTemplate(item, json.total_items));
+                    $("#gift-body").append(makeGiftItemTemplate(item, discount));
                     $("#gift-body")[0].lastElementChild.querySelector(".gift-remove-item").addEventListener("click", removeFromGift);
                 } else {
                     const giftElem = document.querySelector(`#product-${item.product.id}-${item.configuration}`);
                     giftElem.querySelector(".item-quantity").innerHTML = "Количество: " + item.quantity + ";";
+                }
+
+                if (discount && document.querySelector(".price-undiscounted")) {
+                    setDiscounts();
                 }
                 $("#total-number").text(json.total_price);
                 //console.log(json);
@@ -194,6 +223,21 @@ function addToGift(modal) {
 
     function isDuplicate(newItem) {
         return Boolean(document.querySelector(`#product-${newItem.product.id}-${newItem.configuration}`));
+    }
+
+    function setDiscounts() {
+        const undiscounted = document.getElementsByClassName("price-undiscounted");
+        for (let field of undiscounted) {
+            const inner = field.innerHTML,
+                  oldPrice = parseFloat(inner),
+                  bigField = field.parentNode;
+            
+            field.remove();
+            bigField.insertAdjacentHTML("beforeend", `
+                <strike>${oldPrice} RUB</strike>
+                ${(Number(oldPrice) * 0.90).toFixed(2)} RUB
+            `)
+        }
     }
 }
 
@@ -215,14 +259,15 @@ function removeFromGift(e) {
         },
         success: function(json) {
             if (json.result == 'OK') {
-                //removing from the cart page
-                let itemContainer = e.target.parentNode.parentNode.parentNode;
+                let itemContainer = e.target.parentNode.parentNode.parentNode,
+                    discount = (json.total_items >= 2);
                 itemContainer.style.opacity = 0;
 
                 setTimeout(() => {
                     $('#product-' + itemId + '-' + configId).remove();
+                    if (!discount) removeDiscounts();
                 }, 500);
-                //console.log(json);
+                console.log(json);
                 $("#total-number").text(json.total_price);
             }
         },
@@ -230,10 +275,22 @@ function removeFromGift(e) {
             console.log(xhr.status + ": " + xhr.responseText);
         }
     });
+
+    function removeDiscounts() {
+        const priceFields = document.getElementsByClassName("price");
+        for (let field of priceFields) {
+            const fullPrice = parseFloat(field.getElementsByTagName("strike")[0].innerHTML);
+            while (field.firstChild) {
+                field.removeChild(field.firstChild)
+            }
+            field.insertAdjacentHTML("beforeend",`
+                Цена: <span class="price-undiscounted">${fullPrice} RUB</span>
+            `)
+        }
+    }
 }
 
-function makeGiftItemTemplate(item, total_items) {
-    // TODO: если total_items меньше 2 то не зачеркивать и не делать скидку
+function makeGiftItemTemplate(item, discount) {
     return (`<div class="gift-item" id="product-${item.product.id}-${item.configuration}">
     <div class="wrapper">
         <div class="img-container">
@@ -241,14 +298,11 @@ function makeGiftItemTemplate(item, total_items) {
         </div>
         <div class="item-info">
             <div class="title">${item.product.choco_name}</div>
-            <div class="price">
-                Цена: 
-                <strike>${item.product.choco_price} RUB</strike> 
-                ${(Number(item.product.choco_price) * 0.90).toFixed(2)} RUB</div>
-                <div class="additional-info">
-                    <span class="item-quantity">Количество: ${item.quantity};</span>
-                    ${stringifyConfig(item.conf_object)}
-                </div>
+            <div class="price">Цена: ${stringifyPrice(item.product.choco_price, discount)}</div>
+            <div class="additional-info">
+                <span class="item-quantity">Количество: ${item.quantity};</span>
+                ${stringifyConfig(item.conf_object)}
+            </div>
         </div>
             <div class="delete-cross-wrap">
                 <input class="gift-remove-item" type="submit" value="✕">
@@ -257,6 +311,26 @@ function makeGiftItemTemplate(item, total_items) {
             </div>
         </div>
     </div>`);
+}
+
+function stringifyConfig(conf) {
+    let confStr = "";
+    if (conf.size) confStr += `Размер: ${conf.size}; `;
+    if (conf.weight) confStr += `Вес: ${conf.weight} г; `;
+    if (conf.diameter) confStr += `Диаметр: ${conf.diameter} см; `;
+    if (conf.height) confStr += `Высота: ${conf.height} см; `;
+    if (conf.width) confStr += `Ширина: ${conf.width} см; `;
+    if (conf.length) confStr += `Длина: ${conf.length} см; `;
+    return confStr;
+}
+
+function stringifyPrice(price, discount) {
+    if (discount) {
+        return `<strike>${price} RUB</strike> 
+                ${(Number(price) * 0.90).toFixed(2)} RUB`;
+    } else {
+        return `<span class="price-undiscounted">${price} RUB</span>`;
+    }
 }
 
 function orderGift(e) {
@@ -299,31 +373,6 @@ function orderGift(e) {
     });
 }
 
-window.addEventListener("load", () => {
-    let choco_catalog = document.getElementById("open-choco-catalog");
-    let beresta_catalog = document.getElementById("open-beresta-catalog");
-    let wood_catalog = document.getElementById("open-wood-catalog");
-    let catalog_modal = new CatalogModal();
-
-    let packageRadios = document.getElementsByName('package');
-    for (let packageRadio of packageRadios) {
-        packageRadio.addEventListener("click", setPackage);
-    }
-
-    let orderGiftBtn = document.getElementById("gift-checkout-btn");
-
-    let removeCrosses = document.getElementsByClassName("gift-remove-item");
-    for (let cross of removeCrosses) {
-        cross.addEventListener("click", removeFromGift);
-    }
-
-    choco_catalog.addEventListener("click", openCatalog(1, catalog_modal));
-    beresta_catalog.addEventListener("click", openCatalog(2, catalog_modal));
-    wood_catalog.addEventListener("click", openCatalog(3, catalog_modal));
-
-    orderGiftBtn.addEventListener("submit", orderGift);
-});
-
 function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -362,17 +411,6 @@ function openCatalog(categoryId, modal){
             }
         });
     }
-}
-
-function stringifyConfig(conf) {
-    let confStr = "";
-    if (conf.size) confStr += `Размер: ${conf.size}; `;
-    if (conf.weight) confStr += `Вес: ${conf.weight} г; `;
-    if (conf.diameter) confStr += `Диаметр: ${conf.diameter} см; `;
-    if (conf.height) confStr += `Высота: ${conf.height} см; `;
-    if (conf.width) confStr += `Ширина: ${conf.width} см; `;
-    if (conf.length) confStr += `Длина: ${conf.length} см; `;
-    return confStr;
 }
 
 function setPackage(e) {

@@ -41,12 +41,12 @@
                             {% if gift_len > 1 %}
                                 <div class="price">Цена: <strike>{{ product.choco_price }} RUB</strike>
                                     {% with product.choco_price|mul:sale_percent as new_price %}
-                                        {{ new_price|mathround:2 }} RUB
+                                    {{ new_price|mathround:2 }} RUB
                                     {% endwith %}
                                 </div>
                             {% else %}
                                 <div class="price">Цена:
-                                    {{ product.choco_price }} RUB
+                                        <span class="price-undiscounted">{{ product.choco_price }} RUB</span>
                                 </div>
                             {% endif %}
 
