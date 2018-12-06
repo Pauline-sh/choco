@@ -37,11 +37,19 @@
                         </div>
                         <div class="item-info">
                             <div class="title">{{ product.choco_name }}</div>
-                            <div class="price">Цена: <strike>{{ product.choco_price }} RUB</strike>
-                                {% with product.choco_price|mul:sale_percent as new_price %}
-                                    {{ new_price|mathround:2 }} RUB
-                                {% endwith %}
-                            </div>
+
+                            {% if gift_len > 1 %}
+                                <div class="price">Цена: <strike>{{ product.choco_price }} RUB</strike>
+                                    {% with product.choco_price|mul:sale_percent as new_price %}
+                                        {{ new_price|mathround:2 }} RUB
+                                    {% endwith %}
+                                </div>
+                            {% else %}
+                                <div class="price">Цена:
+                                    {{ product.choco_price }} RUB
+                                </div>
+                            {% endif %}
+
                             {% with configuration=item.conf_object %}
                                 <div class="additional-info">
                                     <span class="item-quantity">
@@ -111,7 +119,11 @@
             {% for style in package_styles %}
                 <div>
                     <label>
-                        <input value="{{style.id}}" type="radio" name="package">
+                        {% if gift_package_id == style.id %}
+                            <input value="{{style.id}}" type="radio" name="package" checked>
+                        {% else %}
+                            <input value="{{style.id}}" type="radio" name="package">
+                        {% endif %}
                         <span>{{ style.package_name }}</span>
                     </label>
                 </div>

@@ -86,6 +86,7 @@ function updateQuantity(itemId, configId, newValue){
         },
 
         success: function(json) {
+            console.log(json);
             $('#total-items').text(json.total_items);
             $('#price-' + itemId + '-' + configId).text(json.choco_price);
             $('#total-price-' + itemId + '-' + configId).text(json.total_price);

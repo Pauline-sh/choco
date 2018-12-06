@@ -152,7 +152,9 @@ class Gift(Cart):
         for item in self.cart.values():
             for config in item:
                 sum += Decimal(config['price']) * config['quantity']
-        sum = sum * sale_percent
+
+        if self.__len__() > 1:
+            sum = sum * sale_percent
 
         if self.package:
             sum = sum + Decimal(self.package['package_price'])

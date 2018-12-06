@@ -11,5 +11,5 @@ instructions.txt
 mysqlclient-1.3.13-cp27-cp27m-win_amd64.whl
 mysqlclient-1.3.13-cp27-cp27m-win32.whl
 keys.py
-settings.py
+# settings.py
 porole.txt

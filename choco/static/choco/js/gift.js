@@ -143,6 +143,7 @@ class CatalogModal {
 }
 
 function addToGift(modal) {
+    // TODO: когда добавляешь второй предмет, цена первого должна зачеркиваться и показываться со скидкой
     return function(e) {
         e.preventDefault();
 
