@@ -122,7 +122,7 @@ def cart_page(request):
 def cart_as_gift_total_price(request, cart):
     total_price = cart.get_total_price()
     if request.session['cart_as_gift']:
-        return get_sale_percent(request, cart) # round(Decimal(total_price) * sale_percent + Decimal(request.session['cart_package']['package_price']), 2)
+        return get_sale_percent(request, cart)
     return total_price
 
 
@@ -250,7 +250,6 @@ def gift_page(request):
     gift = Gift(request)
     package_styles = PackageStyle.objects.all()
     total_price = gift.get_total_price()
-    gift_len = len(gift)
 
     if gift.get_package():
         gift_package_id = int(gift.get_package()['id'])
@@ -261,7 +260,7 @@ def gift_page(request):
         'package_styles': package_styles,
         'total_price': total_price,
         'sale_percent': sale_percent,
-        'gift_len': gift_len,
+        'gift_len': len(gift),
         'gift_package_id': gift_package_id,
     })
 
@@ -368,7 +367,9 @@ def gift_get_total_price(request, package_pk):
 
 def order_page(request):
     order_form = OrderForm()
-    return render(request, 'order.html', {'order_form': order_form})
+    return render(request, 'order.html', {
+        'order_form': order_form,
+    })
 
 def order_send(request):
     if request.method == 'POST':
@@ -386,6 +387,8 @@ def order_send(request):
                 if request.session.get('cart_as_gift', False) and request.session.get('cart_package', False):
                     if len(cart) < 2:
                         sale_percent = 1
+                    else:
+                        sale_percent = 0.9
                     for item in cart:
                         configuration = Configuration.objects.get(pk=item['configuration'])
                         order_content_str += str(counter) + u". " + item['product']['choco_name'] + \
@@ -413,12 +416,16 @@ def order_send(request):
                 cart = Gift(request)
                 if len(cart) < 2:
                     sale_percent = 1
+                else:
+                    sale_percent = 0.9
                 for item in cart:
                     configuration = Configuration.objects.get(pk=item['configuration'])
+                    item_price = str(round(Decimal(item['price']) * sale_percent, 2))
+                    order_content_str += u"Подарочный набор\n"
                     order_content_str += str(counter) + u". " + item['product']['choco_name'] + \
                                          u"\n\t Количество товаров: " + str(item['quantity']) + \
                                          u"\n\t Конфигурация: " + configuration.__str__().decode('utf-8') + \
-                                         u"\n\t Цена единицы товара: " + str(round(Decimal(item['price']) * sale_percent, 2)) + "\n"
+                                         u"\n\t Цена единицы товара: " + item_price + "\n"
                     counter = counter + 1
                 order_content_str += u"\nОбщая стоимость заказа: " + str(cart.get_total_price())
                 order_content_str += u"\nВыбранная упаковка и ее цена: " + cart.package['package_name'] + u" " + str(cart.package['package_price'])
@@ -428,7 +435,6 @@ def order_send(request):
             order_content_str += u"\n\tТелефон:" + the_phone_number
             order_content_str += u"\n\tГород: " + the_city
             order_content_str += u"\n\tЗаметка о заказе: " + the_note
-
 
             send_mail(
                 u"Новый заказ",

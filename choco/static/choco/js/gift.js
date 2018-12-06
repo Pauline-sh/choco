@@ -71,7 +71,7 @@ class CatalogModal {
                 this.pages[i][j] = data[j + i * this.ITEMS_ON_PAGE];
             }
         }
-        console.log(this.pages);
+        //console.log(this.pages);
     }
 
     showPage(num) {
@@ -175,7 +175,7 @@ function addToGift(modal) {
                 const item = json.new_item;
 
                 if(!isDuplicate(item)) {
-                    $("#gift-body").append(makeGiftItemTemplate(item, json.total_items);
+                    $("#gift-body").append(makeGiftItemTemplate(item, json.total_items));
                     $("#gift-body")[0].lastElementChild.querySelector(".gift-remove-item").addEventListener("click", removeFromGift);
                 } else {
                     const giftElem = document.querySelector(`#product-${item.product.id}-${item.configuration}`);
