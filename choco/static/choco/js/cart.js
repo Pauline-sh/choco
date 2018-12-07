@@ -86,7 +86,11 @@ function updateQuantity(itemId, configId, newValue){
         },
 
         success: function(json) {
-            console.log(json);
+            if (json.total_items >= 2) {
+                document.querySelector(".order-as-gift-text").innerHTML = "Заказать как подарок (-10%)";
+            } else {
+                document.querySelector(".order-as-gift-text").innerHTML = "Заказать как подарок";
+            }
             $('#total-items').text(json.total_items);
             $('#price-' + itemId + '-' + configId).text(json.choco_price);
             $('#total-price-' + itemId + '-' + configId).text(json.total_price);
@@ -140,7 +144,13 @@ function removeCartItem(e) {
 
             setTimeout(() => {
                 $('#product-' + itemId + '-' + configId).remove();
-                if(json.total_items == 0) {
+                if (json.total_items == 1) {
+                    document.querySelector(".order-as-gift-text").innerHTML = "Заказать как подарок";
+                    return;
+                } 
+
+                if (json.total_items == 0) {
+                    document.getElementById("gift").remove();
                     document.getElementById("cart-main").remove();
                     document.getElementById("checkout-btn").remove();
                     document.getElementById("total").remove();

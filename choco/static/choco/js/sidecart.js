@@ -10,6 +10,7 @@ window.addEventListener("load", () => {
 function openCart(e) {
     e.preventDefault();
 
+    if (window.location.pathname == "/gift/") return;
     if (window.location.pathname == "/cart/") {
         $('html, body').animate({
             scrollTop: $("#cart-main").offset().top

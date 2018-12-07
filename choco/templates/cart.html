@@ -30,7 +30,10 @@
                 <div class="wrapper">
                     <label>
                         <input type="checkbox" name="order-as-gift" id="gift-switch">
-                        <span>Заказать как подарок (-10%)</span>
+                        <span class="order-as-gift-text">
+                            Заказать как подарок 
+                            {% if cart|length > 1 %}(-10%){% endif %}
+                        </span>
                     </label>
                     <div id="package-selection" class="hidden">
                         <p>Выберите упаковку:</p>
@@ -38,7 +41,7 @@
                             <label>
                                 <input value="{{style.id}}" type="radio" name="package-style">
                                 <span>{{ style.package_name }}</span>
-                                <span>+{{ style.package_price }} RUB</span>
+                                <!--span>+{{ style.package_price }} RUB</span-->
                             </label>
                             <br>
                         {% endfor %}
