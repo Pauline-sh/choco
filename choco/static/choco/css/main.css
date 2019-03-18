@@ -124,6 +124,7 @@ input::-webkit-inner-spin-button {
 
 #catalog-modal .modal-body {
     height: auto;
+    min-width: 80%;
 }
 
 #catalog-modal-main {
