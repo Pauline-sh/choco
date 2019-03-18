@@ -46,3 +46,21 @@ hr {
     width: 95%;
     color: #FFFFFF;
 }
+
+.header-menu > div:hover .subcategory-selection {
+    display: block;
+}
+
+.subcategory-selection {
+    display: none;
+    position: absolute;
+    width: 130px;
+    background-color: #B49B7F;
+    border: 1px solid #FFFFFF;
+    z-index: 1;
+}
+
+.subcategory-selection a {
+    display: block;
+    height: 25px;
+}

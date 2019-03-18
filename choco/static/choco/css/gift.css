@@ -123,3 +123,29 @@
     color: #FDF6F0;
     cursor: pointer;
 }
+
+.gift-placeholders {
+    position: relative;
+}
+
+.gift-subcategory-selection {
+    display: none;
+    position: absolute;
+    width: 100%;
+    transform: translateY(-15px);
+    background-color: #B49B7F;
+    border: 3px solid #FFFFFF;
+    border-radius: 5px;
+    z-index: 1;
+
+    font-size: 1.2em;
+    text-align: center;
+}
+
+.gift-subcategory-selection > div {
+    border-bottom: 1px solid #FDF6F0;
+    cursor: pointer;
+}
+.gift-subcategory-selection > div:hover {
+    color: #634249;
+}

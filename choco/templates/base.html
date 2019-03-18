@@ -41,7 +41,19 @@
                 <div class="header-menu">
                     <div><a href="{% url 'choco:home' %}">Главная</a></div>
                     <div><a href="{% url 'choco:catalog_choco' %}">Из шоколада</a></div>
-                    <div><a href="{% url 'choco:catalog_beresta' %}">Из бересты</a></div>
+                    <div><a href="javascript:void(0)">Из бересты</a>
+                        <div class="subcategory-selection">
+                            <a href="{% url 'choco:catalog_beresta' 1 %}">Кружки</a>
+                            <a href="{% url 'choco:catalog_beresta' 2 %}">Тарелки</a>
+                            <a href="{% url 'choco:catalog_beresta' 3 %}">Туеса</a>
+                            <a href="{% url 'choco:catalog_beresta' 4 %}">Хлебницы</a>
+                            <a href="{% url 'choco:catalog_beresta' 5 %}">Фляжки</a>
+                            <a href="{% url 'choco:catalog_beresta' 6 %}">Шкатулки</a>
+                            <a href="{% url 'choco:catalog_beresta' 7 %}">Расчёски</a>
+                            <!--a href="{% url 'choco:catalog_beresta' 8 %}">Заколки</a-->
+                            <a href="{% url 'choco:catalog_beresta' 9 %}">Прочее</a>
+                        </div>
+                    </div>
                     <div><a href="{% url 'choco:catalog_wood' %}">Из дерева</a></div>
                     <div><a href="{% url 'choco:contacts' %}">Контакты</a></div>
                     <div><a id="open-cart" href="#">

@@ -43,6 +43,15 @@ class Configuration(models.Model):
 
         return config_str
 
+class Subcategory(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    subcategory_name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.subcategory_name
+
+    class Meta:
+        ordering = ('id',)
 
 class Assortment(models.Model):
     choco_name = models.CharField(max_length=100)
@@ -58,6 +67,7 @@ class Assortment(models.Model):
     choco_art = models.CharField(max_length=100, blank=True)
 
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    subcategory = models.ForeignKey(Subcategory, on_delete=models.CASCADE, default=1)
     available = models.BooleanField(blank=True)
 
     description = models.CharField(max_length=200, blank=True)

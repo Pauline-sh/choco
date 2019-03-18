@@ -158,11 +158,28 @@ window.addEventListener("load", () => {
         cross.addEventListener("click", removeFromGift);
     }
 
-    choco_catalog.addEventListener("click", openCatalog(1, catalog_modal));
-    beresta_catalog.addEventListener("click", openCatalog(2, catalog_modal));
-    wood_catalog.addEventListener("click", openCatalog(3, catalog_modal));
+    document.querySelector('.gift-subcategory-selection').style.display = 'none';
+
+    /* без подкатегорий */
+    choco_catalog.addEventListener("click", openCatalog(1, catalog_modal, 1));
+    wood_catalog.addEventListener("click", openCatalog(3, catalog_modal, 1));
+
+    /* с подкатегориями */
+    beresta_catalog.addEventListener("click", toggleSubMenu);
+
+    let open_subs_beresta = document.querySelectorAll('.open-subcategory-beresta');
+    for (let btn of open_subs_beresta) {
+        btn.addEventListener('click', openCatalog(2, catalog_modal, Number(btn.dataset.subcategory)));
+    }
 
     orderGiftBtn.addEventListener("submit", orderGift);
+
+    window.addEventListener('click', function(e) {
+        if (document.querySelector('.gift-subcategory-selection').contains(e.target) ||
+            !$(e.target).closest('.has-subs').length) {
+            closeSubMenu();
+        } 
+    });
 });
 
 function addToGift(modal) {
@@ -386,12 +403,22 @@ function getCookie(name) {
     return cookieValue;
 }
 
-function openCatalog(categoryId, modal){
+function toggleSubMenu(e) {
+    const submenu = document.querySelector('.gift-subcategory-selection-beresta');
+
+    submenu.style.display = submenu.style.display === 'none' ? 'block' : 'none';
+}
+
+function closeSubMenu(e) {
+    document.querySelector('.gift-subcategory-selection-beresta').style.display = 'none';
+}
+
+function openCatalog(categoryId, modal, subcategoryId) {
     return function(e) {
         e.preventDefault();
         let csrftoken = getCookie('csrftoken');
         $.ajax({
-            url: "get_items/" + categoryId + "/",
+            url: "get_items/" + categoryId + "/" + subcategoryId,
             type: "POST",
             dataType: "json",
             

@@ -96,8 +96,8 @@ def catalog_choco(request):
 
     return render(request, 'catalog.html', {'chocos': items, 'cart_form': cart_form})
 
-def catalog_beresta(request):
-    items_list = Assortment.objects.filter(category_id=2, available=1).order_by('id')
+def catalog_beresta(request, subcategory_pk):
+    items_list = Assortment.objects.filter(category_id=2, subcategory_id=subcategory_pk, available=1).order_by('id')
     cart_form = CartAddProductForm(auto_id=False)
     items = add_catalog_pagination(request, items_list)
 
@@ -314,9 +314,9 @@ def gift_remove(request, choco_pk, config_pk):
         content_type="application/json"
     )
 
-def gift_get_items(request, category_pk):
+def gift_get_items(request, category_pk, subcategory_pk):
     if request.method == 'POST':
-        items_list = Assortment.objects.filter(category_id=category_pk, available=1).order_by('id')
+        items_list = Assortment.objects.filter(category_id=category_pk, subcategory_id=subcategory_pk, available=1).order_by('id')
         items = []
         for item in items_list:
             items.append(AssortmentSerializer(item).data)

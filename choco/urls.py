@@ -9,7 +9,7 @@ urlpatterns = [
     url(r'^about/$', views.about_page, name='about'),
     url(r'^contacts/$', views.contacts_page, name='contacts'),
     url(r'^catalog/choco/$', views.catalog_choco, name='catalog_choco'),
-    url(r'^catalog/beresta/$', views.catalog_beresta, name='catalog_beresta'),
+    url(r'^catalog/beresta/(?P<subcategory_pk>[0-9]+)/$', views.catalog_beresta, name='catalog_beresta'),
     url(r'^catalog/wood/$', views.catalog_wood, name='catalog_wood'),
     url(r'^catalog/(?P<pk>[0-9]+)/$', views.details_page, name='details'),
     url(r'^cart/$', views.cart_page, name='cart'),
@@ -25,7 +25,7 @@ urlpatterns = [
 
     url(r'^gift/add/(?P<choco_pk>[0-9]+)/$', views.gift_add, name='gift_add'),
     url(r'^gift/remove/(?P<choco_pk>[0-9]+)/(?P<config_pk>[0-9]+)/$', views.gift_remove, name='gift_remove'),
-    url(r'^gift/get_items/(?P<category_pk>[0-9]+)/$', views.gift_get_items, name='gift_get_items'),
+    url(r'^gift/get_items/(?P<category_pk>[0-9]+)/(?P<subcategory_pk>[0-9]+)$', views.gift_get_items, name='gift_get_items'),
     url(r'^gift/state/$', views.gift_state, name='gift_state'),
     url(r'^gift/get_total_price/(?P<package_pk>[0-9]+)/$', views.gift_get_total_price, name='gift_get_total_price'),
 
