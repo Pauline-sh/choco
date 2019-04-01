@@ -13,7 +13,7 @@ class Category (models.Model):
 
 
 class Configuration(models.Model):
-    size = models.CharField(max_length=20, blank=True)
+    size = models.CharField(max_length=100, blank=True)
     weight = models.PositiveSmallIntegerField(blank=True)
 
     stock = models.PositiveSmallIntegerField(blank=True)
