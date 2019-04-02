@@ -104,7 +104,7 @@ def catalog_beresta(request, subcategory_pk):
     return render(request, 'catalog.html', {'chocos': items, 'cart_form': cart_form})
 
 def catalog_wood(request):
-    items_list = Assortment.objects.filter(category_id=3, available=1).order_by('id')
+    items_list = Assortment.objects.filter(category_id=3, available=1).order_by('-id')
     cart_form = CartAddProductForm(auto_id=False)
     items = add_catalog_pagination(request, items_list)
 

@@ -29,7 +29,7 @@
 }
 
 .clip {
-    width: 70%;
+    width: 50%;
     margin: 0 auto;
 }
 
@@ -37,6 +37,14 @@
     display: block;
 }
 
-.clip img {
+.clip img, .clip video {
     width: 100%;
+    border: 3px solid #FDF6F0;
+    border-radius: 5px;
+    box-sizing: border-box;
+    transition: 0.3s;
+}
+
+.clip img:hover, .clip video:hover {
+    border-color: #5B4D41;
 }
