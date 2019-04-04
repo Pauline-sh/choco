@@ -14,6 +14,11 @@
         </a>
     </div>
     <hr>
+
+    {% if chocos.0.category_id == 1 %}
+        <div class="price-warning">Цены указаны при закупке от 20 единиц товара</div>
+    {% endif %}
+
     <div id="assortment">
         {% if chocos|length < 1 %}
             <p>Сейчас ассортимент пуст. Заходите позже!</p>
@@ -31,7 +36,12 @@
                     </div>
                     <div class="item-info">
                         <a href="{{ item.get_absolute_url }}"><strong>{{ item.choco_name }}</strong></a>
-                        <span class="price">{{ item.choco_price }} RUB</span>
+
+                        {% if item.category_id == 1 %}
+                            <span class="price">{{ item.choco_gt_20_price }} RUB</span>
+                        {% else %}
+                            <span class="price">{{ item.choco_price }} RUB</span>
+                        {% endif %}
                     </div>
                     
                     <form action="{% url 'choco:cart_add' choco_pk=item.id %}" method="post" class="cart-add-form">

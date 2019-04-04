@@ -5,6 +5,13 @@
     flex-wrap: wrap;
 }
 
+.price-warning {
+    font-family: MarketDeco;
+    font-size: 1.2em;
+    text-align: center;
+    color: #FFFFFF;
+}
+
 .item-wrap {
     width: 33%;
     margin-top: 2%;
