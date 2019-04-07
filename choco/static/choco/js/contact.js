@@ -1,40 +1,69 @@
+var form_open = false;
+
 $(document).ready(function(){
     $('#contact-form').on('submit', function(event){
         event.preventDefault();
         send_contact_message();
     });
+
+    form_open = (localStorage.getItem('contact_form_open') === "1");
+    if(form_open) {
+        open_call_form();
+    }
+
+    console.log($('#order-call-triangle'));
+    $('#order-call-triangle').on('click', function(event){
+        form_open ? close_call_form() : open_call_form()
+    })
 });
 
+function open_call_form(){
+    $('#order-call-content').css({'display':'block'});
+    $('#order-call-modal').css({'padding-right':'40px'});
+    $('#order-call-triangle').css({
+        'border-width':'20px 20px 20px 0',
+        'border-color':'transparent #ffffff transparent transparent'
+    })
+
+    form_open = true;
+    localStorage.setItem('contact_form_open', '1');
+}
+
+function close_call_form() {
+    $('#order-call-content').css({'display':''});
+    $('#order-call-modal').css({'padding-right':''});
+    $('#order-call-triangle').css({
+        'border-width':'',
+        'border-color':''
+    })
+
+    form_open = false;
+    localStorage.setItem('contact_form_open', '0');
+}
+
 function send_contact_message(){
-    $("body").addClass("loading");
     let csrftoken = $("[name=csrfmiddlewaretoken]").val();
-    console.log($('#id_email').val());
     $.ajax({
-        url: "send/",
+        url: "/send/",
         type: "POST",
         dataType: "json",
         data: {
             the_name : $('#id_name').val(),
-            the_email : $('#id_email').val(),
-            the_subject : $('#id_subject').val(),
-            the_message : $('#id_message').val(),
+            the_phone : $('#id_phone').val()
         },
         headers:{
             "X-CSRFToken": csrftoken
         },
 
         success: function(json) {
-            console.log(json);
-            console.log("success");
-
-            $("body").removeClass("loading");
             if(json.result != "OK"){
                 alert(json.error);
             }
             else{
-                // тут сделать модалочьку
-                alert("Ваше сообщение успешно отправлено!");
-                location.href="/";
+                alert("Ваш заказ принят!");
+                $('#id_name').val('');
+                $('#id_phone').val('');
+                close_call_form();
             }
 
         },

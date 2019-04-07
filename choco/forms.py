@@ -35,7 +35,5 @@ class OrderForm(forms.Form):
 
 
 class ContactForm(forms.Form):
-    name = forms.CharField(label="Имя*")
-    email = forms.CharField(label="E-mail*")
-    subject = forms.CharField(required=False, label="Тема сообщения")
-    message = forms.CharField(label="Текст сообщения*", widget=forms.Textarea())
+    name = forms.CharField(label="Имя")
+    phone = forms.CharField(label="Телефон", widget=forms.TextInput(attrs={'placeholder': '+7(999)999-99-99'}))

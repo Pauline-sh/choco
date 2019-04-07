@@ -183,3 +183,63 @@ input::-webkit-inner-spin-button {
     border: 3px solid #5B4D41;
     border-radius: 50%;
 }
+
+#order-call-modal {
+    position: fixed;
+    height: 160px;
+    box-sizing: border-box;
+    bottom: 30px;
+    left: 30px;
+    padding: 15px 25px 15px 15px;
+    background-color: #5B4D41;
+    border: 3px solid #FDF6F0;
+    border-radius: 5px;
+    color: #FDF6F0;
+}
+
+#order-call-content {
+    display: none;
+}
+
+.order-call-title {
+    margin-bottom: 10px;
+    font-size: 20px;
+    text-align: center;
+}
+
+.order-call-input-wrap {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px auto;
+}
+
+.order-call-input-wrap > span {
+    margin-right: 15px;
+}
+
+
+.order-call-input {
+    display: inline-block;
+}
+
+.order-call-input > input {
+    width: 160px;
+}
+
+.order-call-submit {
+    display: block;
+    margin: 10px auto 0 auto;
+}
+
+#order-call-triangle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 20px 0 20px 20px;
+    border-color: transparent transparent transparent #ffffff;
+    cursor: pointer;
+}

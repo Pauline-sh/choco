@@ -33,11 +33,13 @@ EMAIL_TO = 'chocosuvenir@yandex.ru'
 
 
 def home_page(request):
-    return render(request, 'home.html')
+    contact_form = ContactForm()
+    return render(request, 'home.html', {'contact_form': contact_form})
 
 
 def about_page(request):
-    return render(request, 'about.html')
+    contact_form = ContactForm()
+    return render(request, 'about.html', {'contact_form': contact_form})
 
 
 def contacts_page(request):
@@ -46,6 +48,8 @@ def contacts_page(request):
 
 
 def details_page(request, pk):
+    contact_form = ContactForm()
+
     choco_item = get_object_or_404(Assortment, pk=pk)
     choco_configs = choco_item.choco_config.all()
     first_choco_config = choco_item.choco_config.first()
@@ -71,7 +75,8 @@ def details_page(request, pk):
         'cart_form': cart_form,
         'gallery': choco_gallery,
         'config_types_quantity': len(choco_item.choco_config.all()),
-        'first_choco_config': first_choco_config
+        'first_choco_config': first_choco_config,
+        'contact_form': contact_form
     })
 
 
@@ -90,33 +95,41 @@ def add_catalog_pagination(request, items_list):
     return items
 
 def catalog_choco(request):
+    contact_form = ContactForm()
+
     items_list = Assortment.objects.filter(category_id=1, available=1).order_by('id')
     cart_form = CartAddProductForm(auto_id=False)
     items = add_catalog_pagination(request, items_list)
 
-    return render(request, 'catalog.html', {'chocos': items, 'cart_form': cart_form})
+    return render(request, 'catalog.html', {'chocos': items, 'cart_form': cart_form, 'contact_form': contact_form})
 
 def catalog_beresta(request, subcategory_pk):
+    contact_form = ContactForm()
+
     items_list = Assortment.objects.filter(category_id=2, subcategory_id=subcategory_pk, available=1).order_by('id')
     cart_form = CartAddProductForm(auto_id=False)
     items = add_catalog_pagination(request, items_list)
 
-    return render(request, 'catalog.html', {'chocos': items, 'cart_form': cart_form})
+    return render(request, 'catalog.html', {'chocos': items, 'cart_form': cart_form, 'contact_form': contact_form})
 
 def catalog_wood(request):
+    contact_form = ContactForm()
+
     items_list = Assortment.objects.filter(category_id=3, available=1).order_by('-id')
     cart_form = CartAddProductForm(auto_id=False)
     items = add_catalog_pagination(request, items_list)
 
-    return render(request, 'catalog.html', {'chocos': items, 'cart_form': cart_form})
+    return render(request, 'catalog.html', {'chocos': items, 'cart_form': cart_form, 'contact_form': contact_form})
 
 
 def cart_page(request):
+    contact_form = ContactForm()
+
     cart = Cart(request)
     request.session['cart_as_gift'] = False
     total_price = cart.get_total_price()
     package_styles = PackageStyle.objects.all()
-    return render(request, 'cart.html', {'cart': cart, 'total_price': total_price, 'package_styles':package_styles})
+    return render(request, 'cart.html', {'cart': cart, 'total_price': total_price, 'package_styles':package_styles, 'contact_form': contact_form})
 
 
 def cart_as_gift_total_price(request, cart):
@@ -247,6 +260,8 @@ def cart_as_gift_package(request, package_pk):
 
 
 def gift_page(request):
+    contact_form = ContactForm()
+
     gift = Gift(request)
     package_styles = PackageStyle.objects.all()
     total_price = gift.get_total_price()
@@ -262,6 +277,7 @@ def gift_page(request):
         'sale_percent': sale_percent,
         'gift_len': len(gift),
         'gift_package_id': gift_package_id,
+        'contact_form': contact_form
     })
 
 def gift_add(request, choco_pk):
@@ -366,9 +382,12 @@ def gift_get_total_price(request, package_pk):
 
 
 def order_page(request):
+    contact_form = ContactForm()
+
     order_form = OrderForm()
     return render(request, 'order.html', {
         'order_form': order_form,
+        'contact_form': contact_form
     })
 
 def order_send(request):
@@ -463,26 +482,18 @@ def order_send(request):
 def message_send(request):
     if request.method == 'POST':
         the_name = request.POST.get('the_name')
-        the_email = request.POST.get('the_email')
-        the_subject = request.POST.get('the_subject')
-        the_message = request.POST.get('the_message')
+        the_phone = request.POST.get('the_phone')
 
         response_data = {}
 
-        try:
-            validate_email(the_email)
-        except ValidationError:
-            response_data['error'] = u'Пожалуйста, введите e-mail'
-            response_data['result'] = u'ERROR'
-        else:
-            send_mail(
-                u"ОТ: " + the_name + u" ТЕМА: " + the_subject,
-                u"e-mail отправителя: " + the_email + "\n" + the_message,
-                EMAIL_FROM,
-                [EMAIL_TO],
-                fail_silently=False,
-            )
-            response_data['result'] = u'OK'
+        send_mail(
+            u"Заказ звонка",
+            u"Заказ звонка от: " + the_name + u" Номер телефона: " + the_phone,
+            EMAIL_FROM,
+            [EMAIL_TO],
+            fail_silently=False,
+        )
+        response_data['result'] = u'OK'
 
         return HttpResponse(
             json.dumps(response_data),

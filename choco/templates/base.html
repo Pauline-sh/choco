@@ -25,6 +25,7 @@
         <script src="{% static 'choco/js/cart.js' %}"></script>
         <script src="{% static 'choco/js/sidecart.js' %}"></script>
         <script src="{% static 'choco/js/gallery.js' %}"></script>
+        <script src="{% static 'choco/js/contact.js' %}"></script>
 
 		{% block styles %}
         {% endblock %}
@@ -128,7 +129,24 @@
             {% endblock %}
         </div>
 
-        <!--div class="footer"><p class="test">dat me, bottom hook</p></div-->
+        <div id="order-call-modal">
+            <div id="order-call-content">
+                <div class="order-call-title">Заказать звонок</div>
+                <form id="contact-form" method="post" action="">
+                    {% csrf_token %}
+                    <div class="order-call-input-wrap">
+                        <span>Ваше имя</span>
+                        <div class="order-call-input">{{ contact_form.name }}</div>
+                    </div>
+                    <div class="order-call-input-wrap">
+                        <span>Ваш номер</span>
+                        <div class="order-call-input">{{ contact_form.phone }}</div>
+                    </div>
+                    <input type="submit" value="Заказать" class="order-call-submit">
+                </form>
+            </div>
+            <div id="order-call-triangle"></div>
+        </div>
 
         <div class="modal" id="img-modal">
             <div class="modal-body">
