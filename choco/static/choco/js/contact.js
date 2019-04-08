@@ -6,12 +6,15 @@ $(document).ready(function(){
         send_contact_message();
     });
 
+    if(localStorage.getItem('contact_form_open') === undefined) {
+        localStorage.setItem('contact_form_open', '1');
+    }
+
     form_open = (localStorage.getItem('contact_form_open') === "1");
     if(form_open) {
         open_call_form();
     }
 
-    console.log($('#order-call-triangle'));
     $('#order-call-triangle').on('click', function(event){
         form_open ? close_call_form() : open_call_form()
     })
