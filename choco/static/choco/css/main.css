@@ -190,7 +190,7 @@ input::-webkit-inner-spin-button {
     box-sizing: border-box;
     bottom: 30px;
     left: 30px;
-    padding: 15px 25px 15px 15px;
+    padding: 15px 40px 15px 15px;
     background-color: #5B4D41;
     border: 3px solid #FDF6F0;
     border-radius: 5px;
@@ -198,7 +198,7 @@ input::-webkit-inner-spin-button {
 }
 
 #order-call-content {
-    display: none;
+    display: block;
 }
 
 .order-call-title {
@@ -239,7 +239,7 @@ input::-webkit-inner-spin-button {
     width: 0;
     height: 0;
     border-style: solid;
-    border-width: 20px 0 20px 20px;
-    border-color: transparent transparent transparent #ffffff;
+    border-width: 20px 20px 20px 0;
+    border-color: transparent #ffffff transparent transparent;
     cursor: pointer;
 }
