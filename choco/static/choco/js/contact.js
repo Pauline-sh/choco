@@ -6,7 +6,8 @@ $(document).ready(function(){
         send_contact_message();
     });
 
-    if(localStorage.getItem('contact_form_open') === undefined) {
+    console.log(localStorage.getItem('contact_form_open'));
+    if(localStorage.getItem('contact_form_open') === null) {
         localStorage.setItem('contact_form_open', '1');
     }
 
