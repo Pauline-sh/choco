@@ -1,4 +1,13 @@
-var form_open = true;
+var form_open = false;
+
+if(localStorage.getItem('contact_form_open') === null) {
+    localStorage.setItem('contact_form_open', '1');
+    form_open = true;
+
+    var timer = setTimeout(function() {
+        close_call_form();
+    }, 10000)
+}
 
 $(document).ready(function(){
     $('#contact-form').on('submit', function(event){
@@ -6,12 +15,31 @@ $(document).ready(function(){
         send_contact_message();
     });
 
+    form_open = (localStorage.getItem('contact_form_open') === "1");
+    if(form_open) {
+        open_call_form();
+    }
+
     $('#order-call-triangle').on('click', function(event){
         form_open ? close_call_form() : open_call_form()
     })
+
+    
 });
 
 function open_call_form(){
+    $('#order-call-content').css({'display':'block'});
+    $('#order-call-modal').css({'padding-right':'40px'});
+    $('#order-call-triangle').css({
+        'border-width':'20px 20px 20px 0',
+        'border-color':'transparent #ffffff transparent transparent'
+    })
+
+    form_open = true;
+    localStorage.setItem('contact_form_open', '1');
+}
+
+function close_call_form() {
     $('#order-call-content').css({'display':''});
     $('#order-call-modal').css({'padding-right':''});
     $('#order-call-triangle').css({
@@ -19,18 +47,8 @@ function open_call_form(){
         'border-color':''
     })
 
-    form_open = true;
-}
-
-function close_call_form() {
-    $('#order-call-content').css({'display':'none'});
-    $('#order-call-modal').css({'padding-right':'25px'});
-    $('#order-call-triangle').css({
-        'border-width':'20px 0 20px 20px',
-        'border-color':'transparent transparent transparent #ffffff'
-    })
-
     form_open = false;
+    localStorage.setItem('contact_form_open', '0');
 }
 
 function send_contact_message(){
