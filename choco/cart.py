@@ -18,6 +18,12 @@ class Cart(object):
 
     def add(self, item, configuration, quantity=1, update_quantity=False):
         item_id = str(item.id)
+
+        if item.category_id == 1:
+            price = item.choco_gt_20_price
+        else:
+            price = item.choco_price
+
         if configuration != None:
             config_id = str(configuration.id)
 
@@ -26,7 +32,7 @@ class Cart(object):
                 self.cart[item_id] = [{
                     'configuration': config_id,
                     'quantity': 0,
-                    'price': str(item.choco_price)
+                    'price': str(price)
                 }]
 
             # если такой продукт был но в другой конфигурации
@@ -34,7 +40,7 @@ class Cart(object):
                 self.cart[item_id].append({
                     'configuration': config_id,
                     'quantity': 0,
-                    'price': str(item.choco_price)
+                    'price': str(price)
                 })
 
             if update_quantity:

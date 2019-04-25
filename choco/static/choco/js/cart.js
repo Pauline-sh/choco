@@ -129,9 +129,12 @@ function removeCartItem(e) {
                 setTimeout(() => {
                     itemContainer.removeAttribute("id");
                     itemContainer.remove();
-    
+
+                    calcSidecartTotal(json.cart);
+
                     if(json.total_items == 0) {
                         $("#cart-content").append('<div class="cart-empty">Корзина пуста!</div>');
+                        document.querySelector('.sidecart-total').remove();
                     }
                 }, 500);
                 return;
@@ -202,7 +205,9 @@ function addCartItem(e){
         success: function(json) {
             $('#total-items').text(json.total_items);
             reloadSideCart(json.new_item, json.static_dir);
-            
+
+            calcSidecartTotal(json.cart);
+
             let closeTimer = null;
             if (document.getElementById("side-cart").style.transform == "") {
                 openCart(e);
@@ -215,13 +220,14 @@ function addCartItem(e){
     });
 }
 
-/*function calculateTotal(cart) {
+function calcSidecartTotal(cart) {
     let total = 0;
     for (let item of Object.keys(cart)) {
         total += Number(cart[item][0].total_price);
     }
-    return total.toFixed(2);
-}*/
+
+    document.querySelector('#sidecart-total-num').innerHTML = total;
+}
 
 function getCookie(name) {
     let cookieValue = null;

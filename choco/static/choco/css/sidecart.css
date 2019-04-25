@@ -27,8 +27,12 @@
     color: #5B4D41;
 }
 
-.cart-content {
+.cart-content-container {
     height: 75%;
+}
+
+.cart-content {
+    height: 90%;
     overflow-y: auto;
     overflow-x: hidden;
 }
@@ -80,6 +84,13 @@
 .cart-item-info > div:first-child {
     flex-grow: 1;
     align-self: flex-start;
+}
+
+.sidecart-total {
+    height: 10%;
+    text-align: center;
+    color: #FDF6F0;
+    font-size: 19px;
 }
 
 .sidecart-btn {

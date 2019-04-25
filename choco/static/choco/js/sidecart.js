@@ -78,13 +78,16 @@ function reloadSideCart(new_item, static_dir){
 
     // update quantity if already in cart
     if(document.querySelector("#sidecart-item-" + new_item.product.id + '-' + new_item.configuration)) {
-        $('#sidecart-quantity-' + new_item.product.id + '-' + new_item.configuration).text("Количество: " + new_item.quantity);
+        $('#sidecart-quantity-' + new_item.product.id + '-' + new_item.configuration).html('Количество: <span class="sidecart-item-quantity">' + new_item.quantity + '</span>');
         return;
     }
             
     // delete empty cart message
     if(sideCartContent.firstElementChild.className.indexOf("cart-empty") != -1) {
         sideCartContent.firstElementChild.remove();
+
+        document.querySelector('.cart-content-container').insertAdjacentHTML('beforeend',
+            '<div class="sidecart-total">Общая стоимость: <span id="sidecart-total-num"></span>р</div>');
     }
                 
     // append new item
@@ -116,8 +119,8 @@ function makeTemplate(id, config, static_dir, img, name, config_str, quantity, p
                     '<div class="cart-item-info">' +
                         '<div>' + name + '</div>' +
                         config_str +
-                        '<div id="sidecart-quantity-' + id + '-' + config + '">Количество: ' + quantity + '</div>' +
-                        '<div>Цена: ' + price + ' RUB</div>' +
+                        '<div id="sidecart-quantity-' + id + '-' + config + '">Количество: <span class="sidecart-item-quantity">' + quantity + '</span></div>' +
+                        '<div>Цена: <span class="sidecart-item-total">' + price + '</span> RUB</div>' +
                     '</div>' +
                     '<div class="delete-cross-wrap">' +
                         '<form class="cart-remove-item sidecart" action="" method="post">' +

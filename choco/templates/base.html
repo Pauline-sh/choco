@@ -81,45 +81,50 @@
                     <div class="cart-title">Корзина</div>
                     <div class="placeholder"></div>
                 </div>
-                <div class="cart-content" id="cart-content">
-                    {% if cart|length < 1 %}
-                        <div class="cart-empty">Корзина пуста!</div>
-                    {% else %}
-                        {% for item in cart %}
-                            {% with product=item.product %}
-                                <div class="cart-item" id="sidecart-item-{{item.product.id}}-{{item.configuration}}">
-                                    <div class="wrapper">
-                                        <div class="cart-item-image">
-                                            {% if not product.choco_pic %}
-                                                <img src="{% static 'choco/choco_pics/default.png' %}"/>
-                                            {% else %}
-                                                {% with "choco/choco_pics/"|add:product.choco_dir|add:"/"|add:product.choco_pic as main_pic %}
-                                                    <img src="{% static main_pic %}"/>
-                                                {% endwith %}
-                                            {% endif %}
-                                        </div>
-                                        <div class="cart-item-info">
-                                            <div>{{ product.choco_name }}</div>
-                                            {% with configuration=item.conf_object %}
-                                                {% if configuration.weight %}
-                                                    <div>Вес: {{ configuration.weight }} г</div>
+                <div class="cart-content-container">
+                    <div class="cart-content" id="cart-content">
+                        {% if cart|length < 1 %}
+                            <div class="cart-empty">Корзина пуста!</div>
+                        {% else %}
+                            {% for item in cart %}
+                                {% with product=item.product %}
+                                    <div class="cart-item" id="sidecart-item-{{item.product.id}}-{{item.configuration}}">
+                                        <div class="wrapper">
+                                            <div class="cart-item-image">
+                                                {% if not product.choco_pic %}
+                                                    <img src="{% static 'choco/choco_pics/default.png' %}"/>
+                                                {% else %}
+                                                    {% with "choco/choco_pics/"|add:product.choco_dir|add:"/"|add:product.choco_pic as main_pic %}
+                                                        <img src="{% static main_pic %}"/>
+                                                    {% endwith %}
                                                 {% endif %}
-                                            {% endwith %}
-                                            <div id="sidecart-quantity-{{item.product.id}}-{{item.configuration}}">Количество: {{ item.quantity }}</div>
-                                            <div>Цена: {{ item.total_price }} RUB</div>
-                                        </div>
-                                        <div class="delete-cross-wrap">
-                                            <form class="cart-remove-item sidecart" action="" method="post">
-                                                {% csrf_token %}
-                                                <input type="hidden" class="choco-pk" value="{{ product.id }}">
-                                                <input type="hidden" class="config-pk" value="{{ item.configuration }}">
-                                                <input type="submit" value="✕">
-                                            </form>
+                                            </div>
+                                            <div class="cart-item-info">
+                                                <div>{{ product.choco_name }}</div>
+                                                {% with configuration=item.conf_object %}
+                                                    {% if configuration.weight %}
+                                                        <div>Вес: {{ configuration.weight }} г</div>
+                                                    {% endif %}
+                                                {% endwith %}
+                                                <div id="sidecart-quantity-{{item.product.id}}-{{item.configuration}}">Количество: <span class="sidecart-item-quantity">{{ item.quantity }}</span></div>
+                                                <div>Цена: <span class="sidecart-item-total">{{ item.total_price }}</span> RUB</div>
+                                            </div>
+                                            <div class="delete-cross-wrap">
+                                                <form class="cart-remove-item sidecart" action="" method="post">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" class="choco-pk" value="{{ product.id }}">
+                                                    <input type="hidden" class="config-pk" value="{{ item.configuration }}">
+                                                    <input type="submit" value="✕">
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            {% endwith %}
-                        {% endfor %}
+                                {% endwith %}
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    {% if cart|length > 0 %}
+                        <div class="sidecart-total">Общая стоимость: <span id="sidecart-total-num">{{ cart.get_total_price|floatformat:"-1" }}</span>р</div>
                     {% endif %}
                 </div>
                 <div class="sidecart-btn">
