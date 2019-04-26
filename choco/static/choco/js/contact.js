@@ -1,14 +1,17 @@
 var form_open = false;
+var timer;
 
 $(document).ready(function(){
-    if(localStorage.getItem('contact_form_open') === "1") {
+    if(sessionStorage.getItem('contact_form_open') === "1") {
         open_call_form();
     }
 
-    if(localStorage.getItem('contact_form_open') === null) {
+    if(sessionStorage.getItem('site_visited') === null) {
         open_call_form(true);
     
-        var timer = setTimeout(function() {
+        sessionStorage.setItem('site_visited', '1');
+
+        timer = setTimeout(function() {
             close_call_form();
         }, 10000)
     }
@@ -21,6 +24,14 @@ $(document).ready(function(){
     $('#order-call-triangle').on('click', function(event){
         form_open ? close_call_form() : open_call_form()
     })
+
+    var order_call_inputs = document.querySelectorAll('.order-call-input');
+
+    for(var input of order_call_inputs) {
+        input.addEventListener('click', function(e) {
+            clearTimeout(timer);
+        })
+    }
 });
 
 function open_call_form(skip_flag){
@@ -34,7 +45,7 @@ function open_call_form(skip_flag){
     form_open = true;
     
     if(!skip_flag) {
-        localStorage.setItem('contact_form_open', '1');
+        sessionStorage.setItem('contact_form_open', '1');
     }
 }
 
@@ -47,7 +58,7 @@ function close_call_form() {
     })
 
     form_open = false;
-    localStorage.setItem('contact_form_open', '0');
+    sessionStorage.setItem('contact_form_open', '0');
 }
 
 function send_contact_message(){
