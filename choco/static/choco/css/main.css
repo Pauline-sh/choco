@@ -145,6 +145,13 @@ input::-webkit-inner-spin-button {
     border: 2px solid #FFF;
 }
 
+.search-head {
+    width: 85%;
+    margin: 0 auto;
+    color: #FDF6F0;
+    font-size: 20px;
+}
+
 .instant-item-wrap {
     display: flex;
     justify-content: space-between;

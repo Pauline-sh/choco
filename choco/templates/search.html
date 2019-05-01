@@ -16,7 +16,7 @@
         </div>
         <div id="search-area">
             <div class="search-input-container">
-                <input id="search-input" type="text" placeholder="Поиск по каталогу">
+                <input id="search-input" type="text" placeholder="Поиск по каталогу" value="{{ query }}">
                 <div id="search-result-instant"></div>
             </div>
             <div class="search-btn"><a id="search-link" href="#">Найти</a></div>
@@ -24,13 +24,11 @@
     </div>
     <hr>
 
-    {% if chocos.0.category_id == 1 %}
-        <div class="price-warning">Цены указаны при закупке от 20 единиц товара</div>
-    {% endif %}
+    <h2 class="search-head">Результаты поиска по запросу "{{ query }}":</h2>
 
     <div id="assortment">
         {% if chocos|length < 1 %}
-            <p>Сейчас ассортимент пуст. Заходите позже!</p>
+            <p class="not-found">Ничего не найдено!</p>
         {% else %}
             {% for item in chocos %}
                 <div class="item-wrap">
@@ -39,12 +37,12 @@
                             <img src="{% static 'choco/choco_pics/default.png' %}"/>
                         {% else %}
                             {% with "choco/choco_pics/"|add:item.choco_dir|add:"/"|add:item.choco_pic as main_pic %}
-                                <a href="{{ item.get_absolute_url }}"><img src="{% static main_pic %}"/></a>
+                                <a href="/catalog/{{ item.id }}"><img src="{% static main_pic %}"/></a>
                             {% endwith %}
                         {% endif %}
                     </div>
                     <div class="item-info">
-                        <a href="{{ item.get_absolute_url }}"><strong>{{ item.choco_name }}</strong></a>
+                        <a href="/catalog/{{ item.id }}"><strong>{{ item.choco_name }}</strong></a>
 
                         {% if item.category_id == 1 %}
                             <span class="price">{{ item.choco_gt_20_price }} RUB</span>
@@ -74,23 +72,23 @@
     <div class="pagination">
         {% if chocos.has_previous %}
             <div class="button-container long">
-                <a href="?page={{ chocos.previous_page_number }}">Назад</a>
+                <a href="?query={{ query }}&page={{ chocos.previous_page_number }}">Назад</a>
             </div>
         {% endif %}
         {% for pg in chocos.paginator.page_range %}
             {% if chocos.number == pg %}
             <div class="button-container active">
-                <a href="?page={{ pg }}">{{ pg }}</a>
+                <a href="?query={{ query }}&page={{ pg }}">{{ pg }}</a>
             </div>
             {% else %}
             <div class="button-container">
-                <a href="?page={{ pg }}">{{ pg }}</a>
+                <a href="?query={{ query }}&page={{ pg }}">{{ pg }}</a>
             </div>
             {% endif %}
         {% endfor %}
         {% if chocos.has_next %}
             <div class="button-container long">
-                <a href="?page={{ chocos.next_page_number }}">Вперед</a>
+                <a href="?query={{ query }}&page={{ chocos.next_page_number }}">Вперед</a>
             </div>
         {% endif %}
     </div>

@@ -13,6 +13,10 @@ window.addEventListener("click", function(e) {
 function onSearchInputChange(e) {
   setHref();
 
+  if(e.key == "Enter") {
+    window.location.href = ("/search?query=" + $("#search-input")[0].value);
+  }
+
   if(e.target.value.length < 3) {
     $("#search-result-instant").hide();
     return;
@@ -23,7 +27,6 @@ function onSearchInputChange(e) {
     type: "GET",
 
     success: function(json) {
-        console.log(json.data);
         fillInstant(json.data);
     },
     error: function(xhr, errmsg, err) {
@@ -58,7 +61,11 @@ function fillInstant(data) {
 }
 
 function setHref() {
-  console.log($("#search-input"));
+  if(!$("#search-input")[0].value.length) {
+    $("#search-link").attr("href", "#");
+    return;
+  }
+
   $("#search-link").attr("href", "/search?query=" + $("#search-input")[0].value);
 }
 

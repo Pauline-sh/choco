@@ -5,6 +5,10 @@
     flex-wrap: wrap;
 }
 
+.not-found {
+    color: #FDF6F0;
+}
+
 .price-warning {
     font-family: MarketDeco;
     font-size: 1.2em;

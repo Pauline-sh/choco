@@ -509,7 +509,8 @@ def message_send(request):
 def search_page(request):
     contact_form = ContactForm()
 
-    querylist = request.GET.get('query').split()
+    query = request.GET.get('query')
+    querylist = query.split()
     response = Assortment.objects.filter(reduce(lambda x, y: x | y, [(Q(choco_name__icontains=word) | Q(description__icontains=word)) for word in querylist])).filter(available=1)
     result = []
 
@@ -520,10 +521,12 @@ def search_page(request):
         key = lambda item: get_keyword_matches(item['choco_name'], querylist), reverse=True
     )
 
+    result = result[0:100]
+
     cart_form = CartAddProductForm(auto_id=False)
     items = add_catalog_pagination(request, result)    
 
-    return render(request, 'search.html', {'chocos': items, 'cart_form': cart_form, 'contact_form': contact_form})
+    return render(request, 'search.html', {'chocos': items, 'cart_form': cart_form, 'contact_form': contact_form, 'query': query})
 
 def quick_search(request):
     if request.method == 'GET':
