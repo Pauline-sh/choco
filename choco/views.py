@@ -10,6 +10,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.http import HttpResponse
 from django.conf import settings
+from django.db.models import Q
 
 from .models import Assortment, Configuration, PackageStyle
 from .cart import Cart, Gift
@@ -504,3 +505,54 @@ def message_send(request):
             json.dumps({"nothing to see": "this isn't happening"}),
             content_type="application/json"
         )
+
+def search_page(request):
+    contact_form = ContactForm()
+
+    querylist = request.GET.get('query').split()
+    response = Assortment.objects.filter(reduce(lambda x, y: x | y, [(Q(choco_name__icontains=word) | Q(description__icontains=word)) for word in querylist])).filter(available=1)
+    result = []
+
+    for item in response:
+        result.append(AssortmentSerializer(item).data)
+
+    result.sort(
+        key = lambda item: get_keyword_matches(item['choco_name'], querylist), reverse=True
+    )
+
+    cart_form = CartAddProductForm(auto_id=False)
+    items = add_catalog_pagination(request, result)    
+
+    return render(request, 'search.html', {'chocos': items, 'cart_form': cart_form, 'contact_form': contact_form})
+
+def quick_search(request):
+    if request.method == 'GET':
+        querylist = request.GET.get('query').split()
+        response = Assortment.objects.filter(reduce(lambda x, y: x | y, [(Q(choco_name__icontains=word) | Q(description__icontains=word)) for word in querylist])).filter(available=1)
+        result = []
+
+        for item in response:
+            result.append(AssortmentSerializer(item).data)
+
+        result.sort(
+            key = lambda item: get_keyword_matches(item['choco_name'], querylist), reverse=True
+        )
+
+        return HttpResponse(
+            json.dumps({'result': "OK", 'data': result[0:3]}),
+            content_type="application/json"
+        )
+    else:
+        return HttpResponse(
+            json.dumps({"nothing to see": "this isn't happening"}),
+            content_type="application/json"
+        )
+
+def get_keyword_matches(name, keywords):
+    count = 0
+
+    for word in keywords:
+        if word.lower() in name.lower():
+            count = count + 1
+
+    return count

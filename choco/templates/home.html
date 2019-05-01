@@ -7,11 +7,20 @@
 {% load staticfiles %}
 
 {% block content %}
-    <div id="gift-banner">
-        <a href="{% url 'choco:gift'%}">
-            Собрать подарочный набор
-            <!--img src="{% static 'choco/images/gift_banner2.png'%}"-->
-        </a>
+    <div id="top-area">
+        <div id="gift-banner">
+            <a href="{% url 'choco:gift'%}">
+                Собрать подарочный набор
+                <!--img src="{% static 'choco/images/gift_banner2.png'%}"-->
+            </a>
+        </div>
+        <div id="search-area">
+            <div class="search-input-container">
+                <input id="search-input" type="text" placeholder="Поиск по каталогу">
+                <div id="search-result-instant"></div>
+            </div>
+            <div class="search-btn"><a id="search-link" href="#">Найти</a></div>
+        </div>
     </div>
     <hr>
     <div id="main" class="textpage">

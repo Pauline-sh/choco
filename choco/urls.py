@@ -35,4 +35,7 @@ urlpatterns = [
     url(r'^order/$', views.order_page, name='order'),
     url(r'^order/send/$', views.order_send, name='order_send'),
     url(r'^send/$', views.message_send, name='message_send'),
+
+    url(r'^quick_search$', views.quick_search, name='quick_search'),
+    url(r'^search$', views.search_page, name='search')
 ]
