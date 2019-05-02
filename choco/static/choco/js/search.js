@@ -17,7 +17,7 @@ function onSearchInputChange(e) {
     window.location.href = ("/search?query=" + $("#search-input")[0].value);
   }
 
-  if(e.target.value.length < 3) {
+  if(!e.target.value.length) {
     $("#search-result-instant").hide();
     return;
   }
