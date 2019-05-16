@@ -101,6 +101,14 @@
 
 select[name="configuration"],
 #details .item-info .additional-info {
+    margin-bottom: 2%;
+}
+
+#details .item-info .article {
+    margin-bottom: 2%;
+}
+
+#details .item-info .description {
     margin-bottom: 3%;
 }
 

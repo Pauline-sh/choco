@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
 
-{% block styles %}
-{% endblock %}
-
 <!-- эта строка для отображения изображений из папки static -->
 {% load staticfiles %}
+
+{% block styles %}
+    <script src="{% static 'choco/js/details.js' %}"></script>
+{% endblock %}
 
 {% block content %}
     <div id="main">
@@ -33,12 +34,10 @@
                     <div class="price">Цена: {{ item.choco_price }} RUB</div>
                 {% endif %}
 
+                <div class="article"></div>
+
                 <form action="" method="post" class="cart-add-form">
                     {% csrf_token %}
-
-                    {% if item.description %}
-                        <div>{{ item.description }}</div>
-                    {% endif %}
 
                     {% if config_types_quantity > 1 %}
                         <div>
@@ -49,6 +48,10 @@
                         <div class="additional-info">
                             {{ first_choco_config }}
                         </div>
+                    {% endif %}
+
+                    {% if item.description %}
+                        <div class="description">{{ item.description }}</div>
                     {% endif %}
 
                     <label class="quantity">
