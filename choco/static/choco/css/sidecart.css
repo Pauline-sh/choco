@@ -5,7 +5,7 @@
     z-index: 1;
     top: 0;
     right: -40%;
-    background-color: #5B4D41;
+    background-color: #314c1f;
     overflow-x: hidden;
     transition: 0.5s;
 }
@@ -19,12 +19,12 @@
     font-family: MarketDeco;
     font-size: 1.5em;
     background-color: #FDF6F0;
-    color: #5B4D41;
+    color: #314c1f;
 }
 
 #close-cart {
     text-decoration: none;
-    color: #5B4D41;
+    color: #314c1f;
 }
 
 .cart-content-container {
@@ -103,7 +103,7 @@
     display: inline-block;
     height: 40px;
     width: 90%;
-    border: 3px solid #B49B7F;
+    border: 3px solid #8FBE70;
     border-radius: 7px;
     font-family: MarketDeco;
     font-size: 1.2em;
@@ -111,7 +111,7 @@
     text-align: center;
     text-decoration: none;
     background-color: #FDF6F0;
-    color: #5B4D41;
+    color: #314c1f;
 }
 
 .cart-item .delete-cross-wrap {

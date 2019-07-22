@@ -47,7 +47,7 @@
     height: 30px;
     border: 0; /* reset default */
     border-radius: 10px;
-    background-color: #5B4D41;
+    background-color: #314c1f;
     color: #FDF6F0;
     cursor: pointer;
 }
@@ -118,7 +118,7 @@
     width: 5%;
     margin: 0.5%;
     display: flex;
-    border: 3px solid #5B4D41;
+    border: 3px solid #314c1f;
     border-radius: 3px;
     background-color: #FDF6F0;
 }
@@ -128,14 +128,14 @@
 }
 
 .button-container.active {
-    background-color: #5B4D41;
+    background-color: #314c1f;
 }
 
 .pagination .button-container > a {
     height: 40px;
     line-height: 40px;
     width: 100%;
-    color: #5B4D41;
+    color: #314c1f;
     font-family: MarketDeco;
     font-size: 1.2em;
     text-align: center;

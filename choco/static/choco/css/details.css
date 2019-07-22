@@ -55,7 +55,7 @@
 
 #gallery-main img:hover,
 .gallery-small img:hover {
-    border-color: #5B4D41;
+    border-color: #314c1f;
 }
 
 .vr {
@@ -122,7 +122,7 @@ select[name="configuration"],
     height: 30px;
     border: 0;
     border-radius: 10px;
-    background-color: #5B4D41;
+    background-color: #314c1f;
     color: #FDF6F0;
     cursor: pointer;
 }

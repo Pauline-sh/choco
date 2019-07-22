@@ -18,7 +18,7 @@
 }
 
 .images-home img:hover {
-    border-color: #5B4D41;
+    border-color: #314c1f;
 }
 
 .image-info {
@@ -46,5 +46,5 @@
 }
 
 .clip img:hover, .clip video:hover {
-    border-color: #5B4D41;
+    border-color: #314c1f;
 }

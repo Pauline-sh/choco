@@ -6,7 +6,12 @@
     justify-content: center;
     font-family: AncientKyiv;
     font-size: 7.0em;
-    color: #5b4641;
+    color: #314c1f;
+}
+
+.logo > .t {
+    display: inline-block;
+    margin-left: -5px;
 }
 
 .header-menu {
@@ -36,7 +41,7 @@
 }
 
 img.shopping-cart {
-    color: #3DC9D2;
+    color: #FFFFFF;
     width: 25px;
     height: 25px;
 }
@@ -54,7 +59,7 @@ hr {
     display: none;
     position: absolute;
     width: 130px;
-    background-color: #B49B7F;
+    background-color: #8FBE70;
     border: 1px solid #FFFFFF;
     z-index: 1;
 }

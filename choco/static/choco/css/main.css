@@ -10,14 +10,14 @@
 
 body {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    background-color: #D1BEA9;
+    background-color: #B3D69C;
 }
 
 #content {
     width: 80%;
     margin: 0 auto;
     padding: 0.1px; /* escape margin collapsing */
-    background-color: #B49B7F;
+    background-color: #8FBE70;
 }
 
 #main {
@@ -61,7 +61,7 @@ input::-webkit-inner-spin-button {
 #gift-banner {
     width: 50%;
     text-align: center;
-    background-color: #D1BEA9;
+    background-color: #B3D69C;
     overflow: hidden;
     font-size: 50px;
     white-space: nowrap;
@@ -120,7 +120,7 @@ input::-webkit-inner-spin-button {
     display: flex;
     align-items: center;
     margin-left: 10px;
-    background-color: #5B4D41;
+    background-color: #314c1f;
     color: #FDF6F0;
     border-radius: 5px;
     text-align: center;
@@ -141,7 +141,7 @@ input::-webkit-inner-spin-button {
     padding: 10px;
     position: absolute;
     top: 30px;
-    background-color: #5B4D41;
+    background-color: #314c1f;
     color: #FDF6F0;
     border-radius: 5px;
     border: 2px solid #FFF;
@@ -207,9 +207,9 @@ input::-webkit-inner-spin-button {
     margin: 2.5% auto;
     max-width: 80%;
     height: 90%;
-    border: 5px solid #5B4D41;
+    border: 5px solid #314c1f;
     border-radius: 5px;
-    background-color: #B49B7F;
+    background-color: #8FBE70;
 }
 
 #img-modal img {
@@ -244,7 +244,7 @@ input::-webkit-inner-spin-button {
     align-items: center;
     border-radius: 50%;
     background-color: #FDF6F0;
-    color: #5B4D41;
+    color: #314c1f;
     font-weight: 700;
     cursor: pointer;
 }
@@ -254,7 +254,7 @@ input::-webkit-inner-spin-button {
     position: absolute;
     width: 25px;
     height: 25px;
-    border: 3px solid #5B4D41;
+    border: 3px solid #314c1f;
     border-radius: 50%;
 }
 
@@ -269,7 +269,7 @@ input::-webkit-inner-spin-button {
     align-items: center;
     border-radius: 50%;
     background-color: #FDF6F0;
-    color: #5B4D41;
+    color: #314c1f;
     font-weight: 700;
     font-size: 25px;
     cursor: pointer;
@@ -280,7 +280,7 @@ input::-webkit-inner-spin-button {
     position: fixed;
     width: 45px;
     height: 45px;
-    border: 3px solid #5B4D41;
+    border: 3px solid #314c1f;
     border-radius: 50%;
 }
 
@@ -291,7 +291,7 @@ input::-webkit-inner-spin-button {
     bottom: 30px;
     left: 30px;
     padding: 15px 25px 15px 15px;
-    background-color: #5B4D41;
+    background-color: #314c1f;
     border: 3px solid #FDF6F0;
     border-radius: 5px;
     color: #FDF6F0;
