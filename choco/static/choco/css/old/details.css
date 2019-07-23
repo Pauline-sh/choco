@@ -1,0 +1,135 @@
+#details {
+    margin-bottom: 15%;
+}
+
+#gallery {
+    display: inline-flex;
+    justify-content: center;
+    vertical-align: top;
+    width: 45%;
+}
+
+#gallery-main {
+    display: flex;
+    justify-content: center;
+    width: 75%;
+    max-height: 500px;
+}
+
+#gallery-selection {
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+}
+
+.gallery-small {
+    margin: 3%;
+    cursor: pointer;
+}
+
+.gallery-small:not(:first-child) {
+    margin-top: 5%;
+}
+
+#gallery-main img,
+.gallery-small img {
+    max-height: 500px;
+    border: 3px solid #FDF6F0;
+    background-color: #FDF6F0;
+    border-radius: 5px;
+    box-sizing: border-box;
+    transition: 0.3s;
+}
+
+#gallery-main img {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.gallery-small img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#gallery-main img:hover,
+.gallery-small img:hover {
+    border-color: #5b4641;
+}
+
+.vr {
+    display: inline-block;
+    margin: 0 2%;
+    height: 500px;
+    border-left: 2px solid #FFFFFF;
+}
+
+#details .item-info {
+    margin-left: 5%;
+    display: inline-block;
+    width: 45%;
+    vertical-align: top;
+    color: #FDF6F0;
+}
+
+#details .item-info .title {
+    font-size: 1.5em;
+}
+
+#details .item-info .price {
+    margin: 2% 0;
+    font-size: 1.2em;
+    opacity: 0.8;
+}
+
+#details .item-info .cart-add-form {
+    display: block;
+    height: auto;
+}
+
+#details .item-info .quantity {
+    display: inline-block;
+    width: 20%;
+    height: 30px;
+}
+
+#details .item-info .quantity > input {
+    width: 70%;
+    height: 80%;
+}
+
+select[name="configuration"],
+#details .item-info .additional-info {
+    margin-bottom: 2%;
+}
+
+#details .item-info .article {
+    margin-bottom: 2%;
+}
+
+#details .item-info .description {
+    margin-bottom: 3%;
+}
+
+.additional-info {
+    opacity: 0.9;
+}
+
+.cart-add-form input[type="submit"] {
+    float: right;
+    width: 60%;
+    height: 30px;
+    border: 0;
+    border-radius: 10px;
+    background-color: #5b4641;
+    color: #FDF6F0;
+    cursor: pointer;
+}
+
+.help-message {
+    font-size: 0.7em;
+    font-style: italic;
+    text-align: center;
+    color: #FDF6F0;
+}

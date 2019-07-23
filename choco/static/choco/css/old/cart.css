@@ -1,0 +1,162 @@
+#cart-main {
+    width: 90%;
+    margin: 1.5% auto;
+    border-collapse: collapse;
+    color: #FDF6F0;
+}
+
+#cart-main tr {
+    height: 100px;
+    border-bottom: 1px solid #FDF6F0;
+    transition: 0.5s;
+}
+
+#cart-main td {
+    text-align: center;
+}
+
+#cart-main td img {
+    width: 100px;
+    height: 100px;
+}
+
+#cart-main .title {
+    width: 40%;
+    text-align: start;
+}
+
+#cart-main .title > *:first-child {
+    font-weight: 600;
+    color: #FDF6F0;
+    text-decoration: none;
+}
+
+#cart-main .title > *:last-child {
+    opacity: 0.8;
+}
+
+#cart-main .amount {
+    width: 10%;
+    text-align: start;
+}
+
+#cart-main .delete {
+    width: 1%;
+}
+
+.cart-add-form {
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cart-add-form .quantity {
+    position: relative;
+    display: block;
+    height: 80%;
+    width: 50%;
+}
+
+.cart-add-form .quantity > input {
+    width: 40%;
+}
+
+.quantity-up,
+.quantity-down {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    right: 0;
+    background-size: contain;
+}
+
+.quantity-up {
+    background-image: url("../../images/icon-arrow-up.svg");
+    top: 0;
+}
+
+.quantity-down {
+    background-image: url("../../images/icon-arrow-down.svg");
+    bottom: 0;
+}
+
+#cart-main .delete-cross-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #FDF6F0;
+    border-radius: 20px;
+    transition: 0.3s;
+}
+
+.delete-cross-wrap input[type="submit"] {
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    border: 0;
+    background: 0;
+    cursor: pointer;
+    text-align: center;
+    font-weight: 700;
+    color: #FDF6F0;
+    transition: 0.3s;
+}
+
+.checkout-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 3%;
+}
+
+.checkout-btn > a {
+    display: inline-block;
+    height: 50px;
+    width: 40%;
+    border: 3px solid #5b4641;
+    border-radius: 7px;
+    font-family: MarketDeco;
+    font-size: 1.2em;
+    line-height: 50px;
+    text-align: center;
+    text-decoration: none;
+    background-color: #FDF6F0;
+    color: #5b4641;
+}
+
+.checkout-btn input {
+    padding: 0;
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+    border-style: none;
+    font-size: 1.2em;
+    background-color: #FDF6F0;
+    color: #5b4641;
+    cursor: pointer;
+}
+
+#total {
+    color: #FDF6F0;
+    font-size: 1.3em;
+    text-align: center;
+}
+
+#main-cart-content #gift {
+    width: 40%;
+    margin: 1.5% auto;
+    border: 5px double #5b4641;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 1.2em;
+    color: #FDF6F0;
+}
+
+#main-cart-content #gift > .wrapper {
+    margin: 2.5%;
+}
+
+#main-cart-content #gift #package-selection.hidden {
+    display: none
+}

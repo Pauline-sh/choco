@@ -1,0 +1,147 @@
+#assortment {
+    width: 95%;
+    margin: 1.5% auto;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.not-found {
+    color: #FDF6F0;
+}
+
+.price-warning {
+    font-family: MarketDeco;
+    font-size: 1.2em;
+    text-align: center;
+    color: #FFFFFF;
+}
+
+.item-wrap {
+    width: 33%;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#assortment .cart-add-form,
+#catalog-modal .cart-add-form  {
+    display: flex;
+    justify-content: space-between;
+}
+
+#assortment .cart-add-form .quantity,
+#catalog-modal .cart-add-form .quantity {
+    position: relative;
+    width: 20%;
+}
+
+.cart-add-form .quantity > input {
+    width: 50%;
+    height: 80%;
+}
+
+.cart-add-form input[type="submit"] {
+    width: 60%;
+    height: 30px;
+    border: 0; /* reset default */
+    border-radius: 10px;
+    background-color: #5b4641;
+    color: #FDF6F0;
+    cursor: pointer;
+}
+
+.quantity-up,
+.quantity-down {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    right: 0;
+    background-size: contain;
+}
+
+.quantity-up {
+    background-image: url("../images/icon-arrow-up.svg");
+    top: 0;
+}
+
+.quantity-down {
+    background-image: url("../images/icon-arrow-down.svg");
+    bottom: 0;
+}
+
+.item-info a {
+    display: block;
+    text-decoration: none;
+}
+
+.item-image {
+    width: 80%;
+    overflow: hidden;
+}
+
+.item-image img {
+    width: 100%;
+    height: 100%;
+    background-color: #FDF6F0;
+    transition: 0.3s;
+}
+
+.item-image img:hover {
+    transform: scale(1.3);
+}
+
+#assortment .item-info {
+    max-width: 80%;
+    flex-grow: 1;
+    text-align: center;
+    color: #FFFFFF;
+}
+
+#assortment .item-info a, #catalog-modal .item-info {
+    text-decoration: none;
+    color: #FDF6F0;
+}
+
+#assortment .item-info .price, #catalog-modal .item-info .price{
+    opacity: 0.8;
+}
+
+.pagination {
+    margin: 3% auto;
+    display: flex;
+    justify-content: center;
+}
+
+.pagination .button-container {
+    width: 5%;
+    margin: 0.5%;
+    display: flex;
+    border: 3px solid #5b4641;
+    border-radius: 3px;
+    background-color: #FDF6F0;
+}
+
+.button-container.long {
+    width: 10%;
+}
+
+.button-container.active {
+    background-color: #5b4641;
+}
+
+.pagination .button-container > a {
+    height: 40px;
+    line-height: 40px;
+    width: 100%;
+    color: #5b4641;
+    font-family: MarketDeco;
+    font-size: 1.2em;
+    text-align: center;
+    text-decoration: none;
+}
+
+.pagination .button-container.active > a {
+    color: #FDF6F0;
+}

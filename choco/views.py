@@ -32,20 +32,35 @@ def get_sale_percent(request, cart):
 EMAIL_FROM = 'russian.memento@gmail.com'
 EMAIL_TO = 'chocosuvenir@yandex.ru'
 
+#1-2-7 = old version
+#1-2-8 = new version
+URL_OLD = 'memento'
 
 def home_page(request):
     contact_form = ContactForm()
-    return render(request, 'home.html', {'contact_form': contact_form})
+    if URL_OLD in request.build_absolute_uri():
+        redesign = False
+    else:
+        redesign = True
+    return render(request, 'home.html', {'contact_form': contact_form, 'redesign': redesign, 'url': request.build_absolute_uri()})
 
 
 def about_page(request):
     contact_form = ContactForm()
-    return render(request, 'about.html', {'contact_form': contact_form})
+    if URL_OLD in request.build_absolute_uri():
+        redesign = False
+    else:
+        redesign = True
+    return render(request, 'about.html', {'contact_form': contact_form, 'redesign': redesign})
 
 
 def contacts_page(request):
     contact_form = ContactForm()
-    return render(request, 'contacts.html', {'contact_form': contact_form})
+    if URL_OLD in request.build_absolute_uri():
+        redesign = False
+    else:
+        redesign = True
+    return render(request, 'contacts.html', {'contact_form': contact_form, 'redesign': redesign})
 
 
 def details_page(request, pk):
@@ -70,6 +85,11 @@ def details_page(request, pk):
                 if not f.lower().endswith("_tn.jpg"):
                     choco_gallery.append("%s%s/%s" % (u"choco/choco_pics/", choco_item.choco_dir, f))
 
+    if URL_OLD in request.build_absolute_uri():
+        redesign = False
+    else:
+        redesign = True
+
     return render(request, 'details.html', {
         'item': choco_item,
         'configurations': choco_configs,
@@ -77,7 +97,8 @@ def details_page(request, pk):
         'gallery': choco_gallery,
         'config_types_quantity': len(choco_item.choco_config.all()),
         'first_choco_config': first_choco_config,
-        'contact_form': contact_form
+        'contact_form': contact_form,
+        'redesign': redesign
     })
 
 
@@ -102,7 +123,12 @@ def catalog_choco(request):
     cart_form = CartAddProductForm(auto_id=False)
     items = add_catalog_pagination(request, items_list)
 
-    return render(request, 'catalog.html', {'chocos': items, 'cart_form': cart_form, 'contact_form': contact_form})
+    if URL_OLD in request.build_absolute_uri():
+        redesign = False
+    else:
+        redesign = True
+
+    return render(request, 'catalog.html', {'chocos': items, 'cart_form': cart_form, 'contact_form': contact_form, 'redesign': redesign})
 
 def catalog_beresta(request, subcategory_pk):
     contact_form = ContactForm()
@@ -111,7 +137,12 @@ def catalog_beresta(request, subcategory_pk):
     cart_form = CartAddProductForm(auto_id=False)
     items = add_catalog_pagination(request, items_list)
 
-    return render(request, 'catalog.html', {'chocos': items, 'cart_form': cart_form, 'contact_form': contact_form})
+    if URL_OLD in request.build_absolute_uri():
+        redesign = False
+    else:
+        redesign = True
+
+    return render(request, 'catalog.html', {'chocos': items, 'cart_form': cart_form, 'contact_form': contact_form, 'redesign': redesign})
 
 def catalog_wood(request):
     contact_form = ContactForm()
@@ -120,7 +151,12 @@ def catalog_wood(request):
     cart_form = CartAddProductForm(auto_id=False)
     items = add_catalog_pagination(request, items_list)
 
-    return render(request, 'catalog.html', {'chocos': items, 'cart_form': cart_form, 'contact_form': contact_form})
+    if URL_OLD in request.build_absolute_uri():
+        redesign = False
+    else:
+        redesign = True
+
+    return render(request, 'catalog.html', {'chocos': items, 'cart_form': cart_form, 'contact_form': contact_form, 'redesign': redesign})
 
 
 def cart_page(request):
@@ -130,7 +166,13 @@ def cart_page(request):
     request.session['cart_as_gift'] = False
     total_price = cart.get_total_price()
     package_styles = PackageStyle.objects.all()
-    return render(request, 'cart.html', {'cart': cart, 'total_price': total_price, 'package_styles':package_styles, 'contact_form': contact_form})
+
+    if URL_OLD in request.build_absolute_uri():
+        redesign = False
+    else:
+        redesign = True
+
+    return render(request, 'cart.html', {'cart': cart, 'total_price': total_price, 'package_styles':package_styles, 'contact_form': contact_form, 'redesign': redesign})
 
 
 def cart_as_gift_total_price(request, cart):
@@ -272,13 +314,19 @@ def gift_page(request):
     else:
         gift_package_id = -1
 
+    if URL_OLD in request.build_absolute_uri():
+        redesign = False
+    else:
+        redesign = True
+
     return render(request, 'gift.html', {
         'package_styles': package_styles,
         'total_price': total_price,
         'sale_percent': sale_percent,
         'gift_len': len(gift),
         'gift_package_id': gift_package_id,
-        'contact_form': contact_form
+        'contact_form': contact_form,
+        'redesign': redesign
     })
 
 def gift_add(request, choco_pk):
@@ -386,9 +434,16 @@ def order_page(request):
     contact_form = ContactForm()
 
     order_form = OrderForm()
+
+    if URL_OLD in request.build_absolute_uri():
+        redesign = False
+    else:
+        redesign = True
+
     return render(request, 'order.html', {
         'order_form': order_form,
-        'contact_form': contact_form
+        'contact_form': contact_form,
+        'redesign': redesign
     })
 
 def order_send(request):
@@ -526,7 +581,12 @@ def search_page(request):
     cart_form = CartAddProductForm(auto_id=False)
     items = add_catalog_pagination(request, result)    
 
-    return render(request, 'search.html', {'chocos': items, 'cart_form': cart_form, 'contact_form': contact_form, 'query': query})
+    if URL_OLD in request.build_absolute_uri():
+        redesign = False
+    else:
+        redesign = True
+
+    return render(request, 'search.html', {'chocos': items, 'cart_form': cart_form, 'contact_form': contact_form, 'query': query, 'redesign': redesign})
 
 def quick_search(request):
     if request.method == 'GET':

@@ -1,0 +1,70 @@
+.header {
+}
+
+.logo {
+    display: flex;
+    justify-content: center;
+    font-family: AncientKyiv;
+    font-size: 7.0em;
+    color: #5b4641;
+}
+
+.logo > .t {
+    display: inline-block;
+    margin-left: -5px;
+}
+
+.header-menu {
+    display: flex;
+    justify-content: space-around;
+    margin: 3% 3% 1% 3%;
+}
+
+.header-menu > div {
+    text-align: center;
+}
+
+.header-menu > div:last-child {
+    width: 10%;
+}
+
+.header-menu a {
+    font-family: MarketDeco;
+    transition: 0.3s color ease;
+    text-decoration: none;
+    font-size: 1.3em;
+    color: #FFFFFF;
+}
+
+.header-menu a:hover {
+    color: #634249;
+}
+
+img.shopping-cart {
+    color: #FFFFFF;
+    width: 25px;
+    height: 25px;
+}
+
+hr {
+    width: 95%;
+    color: #FFFFFF;
+}
+
+.header-menu > div:hover .subcategory-selection {
+    display: block;
+}
+
+.subcategory-selection {
+    display: none;
+    position: absolute;
+    width: 130px;
+    background-color: #B49B7F;
+    border: 1px solid #FFFFFF;
+    z-index: 1;
+}
+
+.subcategory-selection a {
+    display: block;
+    height: 25px;
+}

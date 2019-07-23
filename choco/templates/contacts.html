@@ -14,10 +14,18 @@
         <p>
             <a href="mailto:chocosuvenir@yandex.ru"><strong>chocosuvenir@yandex.ru</strong></a>
         </p>
-        <p>
-            <strong>Адрес магазина:</strong><br>
-            м. Щелковская, Щелковское шоссе, д.100, корп.100, ТЦ "Щелково", эт.2, пав. В 20 16; время работы с 10 до 22
-        </p>
-        <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A610218792709250ea29cbfb552fb73c486ce8e9613cd462307fe927eae5208e3&amp;width=702&amp;height=587&amp;lang=ru_RU&amp;scroll=true"></script>
+        {% if redesign %}
+            <p>
+                <strong>Адрес магазина:</strong><br>
+                м. Щелковская, Щелковское шоссе, д.100, корп.100, ТЦ "Щелково", эт.2, пав. В 20 16; время работы с 10 до 22
+            </p>
+            <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A610218792709250ea29cbfb552fb73c486ce8e9613cd462307fe927eae5208e3&amp;width=702&amp;height=587&amp;lang=ru_RU&amp;scroll=true"></script>
+        {% else %}
+            <p>
+                <strong>Адрес магазина:</strong><br>
+                Зелёный проспект, д 3а с1, 1-й этаж, тел. 8-968-750-72-37
+            </p>
+            <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3Add2e8f4a9d1e80be1f363ccaec4013117912ecd6ba1ddb25c87e384231050a4a&amp;width=692&amp;height=458&amp;lang=ru_RU&amp;scroll=true"></script>
+        {% endif %}
     </div>
 {% endblock %}

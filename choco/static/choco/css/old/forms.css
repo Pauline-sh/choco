@@ -1,0 +1,41 @@
+.standart-form {
+    margin: 3%;
+    width: 60%;
+    color: #FDF6F0;
+}
+
+.standart-form .input-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.standart-form .input-container:not(:first-child) {
+    margin-top: 2%;
+}
+
+.standart-form .input-container:not(:last-child) {
+    margin-bottom: 2%;
+}
+
+.standart-form .input-container > div {
+    width: 50%;
+}
+
+.input-name.required::after {
+    content: "*";
+    color: #ff0000;
+}
+
+.input-area > input,
+.input-area > textarea {
+    width: 100%;
+}
+
+.standart-form input[type="submit"] {
+    height: 30px;
+    border: 0;
+    border-radius: 10px;
+    background-color: #5b4641;
+    color: #FDF6F0;
+    cursor: pointer;
+}

@@ -7,18 +7,37 @@
         <meta name="keywords" content="подарок, сувенир, береста, шоколад">
         <meta name="description" content="Оригинальный русский сувенир">
         <!--meta name="viewport" content="width=device-width, initial-scale=1"-->
-        <title>Русский Стиль</title>
+        {% if redesign %}
+            <title>Русский Стиль</title>
+        {% else %}
+            <title>Русский Сувенир</title>
+        {% endif %}
 
         {% load static %}
+
         <link rel="stylesheet" type="text/css" href="{% static 'choco/css/normalize.css' %}">
-        <link rel="stylesheet" type="text/css" href="{% static 'choco/css/main.css' %}">
-        <link rel="stylesheet" type="text/css" href="{% static 'choco/css/header.css' %}">
-        <link rel="stylesheet" type="text/css" href="{% static 'choco/css/sidecart.css' %}">
-        <link rel="stylesheet" type="text/css" href="{% static 'choco/css/catalog.css' %}">
-        <link rel="stylesheet" type="text/css" href="{% static 'choco/css/cart.css' %}">
-        <link rel="stylesheet" type="text/css" href="{% static 'choco/css/details.css' %}">
-        <link rel="stylesheet" type="text/css" href="{% static 'choco/css/forms.css' %}">
-        <link rel="stylesheet" type="text/css" href="{% static 'choco/css/home.css' %}">
+
+        {% if redesign %}
+            <link rel="stylesheet" type="text/css" href="{% static 'choco/css/main.css' %}">
+            <link rel="stylesheet" type="text/css" href="{% static 'choco/css/header.css' %}">
+            <link rel="stylesheet" type="text/css" href="{% static 'choco/css/sidecart.css' %}">
+            <link rel="stylesheet" type="text/css" href="{% static 'choco/css/catalog.css' %}">
+            <link rel="stylesheet" type="text/css" href="{% static 'choco/css/cart.css' %}">
+            <link rel="stylesheet" type="text/css" href="{% static 'choco/css/details.css' %}">
+            <link rel="stylesheet" type="text/css" href="{% static 'choco/css/forms.css' %}">
+            <link rel="stylesheet" type="text/css" href="{% static 'choco/css/home.css' %}"> 
+            <link rel="stylesheet" type="text/css" href="{% static 'choco/css/gift.css' %}">
+        {% else %}
+            <link rel="stylesheet" type="text/css" href="{% static 'choco/css/old/main.css' %}">
+            <link rel="stylesheet" type="text/css" href="{% static 'choco/css/old/header.css' %}">
+            <link rel="stylesheet" type="text/css" href="{% static 'choco/css/old/sidecart.css' %}">
+            <link rel="stylesheet" type="text/css" href="{% static 'choco/css/old/catalog.css' %}">
+            <link rel="stylesheet" type="text/css" href="{% static 'choco/css/old/cart.css' %}">
+            <link rel="stylesheet" type="text/css" href="{% static 'choco/css/old/details.css' %}">
+            <link rel="stylesheet" type="text/css" href="{% static 'choco/css/old/forms.css' %}">
+            <link rel="stylesheet" type="text/css" href="{% static 'choco/css/old/home.css' %}">
+            <link rel="stylesheet" type="text/css" href="{% static 'choco/css/old/gift.css' %}">
+        {% endif %}
 
         <script src="{% static 'choco/jquery/jquery-3.1.1.min.js' %}"></script>
         <script src="{% static 'choco/js/polyfill.js' %}"></script>
@@ -39,7 +58,11 @@
         {% csrf_token %}
         <div id="content">
             <div class="header">
+                {% if redesign %}
                 <div class="logo">Русский с<div class="t">т</div>иль</div>
+                {% else %}
+                <div class="logo">Русский сувенир</div>
+                {% endif %}
                 <div class="header-menu">
                     <div><a href="{% url 'choco:home' %}">Главная</a></div>
                     <div><a href="{% url 'choco:catalog_choco' %}">Из шоколада</a></div>
@@ -62,15 +85,19 @@
                     <div><a href="{% url 'choco:catalog_wood' %}">Из дерева</a></div>
                     <div><a href="{% url 'choco:contacts' %}">Контакты</a></div>
                     <div><a id="open-cart" href="#">
-                        <img class="shopping-cart" src="{% static 'choco/images/shopping-cart.svg' %}">
+                        {% if redesign %}
+                            <img class="shopping-cart" src="{% static 'choco/images/shopping-cart.svg' %}">
+                        {% else %}
+                            <img class="shopping-cart" src="{% static 'choco/images/shopping-cart-old.svg' %}">
+                        {% endif %}
                         <span class="cart-fill" id="total-items">
-							{% with total_items=cart|length %}
-                                {% if cart|length > 0 %}
-                                        {{ total_items }}
-                                    {% else %}
-                                        0
-                                {% endif %}
-                            {% endwith %}
+                        {% with total_items=cart|length %}
+                            {% if cart|length > 0 %}
+                                    {{ total_items }}
+                                {% else %}
+                                    0
+                            {% endif %}
+                        {% endwith %}
 						</span>
                     </a></div>
                 </div>

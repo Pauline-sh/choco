@@ -30,18 +30,33 @@
             Мы упаковываем нашу продукцию в стильные коробки, полностью сделанные из дерева и герметично запаянные термоусадочной пленкой.
         </p>
         <div class="images-home">
-            <div class="wrapper">
-                <img class="img-zoomable" src="{% static 'choco/images/home1.jpg' %}">
-                <div class="image-info">Нажмите, чтобы увеличить</div>
-            </div>
-            <div class="wrapper">
-                <img class="img-zoomable" src="{% static 'choco/images/home2.jpg' %}">
-                <div class="image-info">Нажмите, чтобы увеличить</div>
-            </div>
-            <div class="wrapper">
-                <img class="img-zoomable" src="{% static 'choco/images/home3.jpg' %}">
-                <div class="image-info">Нажмите, чтобы увеличить</div>
-            </div>
+            {% if redesign %}
+                <div class="wrapper">
+                    <img class="img-zoomable" src="{% static 'choco/images/home1.jpg' %}">
+                    <div class="image-info">Нажмите, чтобы увеличить</div>
+                </div>
+                <div class="wrapper">
+                    <img class="img-zoomable" src="{% static 'choco/images/home2.jpg' %}">
+                    <div class="image-info">Нажмите, чтобы увеличить</div>
+                </div>
+                <div class="wrapper">
+                    <img class="img-zoomable" src="{% static 'choco/images/home3.jpg' %}">
+                    <div class="image-info">Нажмите, чтобы увеличить</div>
+                </div>
+            {% else %}
+                <div class="wrapper">
+                    <img class="img-zoomable" src="{% static 'choco/images/home1_old.jpg' %}">
+                    <div class="image-info">Нажмите, чтобы увеличить</div>
+                </div>
+                <div class="wrapper">
+                    <img class="img-zoomable" src="{% static 'choco/images/home2_old.jpg' %}">
+                    <div class="image-info">Нажмите, чтобы увеличить</div>
+                </div>
+                <div class="wrapper">
+                    <img class="img-zoomable" src="{% static 'choco/images/home3_old.jpg' %}">
+                    <div class="image-info">Нажмите, чтобы увеличить</div>
+                </div>
+            {% endif %}
         </div>
         <p>
             Мы рады предложить также изделия из бересты. Береста – уникальный природный материал, сочетающий в себе массу положительных свойств: лёгкость, гибкость, прочность, легко поддаётся обработке, обладает лечебными свойствами. В холодное время года береста или изделие из неё всегда остаётся тёплым, благодаря своим положительным свойствам. Всё, что берёза отдаёт человеку: кору, сок, почки, листья, молодые веточки, чагу, дёготь - наши предки использовали в медицинских целях.
