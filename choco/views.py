@@ -30,7 +30,7 @@ def get_sale_percent(request, cart):
 
 
 EMAIL_FROM = 'russian.memento@gmail.com'
-EMAIL_TO = 'kirpichik61@gmail.com'
+EMAIL_TO = 'chocosuvenir@yandex.ru'
 
 
 def home_page(request):
