@@ -38,9 +38,15 @@
                         {% if not item.choco_pic %}
                             <img src="{% static 'choco/choco_pics/default.png' %}"/>
                         {% else %}
-                            {% with "choco/choco_pics/"|add:item.choco_dir|add:"/"|add:item.choco_pic as main_pic %}
-                                <a href="{{ item.get_absolute_url }}"><img src="{% static main_pic %}"/></a>
-                            {% endwith %}
+                            {% if redesign and 'tn' in item.choco_pic %}
+                                {% with "choco/choco_pics/"|add:item.choco_dir|add:"/new_"|add:item.choco_pic as main_pic %}
+                                    <a href="{{ item.get_absolute_url }}"><img src="{% static main_pic %}"/></a>
+                                {% endwith %}
+                            {% else %}
+                                {% with "choco/choco_pics/"|add:item.choco_dir|add:"/"|add:item.choco_pic as main_pic %}
+                                    <a href="{{ item.get_absolute_url }}"><img src="{% static main_pic %}"/></a>
+                                {% endwith %}
+                            {% endif %}
                         {% endif %}
                     </div>
                     <div class="item-info">

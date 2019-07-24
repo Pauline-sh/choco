@@ -28,9 +28,15 @@
                             {% if not product.choco_pic %}
                                 <img src="{% static 'choco/choco_pics/default.png' %}"/>
                             {% else %}
-                                {% with "choco/choco_pics/"|add:product.choco_dir|add:"/"|add:product.choco_pic as main_pic %}
-                                    <img src="{% static main_pic %}"/>
-                                {% endwith %}
+                                {% if redesign and 'tn' in product.choco_pic %}
+                                    {% with "choco/choco_pics/"|add:product.choco_dir|add:"/new_"|add:product.choco_pic as main_pic %}
+                                        <img src="{% static main_pic %}"/>
+                                    {% endwith %}
+                                {% else %}
+                                    {% with "choco/choco_pics/"|add:product.choco_dir|add:"/"|add:product.choco_pic as main_pic %}
+                                        <img src="{% static main_pic %}"/>
+                                    {% endwith %}
+                                {% endif %}
                             {% endif %}
                         </div>
                         <div class="item-info">

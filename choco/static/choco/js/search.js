@@ -45,11 +45,17 @@ function fillInstant(data) {
   }
 
   for(let item of data) {
+    let img = item.choco_pic;
+
+    if(img.indexOf('tn') !== -1 && location.href.indexOf('memento') === -1) {
+      img = 'new_' + img;
+    }
+
     $("#search-result-instant").show();
     $("#search-result-instant").append(
       `<div class="instant-item-wrap">
         <div class="instant-item-pic">
-          <img src="/static/choco/choco_pics/${item.choco_dir}/${item.choco_pic}"/>
+          <img src="/static/choco/choco_pics/${item.choco_dir}/${img}"/>
         </div>
         <div class="instant-item-info">
           <div class="instant-item-title"><a href="/catalog/${item.id}/" target="_blank">${item.choco_name}</a></div>

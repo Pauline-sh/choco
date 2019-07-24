@@ -87,9 +87,14 @@ class CatalogModal {
     }
 
     makeTemplate(item) {
+        let img = item.choco_pic;
+        if(img.indexOf('tn') !== -1 && location.href.indexOf('memento') === -1) {
+            img = 'new_' + img;
+        }
+
         return(`<div class="item-wrap">
                     <div class="item-image">
-                        <img src="/static/choco/choco_pics/${item.choco_dir}/${item.choco_pic}"/>
+                        <img src="/static/choco/choco_pics/${item.choco_dir}/${img}"/>
                     </div>
                     <div class="item-info">
                         <strong>${item.choco_name}</strong><br>
@@ -306,10 +311,15 @@ function removeFromGift(e) {
 }
 
 function makeGiftItemTemplate(item, discount) {
+    let img = item.product.choco_pic;
+    if(img.indexOf('tn') !== -1 && location.href.indexOf('memento') === -1) {
+        img = 'new_' + img;
+    }
+
     return (`<div class="gift-item" id="product-${item.product.id}-${item.configuration}">
     <div class="wrapper">
         <div class="img-container">
-            <img src="/static/choco/choco_pics/${item.product.choco_dir}/${item.product.choco_pic}"/>
+            <img src="/static/choco/choco_pics/${item.product.choco_dir}/${img}"/>
         </div>
         <div class="item-info">
             <div class="title">${item.product.choco_name}</div>

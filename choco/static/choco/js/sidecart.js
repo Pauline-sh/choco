@@ -111,6 +111,10 @@ function reloadSideCart(new_item, static_dir){
 }
 
 function makeTemplate(id, config, static_dir, img, name, config_str, quantity, price) {
+    if(img.indexOf('tn') !== -1 && location.href.indexOf('memento') === -1) {
+        img = img.split('/')[0] + '/new_' + img.split('/')[1];
+    }
+
     return ('<div class="cart-item" id="sidecart-item-' + id + '-' + config + '">' +
                 '<div class="wrapper">' +
                     '<div class="cart-item-image">' +
