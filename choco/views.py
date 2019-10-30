@@ -8,7 +8,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.mail import send_mail
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
-from django.http import HttpResponse
+from django.http import HttpResponse, FileResponse
 from django.conf import settings
 from django.db.models import Q
 
@@ -619,3 +619,6 @@ def get_keyword_matches(name, keywords):
             count = count + 1
 
     return count
+
+def verify(request, file):
+    return FileResponse(file)

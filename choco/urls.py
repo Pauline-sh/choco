@@ -37,5 +37,7 @@ urlpatterns = [
     url(r'^send/$', views.message_send, name='message_send'),
 
     url(r'^quick_search$', views.quick_search, name='quick_search'),
-    url(r'^search$', views.search_page, name='search')
+    url(r'^search$', views.search_page, name='search'),
+    
+    url(r'^.well-known/acme-challenge/(?P<file>[a-zA-Z0-9_]+)$', views.verify, name='verify')
 ]
