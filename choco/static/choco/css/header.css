@@ -68,3 +68,8 @@ hr {
     display: block;
     height: 25px;
 }
+
+.subcategory-selection a.subcategory-small {
+    font-size: 0.8rem;
+    line-height: 22px;
+}
