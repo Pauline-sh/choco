@@ -621,4 +621,4 @@ def get_keyword_matches(name, keywords):
     return count
 
 def verify(request, file):
-    return FileResponse(file)
+    return FileResponse(open(os.path.join(settings.BASE_DIR, u"choco/" + file)))
